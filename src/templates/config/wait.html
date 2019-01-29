@@ -1,11 +1,13 @@
 <html>
 
 <head>
-  <title></title>
+  <title>Please wait</title>
+  <meta http-equiv="refresh" content="8;url=/">
+  </meta>
   {{> head}}
 </head>
 
-<body class="cover" style="background-image: url({{design.cover}});">
+<body class="cover">
 
   {{> nav}}
 
@@ -13,11 +15,8 @@
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
-          Welcome to the Dashboard
+          Please wait
         </h1>
-        <h2 class="subtitle">
-          Before you can start you must login
-        </h2>
       </div>
     </div>
   </section>
@@ -30,14 +29,15 @@
 
   <section>
     <div class="container">
-      <div class="notification is-size-1 has-text-centered">
+      <div class="notification is-size-3 has-text-centered">
+        <h1 class="title">Please wait</h1>
         <p>
-          Please
-          <a href="/login">login</a> to get started
+          We are just setting a few things up, this will take a few seconds.
         </p>
       </div>
     </div>
   </section>
+
   {{> tail}}
 </body>
 
