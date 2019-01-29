@@ -135,7 +135,9 @@ router.use(function (req, res, next) {
   //  If there is no Auth0 setting in config then we _must_
   //  check to see if we are setting Auth0 settings and if
   //  not, redirect to the Auth0 form.
-  if (configObj.get('auth0') === null) {
+  let auth0 = configObj.get('auth0')
+  const handshake = configObj.get('handshake')
+  if (auth0 === null || !auth0.AUTH0_CALLBACK_URL_DASHBOARD) {
     // Check to see if values are being posted to us
     if (req.method === 'POST') {
       if (
@@ -166,6 +168,9 @@ router.use(function (req, res, next) {
     //  If not, check to see if we've been passed a handshake
     if ('handshake' in req.query) {
       req.templateValues.handshake = req.query.handshake
+    }
+    if (handshake) {
+      req.templateValues.handshake = handshake
     }
 
     //  Set up a nice handy default callback if we are developing

@@ -423,7 +423,7 @@ p.then((res) => {
   )
 
   const auth0 = config.get('auth0')
-  if (auth0 !== null) {
+  if (auth0 !== null && auth0.AUTH0_CALLBACK_URL_DASHBOARD) {
     // Configure Passport to use Auth0
     const strategy = new Auth0Strategy({
       domain: auth0.AUTH0_DOMAIN,

@@ -1,7 +1,5 @@
 /* eslint-disable no-useless-constructor */
 const crypto = require('crypto')
-const request = require('request-promise')
-const auth0 = require('../../modules/auth0')
 const Config = require('../config')
 const elasticsearch = require('elasticsearch')
 

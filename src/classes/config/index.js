@@ -2,6 +2,28 @@ const elasticsearch = require('elasticsearch')
 
 /** Class representing the config settings. */
 
+const saveConfig = async () => {
+  const esclient = new elasticsearch.Client({
+    host: process.env.ELASTICSEARCH
+  })
+  const index = `config_${process.env.KEY}`
+  const type = 'config'
+  try {
+    console.log('about to call esclient.update')
+    await esclient.update({
+      index,
+      type,
+      id: 0,
+      body: {
+        doc: global.config,
+        doc_as_upsert: true
+      }
+    })
+  } catch (err) {
+    // do nothing
+  }
+}
+
 class Config {
   /**
    * This is our getter that allows us to get values from the config.
@@ -104,21 +126,8 @@ class Config {
     this.save()
   }
 
-  save () {
-    const esclient = new elasticsearch.Client({
-      host: process.env.ELASTICSEARCH
-    })
-    const index = `config_${process.env.KEY}`
-    const type = 'config'
-    esclient.update({
-      index,
-      type,
-      id: 0,
-      body: {
-        doc: global.config,
-        doc_as_upsert: true
-      }
-    })
+  async save () {
+    await saveConfig()
   }
 }
 module.exports = Config
