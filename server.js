@@ -429,7 +429,7 @@ p.then((res) => {
       domain: auth0.AUTH0_DOMAIN,
       clientID: auth0.AUTH0_CLIENT_ID,
       clientSecret: auth0.AUTH0_SECRET,
-      callbackURL: auth0.AUTH0_CALLBACK_URL
+      callbackURL: auth0.AUTH0_CALLBACK_URL_DASHBOARD
     },
       (accessToken, refreshToken, extraParams, profile, done) => {
         return done(null, profile)

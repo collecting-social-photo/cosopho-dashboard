@@ -152,10 +152,14 @@ router.use(function (req, res, next) {
           AUTH0_DOMAIN: req.body.AUTH0_DOMAIN,
           AUTH0_CLIENT_ID: req.body.AUTH0_CLIENT_ID,
           AUTH0_SECRET: req.body.AUTH0_SECRET,
-          AUTH0_CALLBACK_URL: req.body.AUTH0_CALLBACK_URL
+          AUTH0_CALLBACK_URL_DASHBOARD: req.body.AUTH0_CALLBACK_URL
         }
         configObj.set('auth0', auth0)
-        return res.redirect('/')
+        setTimeout(() => {
+          global.doRestart = true
+          process.exit()
+        }, 500)
+        return res.redirect('/wait')
       }
     }
 
@@ -189,7 +193,7 @@ if (configObj.get('auth0') !== null) {
     passport.authenticate('auth0', {
       clientID: auth0Obj.AUTH0_CLIENT_ID,
       domain: auth0Obj.AUTH0_DOMAIN,
-      redirectUri: auth0Obj.AUTH0_CALLBACK_URL,
+      redirectUri: auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD,
       audience: `https://${auth0Obj.AUTH0_DOMAIN}/userinfo`,
       responseType: 'code',
       scope: 'openid profile'
@@ -207,9 +211,9 @@ if (configObj.get('auth0') !== null) {
       req.user = null
       req.session = null
       res.clearCookie('connect.sid')
-      res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${auth0Obj.AUTH0_CALLBACK_URL.replace('/callback', '')}`)
+      res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD.replace('/callback', '')}`)
       if (err) {
-        res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${auth0Obj.AUTH0_CALLBACK_URL.replace('/callback', '')}`)
+        res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD.replace('/callback', '')}`)
       }
     })
   })
@@ -230,6 +234,7 @@ if (configObj.get('auth0') !== null) {
 
 router.get('/:lang', main.index)
 router.post('/:lang', main.index)
+router.get('/:lang/wait', main.wait)
 router.get('/:lang/config', ensureLoggedIn, config.index)
 router.post('/:lang/config', ensureLoggedIn, config.index)
 
