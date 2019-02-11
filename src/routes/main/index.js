@@ -1,5 +1,4 @@
 exports.index = (req, res) => {
-  console.log(req.user)
   if (!req.user || !req.user.roles || !req.user.roles.isAdmin) return res.render('main/redirect', req.templateValues)
   return res.render('main/index', req.templateValues)
 }

@@ -35,6 +35,13 @@ exports.ifEndRow = (index, divisor, options) => {
   return options.inverse(this)
 }
 
+exports.ifNeedsToCloseRow = (index, divisor, options) => {
+  if (!((index) % divisor === 0 && index > 0)) {
+    return options.fn(this)
+  }
+  return options.inverse(this)
+}
+
 exports.indexOf = (context, ndx, options) => options.fn(context[ndx])
 
 exports.ifEven = (n, options) => {
@@ -499,4 +506,9 @@ request(
 `
 
   return Prism.highlight(rtn, Prism.languages.javascript, 'javascript')
+}
+
+exports.dashboardURL = () => {
+  if (!global.config || !global.config.auth0 || !global.config.auth0.AUTH0_CALLBACK_URL_API) return null
+  return global.config.auth0.AUTH0_CALLBACK_URL_API.replace('/callback', '')
 }

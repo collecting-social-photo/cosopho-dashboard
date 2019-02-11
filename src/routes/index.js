@@ -47,8 +47,6 @@ router.use(function (req, res, next) {
 router.use(function (req, res, next) {
   req.templateValues = getDefaultTemplateData()
   const configObj = new Config()
-  req.config = configObj
-  req.templateValues.config = req.config
 
   const defaultLang = 'en'
   let selectedLang = 'en'
@@ -229,6 +227,7 @@ if (configObj.get('auth0') !== null) {
 // ############################################################################
 
 const config = require('./config')
+const instances = require('./instances')
 const main = require('./main')
 
 router.get('/:lang', main.index)
@@ -236,5 +235,7 @@ router.post('/:lang', main.index)
 router.get('/:lang/wait', main.wait)
 router.get('/:lang/config', ensureLoggedIn, config.index)
 router.post('/:lang/config', ensureLoggedIn, config.index)
+
+router.get('/:lang/instances', instances.index)
 
 module.exports = router

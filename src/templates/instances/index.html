@@ -8,22 +8,29 @@
 <body>
   {{>nav}}
 
+  {{dumpThis instances}}
+
   <div class="wrapper">
     <div class="columns">
       {{>sidebar}}
       <main class="column main">
-
-        <div class="tile is-ancestor">
+        {{#each instances}}
+          {{#ifStartRow @index 3}}
+            <div class="tile is-ancestor">
+          {{/ifStartRow}}
           <div class="tile is-3 is-parent">
             <a class="tile is-child notification is-primary" href="/instances">
-              <p class="title">Instances</p>
-              <p class="subtitle">Control your instances here</p>
+              <p class="title">Instance name</p>
             </a>
           </div>
-        </div>
-
-      </main>
+          {{#ifEndRow @index 3}}
     </div>
+    {{/ifEndRow}}
+    {{/each}}
+    {{#ifNeedsToCloseRow instances.length 3}}
+  </div>{{/ifNeedsToCloseRow}}
+  </main>
+  </div>
   </div>
   {{>tail}}
 </body>
