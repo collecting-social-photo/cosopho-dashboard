@@ -9,9 +9,6 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 const Config = require('../classes/config')
 const getDefaultTemplateData = require('../helpers').getDefaultTemplateData
 
-const config = require('./config')
-const main = require('./main')
-
 //  Redirect to https, make sure...
 //  app.enable('trust proxy')
 //  is set in server.js
@@ -56,24 +53,10 @@ router.use(function (req, res, next) {
   const defaultLang = 'en'
   let selectedLang = 'en'
 
-  if (req.user === undefined) {
+  if (req.session.user === undefined) {
     req.user = null
   } else {
-    //  Shortcut the roles
-    if ('user_metadata' in req.user && 'roles' in req.user.user_metadata) {
-      req.user.roles = req.user.user_metadata.roles
-    } else {
-      req.user.roles = {
-        isAdmin: false,
-        isDeveloper: false,
-        isStaff: false
-      }
-    }
-    if ('user_metadata' in req.user && 'apitoken' in req.user.user_metadata) {
-      req.user.apitoken = req.user.user_metadata.apitoken
-    } else {
-      req.user.apitoken = null
-    }
+    req.user = req.session.user
   }
 
   //  Read in the language files and overlay the selected langage on the
@@ -231,11 +214,22 @@ if (configObj.get('auth0') !== null) {
     }),
     async function (req, res) {
       // Update the user with extra information
-      req.user = await new User().get(req.user)
-      res.redirect(req.session.returnTo || '/')
+      req.session.user = await new User().get(req.user)
+      return setTimeout(() => {
+        res.redirect(307, req.session.returnTo || '/')
+      }, 1000)
     }
   )
 }
+
+// ############################################################################
+//
+//  Finally the routes
+//
+// ############################################################################
+
+const config = require('./config')
+const main = require('./main')
 
 router.get('/:lang', main.index)
 router.post('/:lang', main.index)
