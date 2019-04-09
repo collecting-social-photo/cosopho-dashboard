@@ -6,23 +6,29 @@
 </head>
 
 <body>
-  {{>nav}}
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
 
-  <div class="wrapper">
-    <div class="columns">
-      {{>sidebar}}
-      <main class="column main">
+    {{>sidebar}}
 
-        <div class="tile is-ancestor">
-          <div class="tile is-3 is-parent">
-            <a class="tile is-child notification is-primary" href="/instances">
-              <p class="title">Instances</p>
-              <p class="subtitle">Control your instances here</p>
-            </a>
-          </div>
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <div class="columns">
+          <main class="column main">
+
+            <div class="tile is-ancestor">
+              <div class="tile is-3 is-parent">
+                <a class="tile is-child notification is-primary" href="/instances">
+                  <p class="title">Instances</p>
+                  <p class="subtitle">Control your instances here</p>
+                </a>
+              </div>
+            </div>
+
+          </main>
         </div>
-
-      </main>
+      </div>
     </div>
   </div>
   {{>tail}}

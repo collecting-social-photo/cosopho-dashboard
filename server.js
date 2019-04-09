@@ -409,9 +409,12 @@ p.then((res) => {
 
   app.use(
     session({
+      cookieName: 'session',
       secret: process.env.KEY,
-      resave: false,
-      saveUninitialized: false,
+      resave: true,
+      saveUninitialized: true,
+      duration: 30 * 60 * 1000,
+      activeDuration: 5 * 60 * 1000,
       store: sessionstore.createSessionStore({
         type: 'elasticsearch',
         index: `session_${process.env.KEY}`,

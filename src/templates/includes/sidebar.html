@@ -1,16 +1,29 @@
-<aside class="column is-2 aside">
-  <nav class="menu">
-    <p class="menu-label">
-      Administration
-    </p>
-    <ul class="menu-list">
-      <li>
-        <a href="/bulma-admin-dashboard-template/forms.html">
-          <span class="icon is-small"><i class="fa fa-pencil-square-o"></i></span>
-          Instances
-        </a>
-      </li>
-    </ul>
-    <br />
-  </nav>
-</aside>
+<div class="docs-sidebar off-canvas-sidebar" id="sidebar">
+
+  <div class="docs-nav">
+    <div class="accordion-container">
+      <div class="accordion">
+        <label class="accordion-header label-header">Cosopho</label>
+      </div>
+
+
+      {{#if user}}
+        {{#if user.roles.isAdmin}}
+          <div class="accordion">
+            <input id="accordion-administration" type="checkbox" name="docs-accordion-checkbox" hidden=""
+              {{#ifEqual navOpen "administration"}}checked=checked{{/ifEqual}}>
+            <label class="accordion-header content c-hand" for="accordion-administration">Administration</label>
+            <div class="accordion-body">
+              <ul class="menu menu-nav">
+                <li class="menu-item"><a href="/{{lang}}/admin/instances">Instances</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+
+    </div>
+  </div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>

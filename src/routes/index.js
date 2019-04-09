@@ -213,7 +213,14 @@ if (configObj.get('auth0') !== null) {
     async function (req, res) {
       // Update the user with extra information
       req.session.user = await new User().get(req.user)
+      req.session.save()
+      let pow = JSON.stringify(req.session.user)
+      pow = JSON.parse(pow)
+      req.session.save()
       return setTimeout(() => {
+        req.session.save()
+        console.log(`Logging in >> ${pow.id}`)
+        req.session.save()
         res.redirect(307, req.session.returnTo || '/')
       }, 1000)
     }
