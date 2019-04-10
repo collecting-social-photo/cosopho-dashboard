@@ -51,10 +51,10 @@ router.use(function (req, res, next) {
   const defaultLang = 'en'
   let selectedLang = 'en'
 
-  if (req.session.user === undefined) {
-    req.user = null
-  } else {
+  if (req.session && req.session.user) {
     req.user = req.session.user
+  } else {
+    req.user = null
   }
 
   //  Read in the language files and overlay the selected langage on the
@@ -159,7 +159,11 @@ router.use(function (req, res, next) {
       req.templateValues.callbackUrl = `http://${process.env.HOST}:${process.env.PORT}/callback`
     }
     req.templateValues.NODE_ENV = process.env.NODE_ENV
-    return res.render('config/auth0', req.templateValues)
+
+    //  Send over the config object
+    req.templateValues.config = configObj
+
+    return res.render('administration/configuration/auth0', req.templateValues)
   }
 
   next()
@@ -233,16 +237,15 @@ if (configObj.get('auth0') !== null) {
 //
 // ############################################################################
 
-const config = require('./config')
-const instances = require('./instances')
+const administration = require('./administration')
 const main = require('./main')
 
 router.get('/:lang', main.index)
 router.post('/:lang', main.index)
 router.get('/:lang/wait', main.wait)
-router.get('/:lang/config', ensureLoggedIn, config.index)
-router.post('/:lang/config', ensureLoggedIn, config.index)
+router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
+router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 
-router.get('/:lang/instances', instances.index)
+router.get('/:lang/administration/instances', administration.instances.index)
 
 module.exports = router

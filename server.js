@@ -372,6 +372,7 @@ const p = new Promise(function (resolve, reject) {
 p.then((res) => {
   const express = require('express')
   const exphbs = require('express-handlebars')
+  const formidableMiddleware = require('express-formidable')
   const bodyParser = require('body-parser')
   const cookieParser = require('cookie-parser')
   const session = require('express-session')
@@ -400,6 +401,7 @@ p.then((res) => {
     })
   )
   app.use(bodyParser.json())
+  app.use(formidableMiddleware())
   app.use(
     bodyParser.urlencoded({
       extended: true
