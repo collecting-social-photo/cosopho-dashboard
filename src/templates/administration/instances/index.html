@@ -6,31 +6,16 @@
 </head>
 
 <body>
-  {{>nav}}
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
 
-  {{dumpThis instances}}
+    {{>sidebar}}
 
-  <div class="wrapper">
-    <div class="columns">
-      {{>sidebar}}
-      <main class="column main">
-        {{#each instances}}
-          {{#ifStartRow @index 3}}
-            <div class="tile is-ancestor">
-          {{/ifStartRow}}
-          <div class="tile is-3 is-parent">
-            <a class="tile is-child notification is-primary" href="/instances">
-              <p class="title">Instance name</p>
-            </a>
-          </div>
-          {{#ifEndRow @index 3}}
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+        <h1>Instances</h1>
+      </div>
     </div>
-    {{/ifEndRow}}
-    {{/each}}
-    {{#ifNeedsToCloseRow instances.length 3}}
-  </div>{{/ifNeedsToCloseRow}}
-  </main>
-  </div>
   </div>
   {{>tail}}
 </body>
