@@ -10,6 +10,19 @@ class Mutations {
         title
       }
     }`
+
+    this.updateInstance = `mutation {
+      updateInstance[[]] {
+        id
+        title
+      }
+    }`
+
+    this.deleteInstance = `mutation {
+      deleteInstance[[]] {
+        id
+      }
+    }`
   }
 
   /**

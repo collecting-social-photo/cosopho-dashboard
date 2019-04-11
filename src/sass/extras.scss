@@ -1,3 +1,5 @@
+@import "./variables";
+
 .container {
   padding-top: 3.5rem;
 }
@@ -28,8 +30,49 @@ hr {
 }
 
 div.docs-content {
-  padding-left: 20rem;
+  padding-left: 16rem;
   padding-right: 0;
+  width: calc(100vw - 1rem);
+
+  .h1 {
+    line-height: 2rem;
+  }
+
+  .primary-card {
+    min-height: 40vh;
+    background: $color-accent;
+    color: white;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .primary-card-inverted {
+    min-height: 40vh;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .btn {
+    background: $color-accent;
+    border-color: $color-accent;
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: $color-accent;
+    border-color: $color-accent;
+    color: #fff;
+  }
+
+  .btn-error {
+    background: #e85600;
+    border-color: #d95000;
+    color: #fff;
+  }
 }
 
 .s-title {
@@ -50,7 +93,7 @@ div.docs-content {
   }
 
   .docs-content {
-    padding-left: inherit !important;
+    padding-left: 1.5rem !important;
   }
 
   .contacts-links {

@@ -7,6 +7,20 @@ class Queries {
     this.hello = `query {
       hello[[]]
     }`
+
+    this.instance = `query {
+      instance[[]] {
+        id
+        title
+      }
+    }`
+
+    this.instances = `query {
+      instances[[]] {
+        id
+        title
+      }
+    }`
   }
 
   /**

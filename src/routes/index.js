@@ -243,9 +243,15 @@ const main = require('./main')
 router.get('/:lang', main.index)
 router.post('/:lang', main.index)
 router.get('/:lang/wait', main.wait)
+
+router.get('/:lang/administration', administration.index)
+
 router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 
 router.get('/:lang/administration/instances', administration.instances.index)
+router.post('/:lang/administration/instances', administration.instances.index)
+router.get('/:lang/administration/instances/:id', administration.instances.instance)
+router.post('/:lang/administration/instances/:id', administration.instances.instance)
 
 module.exports = router

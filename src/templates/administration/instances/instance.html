@@ -1,0 +1,56 @@
+<html>
+
+<head>
+  <title>Instance</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration/instances">Instances</a>
+          </li>
+          <li class="breadcrumb-item">
+            {{instance.title}}
+          </li>
+        </ul>
+
+        <h1>{{instance.title}}</h1>
+        <h5 class="subtitle text-gray">{{instance.id}}</h5>
+
+        <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
+          enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="form-label" for="title">Title</label>
+            <input class="form-input" type="text" id="title" name="title" placeholder="Instance title"
+              value="{{instance.title}}">
+          </div>
+          <button class="btn btn-primary input-group-btn" name="action" value="updateInstance">Update</button>
+        </form>
+
+        <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
+          enctype="multipart/form-data">
+          <button class="btn btn-error input-group-btn" name="action" value="deleteInstance">Delete</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>
