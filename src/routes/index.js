@@ -9,9 +9,6 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 const Config = require('../classes/config')
 const getDefaultTemplateData = require('../helpers').getDefaultTemplateData
 
-const config = require('./config')
-const main = require('./main')
-
 //  Redirect to https, make sure...
 //  app.enable('trust proxy')
 //  is set in server.js
@@ -50,30 +47,14 @@ router.use(function (req, res, next) {
 router.use(function (req, res, next) {
   req.templateValues = getDefaultTemplateData()
   const configObj = new Config()
-  req.config = configObj
-  req.templateValues.config = req.config
 
   const defaultLang = 'en'
   let selectedLang = 'en'
 
-  if (req.user === undefined) {
-    req.user = null
+  if (req.session && req.session.user) {
+    req.user = req.session.user
   } else {
-    //  Shortcut the roles
-    if ('user_metadata' in req.user && 'roles' in req.user.user_metadata) {
-      req.user.roles = req.user.user_metadata.roles
-    } else {
-      req.user.roles = {
-        isAdmin: false,
-        isDeveloper: false,
-        isStaff: false
-      }
-    }
-    if ('user_metadata' in req.user && 'apitoken' in req.user.user_metadata) {
-      req.user.apitoken = req.user.user_metadata.apitoken
-    } else {
-      req.user.apitoken = null
-    }
+    req.user = null
   }
 
   //  Read in the language files and overlay the selected langage on the
@@ -178,7 +159,11 @@ router.use(function (req, res, next) {
       req.templateValues.callbackUrl = `http://${process.env.HOST}:${process.env.PORT}/callback`
     }
     req.templateValues.NODE_ENV = process.env.NODE_ENV
-    return res.render('config/auth0', req.templateValues)
+
+    //  Send over the config object
+    req.templateValues.config = configObj
+
+    return res.render('administration/configuration/auth0', req.templateValues)
   }
 
   next()
@@ -231,16 +216,42 @@ if (configObj.get('auth0') !== null) {
     }),
     async function (req, res) {
       // Update the user with extra information
-      req.user = await new User().get(req.user)
-      res.redirect(req.session.returnTo || '/')
+      req.session.user = await new User().get(req.user)
+      req.session.save()
+      let pow = JSON.stringify(req.session.user)
+      pow = JSON.parse(pow)
+      req.session.save()
+      return setTimeout(() => {
+        req.session.save()
+        console.log(`Logging in >> ${pow.id}`)
+        req.session.save()
+        res.redirect(307, req.session.returnTo || '/')
+      }, 1000)
     }
   )
 }
 
+// ############################################################################
+//
+//  Finally the routes
+//
+// ############################################################################
+
+const administration = require('./administration')
+const main = require('./main')
+
 router.get('/:lang', main.index)
 router.post('/:lang', main.index)
 router.get('/:lang/wait', main.wait)
-router.get('/:lang/config', ensureLoggedIn, config.index)
-router.post('/:lang/config', ensureLoggedIn, config.index)
+
+router.get('/:lang/administration', administration.index)
+
+router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
+router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
+
+router.get('/:lang/administration/instances', administration.instances.index)
+router.post('/:lang/administration/instances', administration.instances.index)
+router.get('/:lang/administration/instances/:id', administration.instances.instance)
+router.post('/:lang/administration/instances/:id', administration.instances.instance)
 
 module.exports = router

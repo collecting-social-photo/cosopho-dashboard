@@ -1,0 +1,72 @@
+<html>
+
+<head>
+  <title>Instances</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            Instances
+          </li>
+        </ul>
+
+        <div class="columns">
+
+          {{#each instances}}
+            <div class="column col-3">
+              <div class="card primary-card">
+                <div class="card-header">
+                  <div class="card-title h1"><a
+                      href="/{{../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                  </div>
+                  <div class="card-subtitle text-gray">{{id}}</div>
+                </div>
+              </div>
+            </div>
+          {{/each}}
+
+          <div class="column col-3">
+            <form method="POST" action="/{{selectedLang}}/administration/instances" enctype="multipart/form-data">
+              <div class="card primary-card-inverted">
+                <div class="card-header">
+                  <div class="card-title h1">Add new instance</div>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-input" type="text" id="title" name="title" placeholder="Instance title">
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary input-group-btn" name="action" value="addInstance">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>

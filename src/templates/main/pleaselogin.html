@@ -1,44 +1,23 @@
 <html>
 
 <head>
-  <title></title>
+  <title>Dashboard</title>
   {{> head}}
 </head>
 
-<body class="cover" style="background-image: url({{design.cover}});">
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
 
-  {{> nav}}
+    {{>sidebar}}
 
-  <section class="hero is-primary is-bold">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Welcome to the Dashboard
-        </h1>
-        <h2 class="subtitle">
-          Before you can start you must login
-        </h2>
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+        Please <a href="/login">log in</a>
       </div>
     </div>
-  </section>
-
-  <section>
-    <div class="container">
-      &nbsp;
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div class="notification is-size-1 has-text-centered">
-        <p>
-          Please
-          <a href="/login">login</a> to get started
-        </p>
-      </div>
-    </div>
-  </section>
-  {{> tail}}
+  </div>
+  {{>tail}}
 </body>
 
 </html>

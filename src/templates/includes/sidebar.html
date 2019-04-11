@@ -1,0 +1,30 @@
+<div class="docs-sidebar off-canvas-sidebar" id="sidebar">
+
+  <div class="docs-nav">
+    <div class="accordion-container">
+      <div class="accordion">
+        <label class="accordion-header label-header">Cosopho</label>
+      </div>
+
+
+      {{#if user}}
+        {{#if user.roles.isAdmin}}
+          <div class="accordion">
+            <input id="accordion-administration" type="checkbox" name="docs-accordion-checkbox" hidden="" navOpen
+              checked=checked>
+            <label class="accordion-header content c-hand" for="accordion-administration">Administration</label>
+            <div class="accordion-body">
+              <ul class="menu menu-nav">
+                <li class="menu-item"><a href="/{{selectedLang}}/administration/configuration">Configuration </a> </li>
+                <li class="menu-item"><a href="/{{selectedLang}}/administration/instances">Instances</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+
+    </div>
+  </div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>

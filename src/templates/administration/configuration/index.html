@@ -1,0 +1,45 @@
+<html>
+
+<head>
+  <title>Dashboard</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            Configuration
+          </li>
+        </ul>
+
+        <h1>Configuration</h1>
+
+        <h2>GraphQL</h2>
+
+        <form method="POST" action="/{{selectedLang}}/administration/configuration" enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="form-label" for="graphQL">GraphQL host url</label>
+            <input class="form-input" type="text" id="graphQL" name="graphQL" placeholder="url for the graphQL server"
+              value="{{graphQL}}">
+          </div>
+          <button class="btn btn-primary input-group-btn" name="action" value="updateGraphQL">Submit</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>

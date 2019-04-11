@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Dashboard</title>
+  <title>Administration</title>
   {{> head}}
 </head>
 
@@ -16,7 +16,10 @@
 
         <ul class="breadcrumb">
           <li class="breadcrumb-item">
-            Home
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            Administration
           </li>
         </ul>
 
@@ -25,8 +28,16 @@
 
             <div class="card primary-card">
               <div class="card-header">
-                <div class="card-title h1"><a href="/{{selectedLang}}/administration">Administration</a>
+                <div class="card-title h1"><a href="/{{selectedLang}}/administration/configuration">Configuration</a>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="column col-3">
+            <div class="card primary-card">
+              <div class="card-header">
+                <div class="card-title h1"><a href="/{{selectedLang}}/administration/instances">Instances</a></div>
               </div>
             </div>
           </div>
