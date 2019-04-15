@@ -463,7 +463,10 @@ exports.xmlCode = object => {
 
 exports.getDefaultTemplateData = () => {
   return {
-    NODE_ENV: process.env.NODE_ENV
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    HOST: process.env.HOST,
+    ELASTICSEARCH: process.env.ELASTICSEARCH
   }
 }
 
