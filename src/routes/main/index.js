@@ -4,5 +4,5 @@ exports.index = (req, res) => {
 }
 
 exports.wait = (req, res) => {
-  return res.render('config/wait', req.templateValues)
+  return res.render('administration/configuration/wait', req.templateValues)
 }
