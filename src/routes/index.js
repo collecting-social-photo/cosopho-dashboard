@@ -257,6 +257,7 @@ router.get('/:lang/administration', administration.index)
 
 router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
+router.get('/:lang/administration/auth0', ensureLoggedIn, administration.configuration.auth0)
 
 router.get('/:lang/administration/instances', administration.instances.index)
 router.post('/:lang/administration/instances', administration.instances.index)
