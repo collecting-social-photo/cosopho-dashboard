@@ -462,12 +462,13 @@ exports.xmlCode = object => {
 }
 
 exports.getDefaultTemplateData = () => {
-  return {
+  const defaultStuff = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     HOST: process.env.HOST,
     ELASTICSEARCH: process.env.ELASTICSEARCH
   }
+  return defaultStuff
 }
 
 exports.nodeQuery = (query, filter, graphQL, token) => {

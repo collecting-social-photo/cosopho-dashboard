@@ -21,15 +21,40 @@
         </ul>
 
         <div class="columns">
-          <div class="column col-3">
+          {{#if user}}
+            <div class="column col-6">
+              <div class="card primary-card-inverted">
+                <div class="card-header">
+                  <div class="card-title h1">API Token</div>
+                </div>
+                {{#if graphQLHost}}
+                  <div class="card-body">
+                    <p>
+                      Below is your API token, you should use this when making API calls.
+                    </p>
+                    <p>
+                      <code>{{user.apitoken}}</code>
+                    </p>
+                    <p>
+                      You can <a href="{{graphQLHost}}/{{user.apitoken}}/playground">view the graphQL playground</a> to
+                      test out various queries.
+                    </p>
+                  </div>
+                {{/if}}
+              </div>
+            </div>
+          {{/if}}
 
-            <div class="card primary-card">
-              <div class="card-header">
-                <div class="card-title h1"><a href="/{{selectedLang}}/administration">Administration</a>
+          {{#if user.roles.isAdmin}}
+            <div class="column col-3">
+              <div class="card primary-card">
+                <div class="card-header">
+                  <div class="card-title h1"><a href="/{{selectedLang}}/administration">Administration</a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          {{/if}}
 
         </div>
 
