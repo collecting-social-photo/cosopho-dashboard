@@ -58,6 +58,7 @@ const getUserSync = async id => {
       doc_as_upsert: true
     }
   })
+
   return newUser
 }
 
@@ -75,6 +76,7 @@ const setApiToken = async id => {
     .update(`${Math.random()}`)
     .digest('hex')
   await setKeyValue(id, 'apitoken', apitoken)
+  return apitoken
 }
 
 /**
@@ -136,7 +138,6 @@ const setKeyValue = async (id, key, value) => {
       doc_as_upsert: true
     }
   })
-
   return user
 }
 /**
@@ -180,7 +181,7 @@ const getUser = async id => {
 
   //  Make sure we have a developer API token
   if (!user.apitoken) {
-    user = await setApiToken(id)
+    user.apitoken = await setApiToken(id)
   }
   return user
 }
