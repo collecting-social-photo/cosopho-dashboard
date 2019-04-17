@@ -20,8 +20,11 @@ class GraphQL {
   async fetch (payload, token) {
     //  Grab the graphQL host
     const configObj = new Config()
-    const graphQL = configObj.get('graphQL')
-    if (!graphQL) return []
+    const auth0 = configObj.get('auth0')
+    console.log(auth0)
+    if (!auth0.AUTH0_CALLBACK_URL_API) return []
+    const graphQL = auth0.AUTH0_CALLBACK_URL_API.replace('/callback', '')
+    console.log(graphQL)
 
     const headers = {
       'content-type': 'application/json',
