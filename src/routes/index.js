@@ -255,19 +255,15 @@ router.get('/:lang', main.index)
 router.post('/:lang', main.index)
 router.get('/:lang/wait', main.wait)
 
-router.get('/:lang/administration', administration.index)
+router.get('/:lang/administration', ensureLoggedIn, administration.index)
 
-router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
-router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
-router.get('/:lang/administration/auth0', ensureLoggedIn, administration.configuration.auth0)
+router.get('/:lang/administration/instances', ensureLoggedIn, administration.instances.index)
+router.post('/:lang/administration/instances', ensureLoggedIn, administration.instances.index)
+router.get('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
+router.post('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
 
-router.get('/:lang/administration/instances', administration.instances.index)
-router.post('/:lang/administration/instances', administration.instances.index)
-router.get('/:lang/administration/instances/:id', administration.instances.instance)
-router.post('/:lang/administration/instances/:id', administration.instances.instance)
-
-router.get('/:lang/administration/users', administration.users.index)
-router.get('/:lang/administration/users/:id', administration.users.user)
-router.post('/:lang/administration/users/:id', administration.users.user)
+router.get('/:lang/administration/users', ensureLoggedIn, administration.users.index)
+router.get('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)
+router.post('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)
 
 module.exports = router
