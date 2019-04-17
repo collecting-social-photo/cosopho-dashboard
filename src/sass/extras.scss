@@ -56,6 +56,16 @@ div.docs-content {
     }
   }
 
+  .primary-card-title {
+    min-height: 40vh;
+    background: magenta;
+    color: white;
+
+    a {
+      color: $color-accent;
+    }
+  }
+
   .btn {
     background: $color-accent;
     border-color: $color-accent;
