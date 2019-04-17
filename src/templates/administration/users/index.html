@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <title>Users</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            Users
+          </li>
+        </ul>
+
+        <div class="columns">
+
+          {{#each users}}
+            <div class="column col-3">
+              <div class="card primary-card">
+                <div class="card-header">
+                  <div class="card-title h1">
+                    <figure class="avatar avatar-lg">
+                      <img src="{{icon}}" alt="User avatar">
+                    </figure>
+                    <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
+                  </div>
+                  <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
+                  <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                        class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
+                  <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                        class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
+                  <p>
+                    <h4>Instances</h4>
+                    <ul>
+                      {{#if instances}}
+                        {{#each instances}}
+                          <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                          </li>
+                        {{/each}}
+                      {{else}}
+                        <li>No instances</li>
+                      {{/if}}
+                    </ul>
+                  </p>
+                </div>
+              </div>
+            </div>
+          {{/each}}
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>

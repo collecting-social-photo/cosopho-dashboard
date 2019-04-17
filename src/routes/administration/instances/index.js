@@ -87,5 +87,25 @@ exports.instance = async (req, res) => {
     return res.redirect(`/${req.templateValues.selectedLang}/administration/instances`)
   }
 
+  //  Grab all the users so we can figure out which ones have control over these instances
+  //  Grab all the users
+  results = []
+  query = queries.get('users', '')
+  results = await graphQL.fetch({
+    query: query
+  }, req.user.apitoken)
+
+  if (results.data && results.data.users) {
+    //  Filter out the users that don't match this instance
+    req.templateValues.users = results.data.users.filter((user) => {
+      if (!user.instances) return false
+      let foundMatch = false
+      user.instances.forEach((instance) => {
+        if (instance.id === req.templateValues.instance.id) foundMatch = true
+      })
+      return foundMatch
+    }).filter(Boolean)
+  }
+
   return res.render('administration/instances/instance', req.templateValues)
 }

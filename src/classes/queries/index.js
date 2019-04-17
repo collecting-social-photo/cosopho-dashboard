@@ -4,6 +4,23 @@ class Queries {
    * Create a collection of queries
    */
   constructor () {
+    this.userBody = `
+    apitoken
+    created
+    displayName
+    icon
+    id
+    instances {
+      id
+      title
+    }
+    lastLoggedIn
+    lastUpdated
+    roles {
+      isAdmin
+      isDeveloper
+    }`
+
     this.hello = `query {
       hello[[]]
     }`
@@ -19,6 +36,18 @@ class Queries {
       instances[[]] {
         id
         title
+      }
+    }`
+
+    this.user = `query {
+      user[[]] {
+        ${this.userBody}
+      }
+    }`
+
+    this.users = `query {
+      users[[]] {
+        ${this.userBody}
       }
     }`
   }

@@ -1,0 +1,103 @@
+<html>
+
+<head>
+  <title>User</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration/users">Users</a>
+          </li>
+          <li class="breadcrumb-item">
+            {{thisUser.displayName}}
+          </li>
+        </ul>
+
+        <h1>{{thisUser.displayName}}</h1>
+
+        <p>
+          <h2 class="mt-2">Details</h2>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>id</td>
+                <td>{{thisUser.id}}</td>
+              </tr>
+              <tr>
+                <td>created</td>
+                <td>{{prettyDate thisUser.created}}</td>
+              </tr>
+              <tr>
+                <td>lastLoggedIn</td>
+                <td>{{prettyDate thisUser.lastLoggedIn}}</td>
+              </tr>
+              <tr>
+                <td>lastUpdated</td>
+                <td>{{prettyDate thisUser.lastUpdated}}</td>
+              </tr>
+              <tr>
+                <td>apitoken</td>
+                <td>{{thisUser.apitoken}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
+        <p>
+          <form method="POST" action="/{{selectedLang}}/administration/users/{{thisUser.id}}"
+            enctype="multipart/form-data">
+            <h2 class="mt-2">Roles</h2>
+
+            <div class="form-group">
+              <label class="form-switch" for="isAdmin">
+                <input type="checkbox" id="isAdmin" name="isAdmin" {{#if thisUser.roles.isAdmin}}checked{{/if}}
+                  {{#ifEqual thisUser.id user.id}}disabled{{/ifEqual}}>
+                <i class="form-icon"></i>Admin
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label class="form-switch" for="isDeveloper">
+                <input type="checkbox" id="isDeveloper" name="isDeveloper"
+                  {{#if thisUser.roles.isDeveloper}}checked{{/if}}>
+                <i class="form-icon"></i>Developer
+              </label>
+            </div>
+
+            <h2 class="mt-2">Instances</h2>
+            {{#each instances}}
+              <div class="form-group">
+                <label class="form-switch" for="instance_{{id}}">
+                  <input type="checkbox" id="instance_{{id}}" name="instance_{{id}}" {{#if isMember}}checked{{/if}}>
+                  <i class="form-icon"></i>{{title}}
+                </label>
+              </div>
+            {{/each}}
+
+            <div class="mt-2">
+              <button class="btn btn-primary input-group-btn" name="action" value="updateUser">Update</button>
+            </div>
+          </form>
+        </p>
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>

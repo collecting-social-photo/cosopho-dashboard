@@ -29,28 +29,91 @@
           </li>
         </ul>
 
-        <h1>{{instance.title}}</h1>
-        <h5 class="subtitle text-gray">{{instance.id}}</h5>
+        <div class="columns">
 
-        <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
-          enctype="multipart/form-data">
-          <div class="form-group">
-            <label class="form-label" for="title">Title</label>
-            <input class="form-input" type="text" id="title" name="title" placeholder="Instance title"
-              value="{{instance.title}}">
+          <div class="column col-3">
+            <div class="card primary-card-inverted">
+              <div class="card-header">
+                <div class="card-title h1">{{instance.title}}</div>
+                <div class="subtitle h6 text-gray">{{instance.id}}</div>
+              </div>
+              <div class="card-body">
+                <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
+                  enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-input" type="text" id="title" name="title" placeholder="Instance title"
+                      value="{{instance.title}}">
+                  </div>
+                  <button class="btn btn-primary input-group-btn" name="action" value="updateInstance">Update</button>
+                </form>
+
+                <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
+                  enctype="multipart/form-data">
+                  <button class="btn btn-error input-group-btn" name="action" value="deleteInstance">Delete</button>
+                </form>
+              </div>
+            </div>
           </div>
-          <button class="btn btn-primary input-group-btn" name="action" value="updateInstance">Update</button>
-        </form>
 
-        <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
-          enctype="multipart/form-data">
-          <button class="btn btn-error input-group-btn" name="action" value="deleteInstance">Delete</button>
-        </form>
 
+          {{#if users}}
+            <div class="column col-3">
+              <div class="card primary-card-title">
+                <div class="card-header">
+                  <div class="card-title h1">Users</div>
+                </div>
+                <div class="card-body">
+                  <p>
+                    The following users have control over this instance.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {{#each users}}
+              <div class="column col-3">
+                <div class="card primary-card">
+                  <div class="card-header">
+                    <div class="card-title h1">
+                      <figure class="avatar avatar-lg">
+                        <img src="{{icon}}" alt="User avatar">
+                      </figure>
+                      <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
+                    </div>
+                    <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
+                    <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
+                    </div>
+                  </div>
+
+                  <div class="card-body">
+                    <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                          class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
+                    <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                          class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
+                    <p>
+                      <h4>Instances</h4>
+                      <ul>
+                        {{#if instances}}
+                          {{#each instances}}
+                            <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                            </li>
+                          {{/each}}
+                        {{else}}
+                          <li>No instances</li>
+                        {{/if}}
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+
+        </div>
       </div>
     </div>
-  </div>
-  {{>tail}}
+    {{>tail}}
 </body>
 
 </html>
