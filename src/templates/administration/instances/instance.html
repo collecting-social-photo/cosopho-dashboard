@@ -56,6 +56,39 @@
             </div>
           </div>
 
+          {{#if instance.initiatives}}
+            <div class="column col-3">
+              <div class="card primary-card-title">
+                <div class="card-header">
+                  <div class="card-title h1">Initiatives</div>
+                </div>
+                <div class="card-body">
+                  <p>
+                    These are the current initiatives in this instance.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {{#each instance.initiatives}}
+              <div class="column col-3">
+                <div class="card primary-card">
+                  <div class="card-header">
+                    <div class="card-title h1">
+                      {{title}}
+                    </div>
+                    <div class="card-subtitle h6 text-gray">{{id}}</div>
+                    <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate created}}</div>
+                  </div>
+
+                  <div class="card-body">
+                    <div>{{#if isActive}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                          class="icon icon-cross mx-1"></i>{{/if}} Active</div>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
 
           {{#if users}}
             <div class="column col-3">

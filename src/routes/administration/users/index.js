@@ -50,6 +50,11 @@ exports.user = async (req, res) => {
       if (req.fields.isAdmin && req.fields.isAdmin === 'on') isAdmin = true
       if (req.fields.isDeveloper && req.fields.isDeveloper === 'on') isDeveloper = true
 
+      //  If we are the current user, then don't change the admin value
+      if (req.user.id === req.params.id) {
+        isAdmin = req.user.roles.isAdmin
+      }
+
       const mutations = new Mutations()
       let mutation = mutations.get('updateUser', `(id: "${req.params.id}", isAdmin: ${isAdmin}, isDeveloper: ${isDeveloper}, instances: ${JSON.stringify(instances)})`)
       const payload = {
