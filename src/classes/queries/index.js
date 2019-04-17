@@ -29,6 +29,12 @@ class Queries {
       instance[[]] {
         id
         title
+        initiatives {
+          id
+          title
+          created
+          isActive
+        }
       }
     }`
 
@@ -36,6 +42,12 @@ class Queries {
       instances[[]] {
         id
         title
+        initiatives {
+          id
+          title
+          created
+          isActive
+        }
       }
     }`
 

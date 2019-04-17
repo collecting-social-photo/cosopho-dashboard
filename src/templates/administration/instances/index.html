@@ -37,6 +37,20 @@
                   </div>
                   <div class="card-subtitle text-gray">{{id}}</div>
                 </div>
+                <div class="card-body">
+                  <p>
+                    <h4>Initiatives</h4>
+                    <ul>
+                      {{#if initiatives}}
+                        {{#each initiatives}}
+                          <li>{{title}}</li>
+                        {{/each}}
+                      {{else}}
+                        <li>No instances</li>
+                      {{/if}}
+                    </ul>
+                  </p>
+                </div>
               </div>
             </div>
           {{/each}}
