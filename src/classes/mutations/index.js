@@ -23,6 +23,12 @@ class Mutations {
         id
       }
     }`
+
+    this.updateUser = `mutation {
+      updateUser[[]] {
+        id
+      }
+    }`
   }
 
   /**

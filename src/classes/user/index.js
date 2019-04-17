@@ -183,6 +183,7 @@ const getUser = async id => {
   if (!user.apitoken) {
     user.apitoken = await setApiToken(id)
   }
+
   return user
 }
 
@@ -215,17 +216,45 @@ class User {
       id = auth0id
     }
 
-    //  Go and get the user from Auth0
+    //  Go and get the user from ElasticSearch
     const user = await getUser(id)
 
     //  move over some of the data from auth0 to our template
     if (typeof auth0id === 'object') {
-      user.displayName = ''
-      if (auth0id.displayName) user.displayName = auth0id.displayName
-      if (auth0id.nickname) user.displayName = auth0id.nickname
+      let updateRecord = false
 
-      user.icon = null
-      if (auth0id.picture) user.icon = auth0id.picture
+      if (auth0id.displayName && (!user.displayName || user.displayName !== auth0id.displayName)) {
+        user.displayName = auth0id.displayName
+        updateRecord = true
+      }
+
+      if (auth0id.nickname && (!user.nickname || user.nickname !== auth0id.nickname)) {
+        user.displayName = auth0id.nickname
+        updateRecord = true
+      }
+
+      if (auth0id.picture && (!user.icon || user.icon !== auth0id.picture)) {
+        user.icon = auth0id.picture
+        updateRecord = true
+      }
+
+      if (updateRecord) {
+        user.lastUpdated = new Date()
+        const esclient = new elasticsearch.Client({
+          host: process.env.ELASTICSEARCH
+        })
+        const index = `users_${process.env.KEY}`
+        const type = 'user'
+        await esclient.update({
+          index,
+          type,
+          id,
+          body: {
+            doc: user,
+            doc_as_upsert: true
+          }
+        })
+      }
     }
     return user
   }
@@ -244,6 +273,10 @@ class User {
   async setLang (id, lang) {
     const user = await setLang(id, lang)
     return user
+  }
+
+  setLastLogin (id) {
+    setKeyValue(id, 'lastLoggedIn', new Date())
   }
 }
 module.exports = User

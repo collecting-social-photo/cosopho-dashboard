@@ -225,7 +225,9 @@ if (configObj.get('auth0') !== null) {
     }),
     async function (req, res) {
       // Update the user with extra information
-      req.session.user = await new User().get(req.user)
+      const user = new User()
+      req.session.user = await user.get(req.user)
+      user.setLastLogin(req.session.user.id)
       req.session.save()
       let pow = JSON.stringify(req.session.user)
       pow = JSON.parse(pow)
@@ -263,5 +265,9 @@ router.get('/:lang/administration/instances', administration.instances.index)
 router.post('/:lang/administration/instances', administration.instances.index)
 router.get('/:lang/administration/instances/:id', administration.instances.instance)
 router.post('/:lang/administration/instances/:id', administration.instances.instance)
+
+router.get('/:lang/administration/users', administration.users.index)
+router.get('/:lang/administration/users/:id', administration.users.user)
+router.post('/:lang/administration/users/:id', administration.users.user)
 
 module.exports = router
