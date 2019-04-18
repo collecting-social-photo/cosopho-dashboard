@@ -59,6 +59,48 @@
             </div>
           {{/if}}
 
+          {{#if instances}}
+
+            <div class="column col-3">
+              <div class="card primary-card-title">
+                <div class="card-header">
+                  <div class="card-title h1">Instances</div>
+                </div>
+                <div class="card-body">
+                  <p>
+                    These are the instances you have control over.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {{#each instances}}
+              <div class="column col-3">
+                <div class="card primary-card">
+                  <div class="card-header">
+                    <div class="card-title h1"><a
+                        href="/{{../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                    </div>
+                    <div class="card-subtitle text-gray">{{id}}</div>
+                  </div>
+                  <div class="card-body">
+                    <p>
+                      <h4>Initiatives</h4>
+                      <ul>
+                        {{#if initiatives}}
+                          {{#each initiatives}}
+                            <li>{{title}}</li>
+                          {{/each}}
+                        {{else}}
+                          <li>No initiatives</li>
+                        {{/if}}
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
         </div>
 
 

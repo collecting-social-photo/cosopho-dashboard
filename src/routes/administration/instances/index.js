@@ -4,7 +4,19 @@ const GraphQL = require('../../../classes/graphQL')
 
 exports.index = async (req, res) => {
   //  Bounce the user is they are not an admin user
-  if (!req.user || !req.user.roles || !req.user.roles.isAdmin) return res.render('main/redirect', req.templateValues)
+  if (!req.user || !req.user.roles || !req.user.roles.isAdmin) {
+    //  Check to see if they are a user who actually has control of this instance
+    if (req.user && req.user.instances) {
+      // Actually this user controls this thing, we are good
+    } else {
+      return res.render('main/redirect', req.templateValues)
+    }
+  }
+
+  let isNotAdmin = true
+  if (req.user && req.user.roles && req.user.isAdmin && req.user.isAdmin === true) {
+    isNotAdmin = false
+  }
 
   const graphQL = new GraphQL()
   const queries = new Queries()
@@ -28,9 +40,12 @@ exports.index = async (req, res) => {
 
   //  Grab all the instances
   let query = queries.get('instances', '')
+  if (isNotAdmin) {
+    query = queries.get('instances', `(ids: ${JSON.stringify(req.user.instances)})`)
+  }
   results = await graphQL.fetch({
     query: query
-  }, req.user.apitoken)
+  }, process.env.HANDSHAKE)
   if (results.data && results.data.instances) {
     req.templateValues.instances = results.data.instances
   }
@@ -40,7 +55,14 @@ exports.index = async (req, res) => {
 
 exports.instance = async (req, res) => {
   //  Bounce the user is they are not an admin user
-  if (!req.user || !req.user.roles || !req.user.roles.isAdmin) return res.render('main/redirect', req.templateValues)
+  if (!req.user || !req.user.roles || !req.user.roles.isAdmin) {
+    //  Check to see if they are a user who actually has control of this instance
+    if (req.user && req.user.instances && req.user.instances.includes(req.params.id)) {
+      // Actually this user controls this thing, we are good
+    } else {
+      return res.render('main/redirect', req.templateValues)
+    }
+  }
 
   const graphQL = new GraphQL()
   const queries = new Queries()
@@ -55,7 +77,7 @@ exports.instance = async (req, res) => {
       const payload = {
         query: mutation
       }
-      results = await graphQL.fetch(payload, req.user.apitoken)
+      results = await graphQL.fetch(payload, process.env.HANDSHAKE)
       return setTimeout(() => {
         res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}`)
       }, 1000)
@@ -68,7 +90,7 @@ exports.instance = async (req, res) => {
       const payload = {
         query: mutation
       }
-      results = await graphQL.fetch(payload, req.user.apitoken)
+      results = await graphQL.fetch(payload, process.env.HANDSHAKE)
       return setTimeout(() => {
         res.redirect(`/${req.templateValues.selectedLang}/administration/instances`)
       }, 1000)
@@ -79,7 +101,7 @@ exports.instance = async (req, res) => {
   let query = queries.get('instance', `(id: "${req.params.id}")`)
   results = await graphQL.fetch({
     query: query
-  }, req.user.apitoken)
+  }, process.env.HANDSHAKE)
 
   if (results.data && results.data.instance) {
     req.templateValues.instance = results.data.instance
@@ -93,7 +115,7 @@ exports.instance = async (req, res) => {
   query = queries.get('users', '')
   results = await graphQL.fetch({
     query: query
-  }, req.user.apitoken)
+  }, process.env.HANDSHAKE)
 
   if (results.data && results.data.users) {
     //  Filter out the users that don't match this instance
