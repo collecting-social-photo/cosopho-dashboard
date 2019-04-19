@@ -31,6 +31,7 @@ class Queries {
         title
         initiatives {
           id
+          slug
           title
           created
           isActive
@@ -44,10 +45,22 @@ class Queries {
         title
         initiatives {
           id
+          slug
           title
           created
           isActive
         }
+      }
+    }`
+
+    this.initiative = `query {
+      initiative[[]] {
+        id
+        slug
+        title
+        created
+        isActive
+        instance
       }
     }`
 

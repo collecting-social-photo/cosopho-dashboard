@@ -4,6 +4,12 @@ class Mutations {
    * Create a collection of mutations
    */
   constructor () {
+    this.updateUser = `mutation {
+      updateUser[[]] {
+        id
+      }
+    }`
+
     this.createInstance = `mutation {
       createInstance[[]] {
         id
@@ -25,16 +31,25 @@ class Mutations {
       }
     }`
 
-    this.updateUser = `mutation {
-      updateUser[[]] {
-        id
-      }
-    }`
-
     this.createInitiative = `mutation {
       createInitiative[[]] {
         instance
         title
+      }
+    }`
+
+    this.updateInitiative = `mutation {
+      updateInitiative[[]] {
+        id
+        slug
+        title
+      }
+    }`
+
+    this.deleteInitiative = `mutation {
+      deleteInitiative[[]] {
+        status
+        success
       }
     }`
   }

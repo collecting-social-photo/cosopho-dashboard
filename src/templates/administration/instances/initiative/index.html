@@ -1,0 +1,85 @@
+<html>
+
+<head>
+  <title>Initiative</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration/instances">Instances</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration/instances/{{instance.id}}">{{instance.title}}</a>
+          </li>
+          <li class="breadcrumb-item">
+            {{initiative.title}}
+          </li>
+        </ul>
+
+        <div class="columns">
+
+          <div class="column col-3">
+            <div class="card primary-card-inverted">
+              <div class="card-header">
+                <div class="card-title h1">{{initiative.title}}</div>
+                <div class="subtitle h6 text-gray">{{initiative.id}}</div>
+              </div>
+              <div class="card-body">
+                <form method="POST"
+                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/{{initiative.slug}}"
+                  enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title"
+                      value="{{initiative.title}}">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-switch" for="isActive">
+                      <input type="checkbox" id="isActive" name="isActive" {{#if initiative.isActive}}checked{{/if}}>
+                      <i class="form-icon"></i>Active
+                    </label>
+                  </div>
+
+                  <button class="btn btn-primary input-group-btn" name="action" value="updateInitiative">Update</button>
+                </form>
+
+
+                <form method="POST"
+                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/{{initiative.slug}}"
+                  enctype="multipart/form-data">
+                  <button class="btn btn-error input-group-btn" name="action" value="deleteInitiative"
+                    {{#if initiative.photos}}disabled{{/if}}>Delete</button>
+                  {{#if initiative.photos}}
+                    <p class="text-small text-gray">
+                      An initiative with photos in cannot be deleted.
+                    </p>
+                  {{/if}}
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {{>tail}}
+</body>
+
+</html>

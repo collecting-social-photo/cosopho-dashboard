@@ -43,7 +43,9 @@
                     <ul>
                       {{#if initiatives}}
                         {{#each initiatives}}
-                          <li>{{title}}</li>
+                          <li><a
+                              href="/{{../../selectedLang}}/administration/instances/{{../id}}/{{slug}}">{{title}}</a>
+                          </li>
                         {{/each}}
                       {{else}}
                         <li>No initiatives</li>
