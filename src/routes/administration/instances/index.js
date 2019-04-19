@@ -14,7 +14,7 @@ exports.index = async (req, res) => {
   }
 
   let isNotAdmin = true
-  if (req.user && req.user.roles && req.user.isAdmin && req.user.isAdmin === true) {
+  if (req.user && req.user.roles && req.user.roles.isAdmin && req.user.roles.isAdmin === true) {
     isNotAdmin = false
   }
 
