@@ -20,13 +20,21 @@ class Mutations {
 
     this.deleteInstance = `mutation {
       deleteInstance[[]] {
-        id
+        status
+        success
       }
     }`
 
     this.updateUser = `mutation {
       updateUser[[]] {
         id
+      }
+    }`
+
+    this.createInitiative = `mutation {
+      createInitiative[[]] {
+        instance
+        title
       }
     }`
   }

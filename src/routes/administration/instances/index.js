@@ -60,7 +60,7 @@ exports.instance = async (req, res) => {
     if (req.user && req.user.instances && req.user.instances.includes(req.params.id)) {
       // Actually this user controls this thing, we are good
     } else {
-      return res.render('main/redirect', req.templateValues)
+      return res.redirect('/administration/instances')
     }
   }
 
@@ -70,9 +70,19 @@ exports.instance = async (req, res) => {
   //  If we have been told to do something, do it here
   let results = []
   if (req.fields && req.fields.action) {
-    if (req.fields.action === 'updateInstance' && req.fields.title && req.fields.title !== '') {
-      const mutations = new Mutations()
+    const mutations = new Mutations()
+    if (req.fields.action === 'addInitiative' && req.fields.title && req.fields.title !== '') {
+      let mutation = mutations.get('createInitiative', `(instance: "${req.params.id}", title:"${req.fields.title}")`)
+      const payload = {
+        query: mutation
+      }
+      results = await graphQL.fetch(payload, process.env.HANDSHAKE)
+      return setTimeout(() => {
+        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}`)
+      }, 1000)
+    }
 
+    if (req.fields.action === 'updateInstance' && req.fields.title && req.fields.title !== '') {
       let mutation = mutations.get('updateInstance', `(id: "${req.params.id}", title:"${req.fields.title}")`)
       const payload = {
         query: mutation
@@ -84,8 +94,6 @@ exports.instance = async (req, res) => {
     }
 
     if (req.fields.action === 'deleteInstance') {
-      const mutations = new Mutations()
-
       let mutation = mutations.get('deleteInstance', `(id: "${req.params.id}")`)
       const payload = {
         query: mutation

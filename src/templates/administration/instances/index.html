@@ -55,7 +55,7 @@
             </div>
           {{/each}}
 
-          {{#if user.isAdmin}}
+          {{#if user.roles.isAdmin}}
             <div class="column col-3">
               <form method="POST" action="/{{selectedLang}}/administration/instances" enctype="multipart/form-data">
                 <div class="card primary-card-inverted">
