@@ -48,9 +48,16 @@
                   <button class="btn btn-primary input-group-btn" name="action" value="updateInstance">Update</button>
                 </form>
 
+
                 <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
                   enctype="multipart/form-data">
-                  <button class="btn btn-error input-group-btn" name="action" value="deleteInstance">Delete</button>
+                  <button class="btn btn-error input-group-btn" name="action" value="deleteInstance"
+                    {{#if instance.initiatives}}disabled{{/if}}>Delete</button>
+                  {{#if instance.initiatives}}
+                    <p class="text-small text-gray">
+                      An instance with initiatives in cannot be deleted.
+                    </p>
+                  {{/if}}
                 </form>
               </div>
             </div>
@@ -75,7 +82,7 @@
                 <div class="card primary-card">
                   <div class="card-header">
                     <div class="card-title h1">
-                      {{title}}
+                      <a href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{slug}}">{{title}}</a>
                     </div>
                     <div class="card-subtitle h6 text-gray">{{id}}</div>
                     <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate created}}</div>
@@ -88,61 +95,114 @@
                 </div>
               </div>
             {{/each}}
-          {{/if}}
-
-          {{#if users}}
+            <div class="column col-3">
+              <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
+                enctype="multipart/form-data">
+                <div class="card primary-card-inverted">
+                  <div class="card-header">
+                    <div class="card-title h1">Add new initiative</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label class="form-label" for="title">Title</label>
+                      <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title">
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <button class="btn btn-primary input-group-btn" name="action" value="addInitiative">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          {{else}}
             <div class="column col-3">
               <div class="card primary-card-title">
                 <div class="card-header">
-                  <div class="card-title h1">Users</div>
+                  <div class="card-title h1">Initiatives</div>
                 </div>
                 <div class="card-body">
                   <p>
-                    The following users have control over this instance.
+                    There are no initiatives, you can add one though
                   </p>
                 </div>
               </div>
             </div>
 
-            {{#each users}}
-              <div class="column col-3">
-                <div class="card primary-card">
+            <div class="column col-3">
+              <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
+                enctype="multipart/form-data">
+                <div class="card primary-card-inverted">
                   <div class="card-header">
-                    <div class="card-title h1">
-                      <figure class="avatar avatar-lg">
-                        <img src="{{icon}}" alt="User avatar">
-                      </figure>
-                      <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
-                    </div>
-                    <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
-                    <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
+                    <div class="card-title h1">Add new initiative</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label class="form-label" for="title">Title</label>
+                      <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title">
                     </div>
                   </div>
+                  <div class="card-footer">
+                    <button class="btn btn-primary input-group-btn" name="action" value="addInitiative">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          {{/if}}
 
+          {{#if user.roles.isAdmin}}
+            {{#if users}}
+              <div class="column col-3">
+                <div class="card primary-card-title">
+                  <div class="card-header">
+                    <div class="card-title h1">Users</div>
+                  </div>
                   <div class="card-body">
-                    <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
-                          class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
-                    <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
-                          class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
                     <p>
-                      <h4>Instances</h4>
-                      <ul>
-                        {{#if instances}}
-                          {{#each instances}}
-                            <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
-                            </li>
-                          {{/each}}
-                        {{else}}
-                          <li>No instances</li>
-                        {{/if}}
-                      </ul>
+                      The following users have control over this instance.
                     </p>
                   </div>
                 </div>
               </div>
-            {{/each}}
-          {{/if}}
 
+              {{#each users}}
+                <div class="column col-3">
+                  <div class="card primary-card">
+                    <div class="card-header">
+                      <div class="card-title h1">
+                        <figure class="avatar avatar-lg">
+                          <img src="{{icon}}" alt="User avatar">
+                        </figure>
+                        <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
+                      </div>
+                      <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
+                      <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
+                      </div>
+                    </div>
+
+                    <div class="card-body">
+                      <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                            class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
+                      <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                            class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
+                      <p>
+                        <h4>Instances</h4>
+                        <ul>
+                          {{#if instances}}
+                            {{#each instances}}
+                              <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                              </li>
+                            {{/each}}
+                          {{else}}
+                            <li>No instances</li>
+                          {{/if}}
+                        </ul>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {{/each}}
+            {{/if}}
+          {{/if}}
         </div>
       </div>
     </div>

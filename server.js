@@ -385,6 +385,8 @@ p.then((res) => {
 
   const config = new Config()
 
+  process.env.HANDSHAKE = config.get('handshake')
+
   const app = express()
   const hbs = exphbs.create({
     extname: '.html',
