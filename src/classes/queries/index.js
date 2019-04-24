@@ -33,6 +33,7 @@ class Queries {
           id
           slug
           title
+          description
           created
           isActive
         }
@@ -47,6 +48,7 @@ class Queries {
           id
           slug
           title
+          description
           created
           isActive
         }
@@ -58,6 +60,7 @@ class Queries {
         id
         slug
         title
+        description
         created
         isActive
         instance

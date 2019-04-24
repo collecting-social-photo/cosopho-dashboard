@@ -49,7 +49,9 @@ exports.index = async (req, res) => {
     if (req.fields.action === 'updateInitiative' && req.fields.title && req.fields.title !== '') {
       let isActive = false
       if (req.fields.isActive) isActive = true
-      let mutation = mutations.get('updateInitiative', `(instance: "${req.params.id}", id: "${initiative.id}", title:"${req.fields.title}", isActive: ${isActive})`)
+      let description = ''
+      if (req.fields.description) description = req.fields.description
+      let mutation = mutations.get('updateInitiative', `(instance: "${req.params.id}", id: "${initiative.id}", title: "${req.fields.title}", isActive: ${isActive}, description: "${description}")`)
       const payload = {
         query: mutation
       }

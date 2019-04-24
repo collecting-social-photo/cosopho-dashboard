@@ -34,7 +34,7 @@
 
         <div class="columns">
 
-          <div class="column col-3">
+          <div class="column col-6">
             <div class="card primary-card-inverted">
               <div class="card-header">
                 <div class="card-title h1">{{initiative.title}}</div>
@@ -48,6 +48,12 @@
                     <label class="form-label" for="title">Title</label>
                     <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title"
                       value="{{initiative.title}}">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-input" id="description" name="description"
+                      placeholder="Add initiative description here" rows="3">{{initiative.description}}</textarea>
                   </div>
 
                   <div class="form-group">

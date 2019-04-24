@@ -86,16 +86,20 @@
                     </div>
                     <div class="card-subtitle h6 text-gray">{{id}}</div>
                     <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate created}}</div>
+                    <div class="card-subtitle h6 {{#if isActive}}{{else}}text-gray{{/if}}">
+                      {{#if isActive}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-cross"></i>
+                      {{/if}} Active
+                    </div>
                   </div>
 
                   <div class="card-body">
-                    <div>{{#if isActive}}<i class="icon icon-check mx-1"></i>{{else}}<i
-                          class="icon icon-cross mx-1"></i>{{/if}} Active</div>
+                    <div>{{description}}</div>
                   </div>
+
                 </div>
               </div>
             {{/each}}
-            <div class="column col-3">
+            <div class="column col-6">
               <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
                 enctype="multipart/form-data">
                 <div class="card primary-card-inverted">
@@ -106,6 +110,11 @@
                     <div class="form-group">
                       <label class="form-label" for="title">Title</label>
                       <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="description">Description</label>
+                      <textarea class="form-input" id="description" name="description"
+                        placeholder="Add initiative description here" rows="3"></textarea>
                     </div>
                   </div>
                   <div class="card-footer">
@@ -128,7 +137,7 @@
               </div>
             </div>
 
-            <div class="column col-3">
+            <div class="column col-6">
               <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
                 enctype="multipart/form-data">
                 <div class="card primary-card-inverted">
@@ -139,6 +148,11 @@
                     <div class="form-group">
                       <label class="form-label" for="title">Title</label>
                       <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="description">Description</label>
+                      <textarea class="form-input" id="description" name="description"
+                        placeholder="Add initiative description here" rows="3"></textarea>
                     </div>
                   </div>
                   <div class="card-footer">

@@ -75,7 +75,9 @@ exports.instance = async (req, res) => {
   if (req.fields && req.fields.action) {
     const mutations = new Mutations()
     if (req.fields.action === 'addInitiative' && req.fields.title && req.fields.title !== '') {
-      let mutation = mutations.get('createInitiative', `(instance: "${req.params.id}", title:"${req.fields.title}")`)
+      let description = ''
+      if (req.fields.description) description = req.fields.description
+      let mutation = mutations.get('createInitiative', `(instance: "${req.params.id}", title: "${req.fields.title}", description: "${description}")`)
       const payload = {
         query: mutation
       }
