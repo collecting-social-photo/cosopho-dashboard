@@ -36,6 +36,7 @@ class Queries {
           description
           created
           isActive
+          isFeatured
         }
       }
     }`
@@ -51,6 +52,7 @@ class Queries {
           description
           created
           isActive
+          isFeatured
         }
       }
     }`
@@ -63,6 +65,7 @@ class Queries {
         description
         created
         isActive
+        isFeatured
         instance
       }
     }`

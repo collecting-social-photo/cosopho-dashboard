@@ -90,8 +90,11 @@
                       {{#if isActive}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-cross"></i>
                       {{/if}} Active
                     </div>
+                    <div class="card-subtitle h6 {{#if isFeatured}}{{else}}text-gray{{/if}}">
+                      {{#if isFeatured}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-cross"></i>
+                      {{/if}} Featured
+                    </div>
                   </div>
-
                   <div class="card-body">
                     <div>{{description}}</div>
                   </div>
