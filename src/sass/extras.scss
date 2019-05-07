@@ -89,6 +89,16 @@ div.docs-content {
     border-color: #2faa3f;
     color: #fff;
   }
+
+  .btn-white {
+    background: white;
+    border-color: lightgray;
+    color: black;
+
+    &:hover {
+      background: lightgray;
+    }
+  }
 }
 
 .text-small {
