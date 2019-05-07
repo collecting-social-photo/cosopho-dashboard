@@ -74,6 +74,26 @@ exports.index = async (req, res) => {
         res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}`)
       }, 1000)
     }
+
+    //  If we are approving or rejecting the photo
+    if (req.fields.action === 'approvePhoto' || req.fields.action === 'rejectPhoto') {
+      // Set approving or rejecting the photo
+      let approved = false
+      if (req.fields.action === 'approvePhoto') {
+        approved = true
+      }
+
+      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", reviewed: true, approved: ${approved})`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/${initiative.id}`)
+        }, 1000)
+      }
+    }
   }
 
   //  Ok, now we checked all that action stuff, lets go get the instance too!
@@ -87,6 +107,20 @@ exports.index = async (req, res) => {
     instance = instance.data.instance
   } else {
     return res.redirect(`/administration/instances`)
+  }
+
+  //  Lets get the photos for this instance
+  let photos = null
+  let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiative: "${req.params.slug}", reviewed: false)`)
+  photos = await graphQL.fetch({
+    query: photosQuery
+  }, process.env.HANDSHAKE)
+
+  if (photos.data && photos.data.photos) {
+    req.templateValues.photos = photos.data.photos.map((photo) => {
+      photo.tags = photo.tags.join(', ')
+      return photo
+    })
   }
 
   req.templateValues.instance = instance

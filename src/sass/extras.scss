@@ -83,6 +83,12 @@ div.docs-content {
     border-color: #d95000;
     color: #fff;
   }
+
+  .btn-success {
+    background: #32b643;
+    border-color: #2faa3f;
+    color: #fff;
+  }
 }
 
 .text-small {
@@ -112,5 +118,12 @@ div.docs-content {
 
   .contacts-links {
     position: inherit !important;
+  }
+}
+
+ul {
+  &.no-bullet {
+    list-style: none;
+    margin: none;
   }
 }
