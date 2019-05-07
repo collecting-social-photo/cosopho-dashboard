@@ -91,6 +91,54 @@
             </div>
           </div>
 
+          {{#if photos}}
+            <div class="column col-3">
+              <div class="card primary-card-title">
+                <div class="card-header">
+                  <div class="card-title h1">Photos</div>
+                </div>
+                <div class="card-body">
+                  <p>
+                    These photos are awaiting review.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {{#each photos}}
+              <div class="column col-3">
+                <div class="card">
+                  <div class="card-image">
+                    <img src="http://placekitten.com/500/500" class="img-responsive">
+                  </div>
+                  <div class="card-header">
+                    <div class="card-title h1">{{title}}</div>
+                  </div>
+                  <div class="card-body">
+                    <p>
+                      {{story}}
+                    </p>
+                    <ul class="no-bullet">
+                      <li><strong>tags:</strong> {{tags}}</li>
+                      <li><strong>location:</strong> {{location}}</li>
+                    </ul>
+                  </div>
+                  <div class="card-footer">
+                    <form method="POST"
+                      action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{../initiative.slug}}"
+                      enctype="multipart/form-data">
+                      <input type="hidden" name="photoId" value="{{id}}" />
+                      <div class="btn-group btn-group-block">
+                        <button class="btn btn-success" name="action" value="approvePhoto">Approve</button>
+                        <button class="btn btn-error" name="action" value="rejectPhoto">Reject</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+
         </div>
       </div>
     </div>

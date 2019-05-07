@@ -52,6 +52,12 @@ class Mutations {
         success
       }
     }`
+
+    this.updatePhoto = `mutation {
+      updatePhoto[[]] {
+        id
+      }
+    }`
   }
 
   /**

@@ -110,13 +110,29 @@ exports.instance = async (req, res) => {
     }
   }
 
-  //  Grab all the instances
+  //  Grab the instance
   let query = queries.get('instance', `(id: "${req.params.id}")`)
   results = await graphQL.fetch({
     query: query
   }, process.env.HANDSHAKE)
 
   if (results.data && results.data.instance) {
+    if (results.data.instance.initiatives) {
+      let newInitiatives = []
+      for (const initiative of results.data.instance.initiatives) {
+        let photos = null
+        let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiative: "${initiative.id}", reviewed: false)`)
+        photos = await graphQL.fetch({
+          query: photosQuery
+        }, process.env.HANDSHAKE)
+
+        if (photos.data && photos.data.photos) {
+          initiative.reviewCount = photos.data.photos.length
+        }
+        newInitiatives.push(initiative)
+      }
+      results.data.instance.initiatives = newInitiatives
+    }
     req.templateValues.instance = results.data.instance
   } else {
     return res.redirect(`/${req.templateValues.selectedLang}/administration/instances`)

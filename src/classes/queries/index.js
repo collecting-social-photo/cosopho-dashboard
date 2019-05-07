@@ -81,6 +81,31 @@ class Queries {
         ${this.userBody}
       }
     }`
+
+    this.photos = `query {
+      photos[[]] {
+        id
+        instance
+        initiative
+        title
+        story
+        tags
+        location
+        date
+        socialMedias
+        make
+        model
+        aperture
+        shutterSpeed
+        license
+        uploaded
+        person {
+          id
+          name
+          slug
+        }    
+      }
+    }`
   }
 
   /**

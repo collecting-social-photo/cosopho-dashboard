@@ -98,7 +98,15 @@
                   <div class="card-body">
                     <div>{{description}}</div>
                   </div>
-
+                  {{#if reviewCount}}
+                    <div class="card-footer">
+                      <a class="btn btn-white"
+                        href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{slug}}"
+                        style="color: black">Review
+                        {{reviewCount}}
+                        photo{{#ifgt reviewCount 0}}s{{/ifgt}}</a>
+                    </div>
+                  {{/if}}
                 </div>
               </div>
             {{/each}}
