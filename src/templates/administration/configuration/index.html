@@ -1,0 +1,73 @@
+<html>
+
+<head>
+  <title>Administration</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            Administration
+          </li>
+        </ul>
+
+        <div class="columns">
+
+          {{#if user.roles.isAdmin}}
+            <div class="column col-3">
+              <form method="POST" action="/{{selectedLang}}/administration/configuration" enctype="multipart/form-data">
+                <div class="card primary-card-inverted">
+                  <div class="card-header">
+                    <div class="card-title h1">Configure Cloudinary</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label class="form-label" for="cloud_name">Cloud name</label>
+                      <input class="form-input" type="text" id="cloud_name" name="cloud_name" placeholder="Cloud name"
+                        value="{{cloudinary.cloud_name}}">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label" for="api_key">API key</label>
+                      <input class="form-input" type="text" id="api_key" name="api_key" placeholder="API key"
+                        value="{{cloudinary.api_key}}">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label" for="api_secret">API secret</label>
+                      <input class="form-input" type="text" id="api_secret" name="api_secret" placeholder="API secret"
+                        value="{{cloudinary.api_secret}}">
+                    </div>
+
+                  </div>
+                  <div class="card-footer">
+                    <button class="btn btn-primary input-group-btn" name="action"
+                      value="updateCloudinary">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          {{/if}}
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>
