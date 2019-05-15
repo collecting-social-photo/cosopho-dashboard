@@ -99,6 +99,12 @@ class Queries {
         shutterSpeed
         license
         uploaded
+        data {
+          width
+          height
+          public_id
+          version
+        }
         person {
           id
           name

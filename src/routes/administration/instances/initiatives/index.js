@@ -1,6 +1,7 @@
 const Queries = require('../../../../classes/queries')
 const Mutations = require('../../../../classes/mutations')
 const GraphQL = require('../../../../classes/graphQL')
+const Config = require('../../../../classes/config')
 
 exports.index = async (req, res) => {
   //  Work out if the user is allowed to see this or not
@@ -90,7 +91,7 @@ exports.index = async (req, res) => {
         }
         await graphQL.fetch(payload, process.env.HANDSHAKE)
         return setTimeout(() => {
-          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/${initiative.id}`)
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/${req.params.slug}`)
         }, 1000)
       }
     }
@@ -111,18 +112,26 @@ exports.index = async (req, res) => {
 
   //  Lets get the photos for this instance
   let photos = null
-  let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiative: "${req.params.slug}", reviewed: false)`)
+  let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${req.params.slug}", reviewed: false)`)
   photos = await graphQL.fetch({
     query: photosQuery
   }, process.env.HANDSHAKE)
 
   if (photos.data && photos.data.photos) {
     req.templateValues.photos = photos.data.photos.map((photo) => {
-      photo.tags = photo.tags.join(', ')
+      if (photo.tags) {
+        if (Array.isArray(photo.tags)) {
+          photo.tags = photo.tags.join(', ')
+        } else {
+          photo.tags = [photo.tags]
+        }
+      }
       return photo
     })
   }
 
+  const config = new Config()
+  req.templateValues.cloudinary = config.get('cloudinary')
   req.templateValues.instance = instance
   req.templateValues.initiative = initiative
 
