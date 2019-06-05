@@ -102,9 +102,7 @@
                     <div class="card-footer">
                       <a class="btn btn-white"
                         href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{slug}}"
-                        style="color: black">Review
-                        {{reviewCount}}
-                        photo{{#ifgt reviewCount 0}}s{{/ifgt}}</a>
+                        style="color: black">{{reviewCount}} photo{{#ifNotEqual reviewCount 1}}s{{/ifNotEqual}}</a>
                     </div>
                   {{/if}}
                 </div>
