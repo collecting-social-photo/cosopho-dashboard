@@ -95,6 +95,19 @@ exports.index = async (req, res) => {
         }, 1000)
       }
     }
+
+    if (req.fields.action === 'deletePhoto') {
+      const mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}")`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/${req.params.slug}`)
+        }, 1000)
+      }
+    }
   }
 
   //  Ok, now we checked all that action stuff, lets go get the instance too!
@@ -112,7 +125,9 @@ exports.index = async (req, res) => {
 
   //  Lets get the photos for this instance
   let photos = null
-  let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${req.params.slug}", reviewed: false)`)
+  let page = 0
+  let perPage = 50
+  let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${req.params.slug}", sort: "desc", sort_field: "uploaded", page: ${page}, per_page: ${perPage})`)
   photos = await graphQL.fetch({
     query: photosQuery
   }, process.env.HANDSHAKE)

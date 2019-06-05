@@ -121,13 +121,13 @@ exports.instance = async (req, res) => {
       let newInitiatives = []
       for (const initiative of results.data.instance.initiatives) {
         let photos = null
-        let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${initiative.slug}", reviewed: false)`)
+        let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${initiative.slug}", per_page: 1, approved: true)`)
         photos = await graphQL.fetch({
           query: photosQuery
         }, process.env.HANDSHAKE)
 
-        if (photos.data && photos.data.photos) {
-          initiative.reviewCount = photos.data.photos.length
+        if (photos.data && photos.data.photos && photos.data.photos.length === 1 && photos.data.photos[0]._sys && photos.data.photos[0]._sys.pagination && photos.data.photos[0]._sys.pagination.total) {
+          initiative.reviewCount = photos.data.photos[0]._sys.pagination.total
         }
         newInitiatives.push(initiative)
       }

@@ -99,6 +99,8 @@ class Queries {
         shutterSpeed
         license
         uploaded
+        approved
+        reviewed
         data {
           width
           height
@@ -109,7 +111,12 @@ class Queries {
           id
           name
           slug
-        }    
+        }
+        _sys {
+          pagination {
+            total
+          }
+        }
       }
     }`
   }

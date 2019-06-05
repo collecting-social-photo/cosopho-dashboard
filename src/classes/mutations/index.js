@@ -58,6 +58,13 @@ class Mutations {
         id
       }
     }`
+
+    this.deletePhoto = `mutation {
+      deletePhoto[[]] {
+        status
+        success
+      }
+    }`
   }
 
   /**
