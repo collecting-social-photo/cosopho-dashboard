@@ -121,7 +121,7 @@ exports.instance = async (req, res) => {
       let newInitiatives = []
       for (const initiative of results.data.instance.initiatives) {
         let photos = null
-        let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${initiative.slug}", per_page: 1, approved: true)`)
+        let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${initiative.slug}", per_page: 1)`)
         photos = await graphQL.fetch({
           query: photosQuery
         }, process.env.HANDSHAKE)
