@@ -267,6 +267,8 @@ router.post('/:lang/administration/instances/:id', ensureLoggedIn, administratio
 router.get('/:lang/administration/instances/:id/:slug', ensureLoggedIn, administration.instances.initiatives.index)
 router.post('/:lang/administration/instances/:id/:slug', ensureLoggedIn, administration.instances.initiatives.index)
 
+router.get('/:lang/administration/instances/:id/person/:slug', ensureLoggedIn, administration.instances.person.index)
+
 router.get('/:lang/administration/users', ensureLoggedIn, administration.users.index)
 router.get('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)
 router.post('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)

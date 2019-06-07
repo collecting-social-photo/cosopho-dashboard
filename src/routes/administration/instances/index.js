@@ -3,7 +3,9 @@ const Mutations = require('../../../classes/mutations')
 const GraphQL = require('../../../classes/graphQL')
 
 const initiatives = require('./initiatives')
+const person = require('./person')
 exports.initiatives = initiatives
+exports.person = person
 
 exports.index = async (req, res) => {
   //  Bounce the user is they are not an admin user
