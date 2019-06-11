@@ -27,7 +27,7 @@
             <a href="/{{selectedLang}}/administration/instances/{{instance.id}}">{{instance.title}}</a>
           </li>
           <li class="breadcrumb-item">
-            <a href="/{{selectedLang}}/administration/instances/people">People</a>
+            <a href="/{{selectedLang}}/administration/instances/{{instance.id}}/ppppeople">People</a>
           </li>
           <li class="breadcrumb-item">
             {{person.username}}
@@ -116,6 +116,9 @@
                   {{/each}}
                 </tbody>
               </table>
+
+              {{>pagination}}
+
             </div>
           {{/if}}
         </div>

@@ -1,7 +1,6 @@
 const Queries = require('../../../../classes/queries')
 const GraphQL = require('../../../../classes/graphQL')
 const Config = require('../../../../classes/config')
-const utils = require('../../../../modules/utils')
 
 exports.index = async (req, res) => {
   //  Work out if the user is allowed to see this or not
@@ -48,31 +47,24 @@ exports.index = async (req, res) => {
     console.log(req.fields)
   }
 
-  //  Ok, now we checked all that action stuff, lets go get the person too!
-  let person = null
+  //  Ok, now we checked all that action stuff, lets go get the people too!
+  let people = null
   let page = 0
-  let perPage = 20
-  if (req.params.page) page = req.params.page - 1
-
-  let personQuery = queries.get('person', `(slug: "${req.params.slug}", instance: "${req.params.id}", photos_page: ${page}, photos_per_page: ${perPage})`)
-  person = await graphQL.fetch({
-    query: personQuery
+  let perPage = 50
+  let peopleQuery = queries.get('people', `(instance: "${req.params.id}", photos_page: ${page}, photos_per_page: ${perPage})`)
+  people = await graphQL.fetch({
+    query: peopleQuery
   }, process.env.HANDSHAKE)
-
-  if (person.data && person.data.person) {
-    person = person.data.person
+  if (people.data && people.data.people) {
+    people = people.data.people
   } else {
     return res.redirect(`/administration/instances/${req.params.id}`)
   }
 
-  if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination) {
-    req.templateValues.pagination = utils.paginator(person.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/person/${req.params.slug}/page/`, 2)
-  }
-
   const config = new Config()
   req.templateValues.cloudinary = config.get('cloudinary')
-  req.templateValues.person = person
+  req.templateValues.people = people
   req.templateValues.instance = instance
 
-  return res.render('administration/instances/person/index', req.templateValues)
+  return res.render('administration/instances/people/index', req.templateValues)
 }

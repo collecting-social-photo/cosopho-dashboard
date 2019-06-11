@@ -264,10 +264,16 @@ router.post('/:lang/administration/configuration', ensureLoggedIn, administratio
 router.get('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
 router.post('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
 
+router.get('/:lang/administration/instances/:id/ppppeople', ensureLoggedIn, administration.instances.people.index)
+router.post('/:lang/administration/instances/:id/ppppeople', ensureLoggedIn, administration.instances.people.index)
+
 router.get('/:lang/administration/instances/:id/:slug', ensureLoggedIn, administration.instances.initiatives.index)
+router.get('/:lang/administration/instances/:id/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
 router.post('/:lang/administration/instances/:id/:slug', ensureLoggedIn, administration.instances.initiatives.index)
+router.post('/:lang/administration/instances/:id/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
 
 router.get('/:lang/administration/instances/:id/person/:slug', ensureLoggedIn, administration.instances.person.index)
+router.get('/:lang/administration/instances/:id/person/:slug/page/:page', ensureLoggedIn, administration.instances.person.index)
 
 router.get('/:lang/administration/users', ensureLoggedIn, administration.users.index)
 router.get('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)

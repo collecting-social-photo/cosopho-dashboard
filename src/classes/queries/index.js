@@ -44,7 +44,15 @@ class Queries {
         height
         public_id
         version
-      }`
+      }
+      _sys {
+        pagination {
+          page
+          maxPage
+          total
+        }
+      }
+    `
 
     this.personBody = `
       id
@@ -122,6 +130,13 @@ class Queries {
         ${this.personBody}
       }
     }`
+
+    this.people = `query {
+      people[[]] {
+        ${this.personBody}
+      }
+    }`
+
     this.photos = `query {
       photos[[]] {
         ${this.photoBody}
