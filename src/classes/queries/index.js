@@ -21,6 +21,49 @@ class Queries {
       isDeveloper
     }`
 
+    this.photoBody = `
+      id
+      instance
+      initiative
+      title
+      story
+      tags
+      location
+      date
+      socialMedias
+      make
+      model
+      aperture
+      shutterSpeed
+      license
+      uploaded
+      approved
+      reviewed
+      data {
+        width
+        height
+        public_id
+        version
+      }
+      _sys {
+        pagination {
+          page
+          maxPage
+          total
+        }
+      }
+    `
+
+    this.personBody = `
+      id
+      instance
+      slug
+      username
+      avatar
+      photos {
+        ${this.photoBody}
+      }`
+
     this.hello = `query {
       hello[[]]
     }`
@@ -82,34 +125,24 @@ class Queries {
       }
     }`
 
+    this.person = `query {
+      person[[]] {
+        ${this.personBody}
+      }
+    }`
+
+    this.people = `query {
+      people[[]] {
+        ${this.personBody}
+      }
+    }`
+
     this.photos = `query {
       photos[[]] {
-        id
-        instance
-        initiative
-        title
-        story
-        tags
-        location
-        date
-        socialMedias
-        make
-        model
-        aperture
-        shutterSpeed
-        license
-        uploaded
-        approved
-        reviewed
-        data {
-          width
-          height
-          public_id
-          version
-        }
+        ${this.photoBody}
         person {
           id
-          name
+          username
           slug
         }
         _sys {

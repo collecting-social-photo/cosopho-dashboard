@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Initiative</title>
+  <title>Person</title>
   {{> head}}
 </head>
 
@@ -10,7 +10,6 @@
     {{>nav}}
 
     {{>sidebar}}
-
     <div class="off-canvas-content">
       <div class="docs-content" id="content">
 
@@ -28,7 +27,10 @@
             <a href="/{{selectedLang}}/administration/instances/{{instance.id}}">{{instance.title}}</a>
           </li>
           <li class="breadcrumb-item">
-            {{initiative.title}}
+            <a href="/{{selectedLang}}/administration/instances/{{instance.id}}/ppppeople">People</a>
+          </li>
+          <li class="breadcrumb-item">
+            {{person.username}}
           </li>
         </ul>
 
@@ -37,55 +39,14 @@
           <div class="column col-6">
             <div class="card primary-card-inverted">
               <div class="card-header">
-                <div class="card-title h1">{{initiative.title}}</div>
-                <div class="subtitle h6 text-gray">{{initiative.id}}</div>
+                <div class="card-title h1">{{person.username}}</div>
+                <div class="subtitle h6 text-gray">{{person.id}}</div>
               </div>
               <div class="card-body">
                 <form method="POST"
-                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/{{initiative.slug}}"
+                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/person/{{person.slug}}"
                   enctype="multipart/form-data">
-                  <div class="form-group">
-                    <label class="form-label" for="title">Title</label>
-                    <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title"
-                      value="{{initiative.title}}">
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label" for="description">Description</label>
-                    <textarea class="form-input" id="description" name="description"
-                      placeholder="Add initiative description here" rows="3">{{initiative.description}}</textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-switch" for="isActive">
-                      <input type="checkbox" id="isActive" name="isActive" {{#if initiative.isActive}}checked{{/if}}>
-                      <i class="form-icon"></i>Active
-                    </label>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-switch" for="isFeatured">
-                      <input type="checkbox" id="isFeatured" name="isFeatured"
-                        {{#if initiative.isFeatured}}checked{{/if}}>
-                      <i class="form-icon"></i>Featured
-                    </label>
-                  </div>
-
-
-                  <button class="btn btn-primary input-group-btn" name="action" value="updateInitiative">Update</button>
-                </form>
-
-
-                <form method="POST"
-                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/{{initiative.slug}}"
-                  enctype="multipart/form-data">
-                  <button class="btn btn-error input-group-btn" name="action" value="deleteInitiative"
-                    {{#if initiative.photos}}disabled{{/if}}>Delete</button>
-                  {{#if initiative.photos}}
-                    <p class="text-small text-gray">
-                      An initiative with photos in cannot be deleted.
-                    </p>
-                  {{/if}}
+                  <button class="btn btn-primary input-group-btn" name="action" value="updatePerson">Update</button>
                 </form>
               </div>
             </div>
@@ -94,7 +55,7 @@
         </div>
 
         <div class="columns">
-          {{#if photos}}
+          {{#if person.photos}}
             <div class="column col-12">
               <h1 class="h1">Photos</h1>
               <table class="table">
@@ -105,14 +66,14 @@
                     <th>Story</th>
                     <th>Tags</th>
                     <th>Location</th>
-                    <th>Owner</th>
+                    <th>Initiative</th>
                     <th>Uploaded</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {{#each photos}}
+                  {{#each person.photos}}
                     <tr>
                       <td>
                         <img
@@ -127,13 +88,7 @@
 
                       <td>
                         <a
-                          href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/person/{{person.slug}}">
-                          {{#if person.username}}
-                            {{person.username}}
-                          {{else}}
-                            {{person.id}}
-                          {{/if}}
-                        </a>
+                          href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{initiative}}">{{initiative}}</a>
                       </td>
                       <td>{{timeAgo uploaded}}</td>
                       <td>{{#if approved}}

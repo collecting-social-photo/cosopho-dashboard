@@ -143,3 +143,13 @@ ul {
     margin: none;
   }
 }
+
+.pagination {
+  .page-prev {
+    text-align: right;
+  }
+
+  .page-next {
+    text-align: left !important;
+  }
+}

@@ -1,0 +1,31 @@
+{{#if pagination}}
+  <ul class="pagination">
+    <li class="page-item page-prev{{#unless pagination.showPrevious}} disabled{{/unless}}">
+      <a href="{{pagination.target}}{{pagination.previousPage}}"
+        {{#unless pagination.showPrevious}}disabled{{/unless}}>Previous</a>
+    </li>
+
+    {{#if pagination.showStartEllipses}}
+      <li class="page-item"><a href="{{pagination.target}}1" aria-label="Goto page 1">1</a></li>
+      <li class="page-item pagination-ellipsis">&hellip;</li>
+    {{/if}}
+
+    {{#each pagination.pageLoop}}
+      <li class="page-item{{#ifEqual @this ../pagination.page}} active{{/ifEqual}}">
+        <a href="{{../pagination.target}}{{@this}}" aria-label="Goto page {{@this}}"
+          {{#ifEqual @this ../pagination.page}} aria-current="page" {{/ifEqual}}>{{@this}}</a>
+      </li>
+    {{/each}}
+
+    {{#if pagination.showEndEllipses}}
+      <li class="page-item pagination-ellipsis">&hellip;</li>
+      <li class="page-item"><a href="{{pagination.target}}{{pagination.maxPage}}"
+          aria-label="Goto page {{pagination.maxPage}}">{{pagination.maxPage}}</a></li>
+    {{/if}}
+
+    <li class="page-item page-next{{#unless pagination.showNext}} disabled{{/unless}}">
+      <a href="{{pagination.target}}{{pagination.nextPage}}">Next</a>
+    </li>
+
+  </ul>
+{{/if}}

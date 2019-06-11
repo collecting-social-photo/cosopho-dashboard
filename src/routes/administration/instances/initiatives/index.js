@@ -2,6 +2,7 @@ const Queries = require('../../../../classes/queries')
 const Mutations = require('../../../../classes/mutations')
 const GraphQL = require('../../../../classes/graphQL')
 const Config = require('../../../../classes/config')
+const utils = require('../../../../modules/utils')
 
 exports.index = async (req, res) => {
   //  Work out if the user is allowed to see this or not
@@ -126,11 +127,17 @@ exports.index = async (req, res) => {
   //  Lets get the photos for this instance
   let photos = null
   let page = 0
-  let perPage = 50
+  let perPage = 20
+  if (req.params.page) page = req.params.page - 1
+
   let photosQuery = queries.get('photos', `(instance: "${req.params.id}", initiatives: "${req.params.slug}", sort: "desc", sort_field: "uploaded", page: ${page}, per_page: ${perPage})`)
   photos = await graphQL.fetch({
     query: photosQuery
   }, process.env.HANDSHAKE)
+
+  if (photos.data.photos && photos.data.photos.length > 0 && photos.data.photos[0]._sys && photos.data.photos[0]._sys.pagination) {
+    req.templateValues.pagination = utils.paginator(photos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/${req.params.slug}/page/`, 2)
+  }
 
   if (photos.data && photos.data.photos) {
     req.templateValues.photos = photos.data.photos.map((photo) => {
