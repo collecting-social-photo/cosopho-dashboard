@@ -54,7 +54,7 @@ exports.index = async (req, res) => {
       }
       await graphQL.fetch(payload, req.user.apitoken)
       return setTimeout(() => {
-        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/ppppeople`)
+        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/people`)
       }, 1000)
     }
   }
