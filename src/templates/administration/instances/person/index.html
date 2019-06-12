@@ -91,10 +91,15 @@
                           href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{initiative}}">{{initiative}}</a>
                       </td>
                       <td>{{timeAgo uploaded}}</td>
-                      <td>{{#if approved}}
-                          <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                      <td>
+                        {{#if suspended}}
+                          <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                         {{else}}
-                          <span class="text-error"><i class="icon icon-cross"></i> Rejected</span>
+                          {{#if approved}}
+                            <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                          {{else}}
+                            <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                          {{/if}}
                         {{/if}}
                       </td>
                       <td>

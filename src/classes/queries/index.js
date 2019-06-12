@@ -10,6 +10,7 @@ class Queries {
     displayName
     icon
     id
+    suspended
     instances {
       id
       title
@@ -39,6 +40,7 @@ class Queries {
       uploaded
       approved
       reviewed
+      suspended
       data {
         width
         height
