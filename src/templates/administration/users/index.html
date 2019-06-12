@@ -26,52 +26,197 @@
           </li>
         </ul>
 
-        <div class="columns">
 
-          {{#each users}}
+        {{#if adminUsers}}
+          <div class="columns">
             <div class="column col-3">
-              <div class="card primary-card">
+              <div class="card primary-card-title">
                 <div class="card-header">
-                  <div class="card-title h1">
-                    <figure class="avatar avatar-lg">
-                      <img src="{{icon}}" alt="User avatar">
-                    </figure>
-                    <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
-                  </div>
-                  <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
-                  <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
-                  </div>
+                  <div class="card-title h1">Admin users</div>
                 </div>
-
                 <div class="card-body">
-                  <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
-                        class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
-                  <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
-                        class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
                   <p>
-                    <h4>Instances</h4>
-                    <ul>
-                      {{#if instances}}
-                        {{#each instances}}
-                          <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
-                          </li>
-                        {{/each}}
-                      {{else}}
-                        <li>No instances</li>
-                      {{/if}}
-                    </ul>
+                    The following users are admin users with full access to the dashboard.
                   </p>
                 </div>
               </div>
             </div>
-          {{/each}}
+        {{/if}}
 
-        </div>
+        {{#each adminUsers}}
+          <div class="column col-3">
+            <div class="card primary-card">
+              <div class="card-header">
+                <div class="card-title h1">
+                  <figure class="avatar avatar-lg">
+                    <img src="{{icon}}" alt="User avatar">
+                  </figure>
+                  <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
+                </div>
+                <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
+                <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
+                </div>
+              </div>
 
+              <div class="card-body">
+                <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                      class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
+                <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                      class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
+                <p>
+                  <h4>Instances</h4>
+                  <ul>
+                    {{#if instances}}
+                      {{#each instances}}
+                        <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                        </li>
+                      {{/each}}
+                    {{else}}
+                      <li>No instances</li>
+                    {{/if}}
+                  </ul>
+                </p>
+              </div>
+            </div>
+          </div>
+        {{/each}}
 
+        {{#if adminUsers}}
       </div>
+      {{/if}}
+
+      {{#if instanceOwners}}
+        <div class="columns">
+          <div class="column col-3">
+            <div class="card primary-card-title">
+              <div class="card-header">
+                <div class="card-title h1">Instance owners</div>
+              </div>
+              <div class="card-body">
+                <p>
+                  The following users don't have full admin access but are in control of instances.
+                </p>
+              </div>
+            </div>
+          </div>
+      {{/if}}
+
+      {{#each instanceOwners}}
+        <div class="column col-3">
+          <div class="card primary-card">
+            <div class="card-header">
+              <div class="card-title h1">
+                <figure class="avatar avatar-lg">
+                  <img src="{{icon}}" alt="User avatar">
+                </figure>
+                <a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a>
+              </div>
+              <div class="card-subtitle h6 text-gray">Created: {{prettyDateShort created}}</div>
+              <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate lastLoggedIn}}
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div>{{#if roles.isAdmin}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                    class="icon icon-cross mx-1"></i>{{/if}} Admin</div>
+              <div>{{#if roles.isDeveloper}}<i class="icon icon-check mx-1"></i>{{else}}<i
+                    class="icon icon-cross mx-1"></i>{{/if}} Developer</div>
+              <p>
+                <h4>Instances</h4>
+                <ul>
+                  {{#if instances}}
+                    {{#each instances}}
+                      <li><a href="/{{../../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
+                      </li>
+                    {{/each}}
+                  {{else}}
+                    <li>No instances</li>
+                  {{/if}}
+                </ul>
+              </p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+
+      {{#if instanceOwners}}
     </div>
+    {{/if}}
+
+
+    {{#if developerOnlyUsers}}
+      <hr />
+      <div class="columns">
+    {{/if}}
+
+
+    <div class="column col-12">
+      <h1 class="h1">Developers <small class="label">people with registered API tokens</small></h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Created</th>
+            <th>Last Logged In</th>
+            <th>API token</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each developerOnlyUsers}}
+            <tr>
+              <td><a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a></td>
+              <td>{{timeAgo created}}</td>
+              <td>{{timeAgo lastLoggedIn}}</td>
+              <td><code>{{apitoken}}</code></td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    {{#if developerOnlyUsers}}
   </div>
+  {{/if}}
+
+  {{#if suspendedUsers}}
+    <hr />
+    <div class="columns">
+  {{/if}}
+
+
+  <div class="column col-12">
+    <h1 class="h1">Suspended users <small class="label">people with their API tokens suspended</small></h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Created</th>
+          <th>Last Logged In</th>
+          <th>API token</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each suspendedUsers}}
+          <tr>
+            <td><a href="/{{../selectedLang}}/administration/users/{{id}}">{{displayName}}</a></td>
+            <td>{{timeAgo created}}</td>
+            <td>{{timeAgo lastLoggedIn}}</td>
+            <td><code>{{apitoken}}</code></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  {{#if suspendedUsers}}
+    </div>
+  {{/if}}
+
+  <hr />
+  </div>
+  </div>
+  </div>
+
   {{>tail}}
 </body>
 
