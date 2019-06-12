@@ -40,6 +40,7 @@
                   <tr>
                     <th>id</th>
                     <th>username</th>
+                    <th>photos</th>
                     <th>status</th>
                     <th>action</th>
                   </tr>
@@ -54,8 +55,11 @@
                           {{else}}
                             {{id}}
                           {{/if}}
-                        </a></td>
-
+                        </a>
+                      </td>
+                      <td>
+                        {{#if photos}}{{photos}}{{/if}}
+                      </td>
                       <td>{{#if suspended}}
                           <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                         {{else}}
@@ -63,16 +67,15 @@
                         {{/if}}
                       </td>
                       <td>
-                        {{#if photos}}{{photos}}{{/if}}
                         <form method="POST"
-                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{../initiative.slug}}"
+                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{../initiative.slug}}people"
                           enctype="multipart/form-data">
-                          <input type="hidden" name="photoId" value="{{id}}" />
+                          <input type="hidden" name="personId" value="{{id}}" />
                           <div class="btn-group btn-group-block">
                             {{#if suspended}}
-                              <button class="btn btn-success" name="action" value="approvePhoto">Unsuspend</button>
+                              <button class="btn btn-success" name="action" value="unsuspendPerson">Unsuspend</button>
                             {{else}}
-                              <button class="btn btn-warning" name="action" value="rejectPhoto">Suspend</button>
+                              <button class="btn btn-warning" name="action" value="suspendPerson">Suspend</button>
                             {{/if}}
                           </div>
                         </form>

@@ -92,7 +92,7 @@ exports.index = async (req, res) => {
         }
         await graphQL.fetch(payload, process.env.HANDSHAKE)
         return setTimeout(() => {
-          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/${req.params.slug}`)
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/initiatives/${req.params.slug}`)
         }, 1000)
       }
     }
@@ -105,7 +105,7 @@ exports.index = async (req, res) => {
         }
         await graphQL.fetch(payload, process.env.HANDSHAKE)
         return setTimeout(() => {
-          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/${req.params.slug}`)
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/initiatives/${req.params.slug}`)
         }, 1000)
       }
     }
@@ -124,7 +124,7 @@ exports.index = async (req, res) => {
     return res.redirect(`/administration/instances`)
   }
 
-  //  Lets get the photos for this instance
+  //  Lets get the photos for this initiative
   let photos = null
   let page = 0
   let perPage = 20
@@ -136,7 +136,7 @@ exports.index = async (req, res) => {
   }, process.env.HANDSHAKE)
 
   if (photos.data.photos && photos.data.photos.length > 0 && photos.data.photos[0]._sys && photos.data.photos[0]._sys.pagination) {
-    req.templateValues.pagination = utils.paginator(photos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/${req.params.slug}/page/`, 2)
+    req.templateValues.pagination = utils.paginator(photos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/initiatives/${req.params.slug}/page/`, 2)
   }
 
   if (photos.data && photos.data.photos) {

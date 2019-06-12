@@ -261,19 +261,24 @@ router.get('/:lang/administration/instances', ensureLoggedIn, administration.ins
 router.post('/:lang/administration/instances', ensureLoggedIn, administration.instances.index)
 router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
+
 router.get('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
 router.post('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
+router.get('/:lang/administration/instances/:id/page/:page', ensureLoggedIn, administration.instances.instance)
+router.post('/:lang/administration/instances/:id/page/:page', ensureLoggedIn, administration.instances.instance)
 
-router.get('/:lang/administration/instances/:id/ppppeople', ensureLoggedIn, administration.instances.people.index)
-router.post('/:lang/administration/instances/:id/ppppeople', ensureLoggedIn, administration.instances.people.index)
+router.get('/:lang/administration/instances/:id/people', ensureLoggedIn, administration.instances.people.index)
+router.post('/:lang/administration/instances/:id/people', ensureLoggedIn, administration.instances.people.index)
 
-router.get('/:lang/administration/instances/:id/:slug', ensureLoggedIn, administration.instances.initiatives.index)
-router.get('/:lang/administration/instances/:id/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
-router.post('/:lang/administration/instances/:id/:slug', ensureLoggedIn, administration.instances.initiatives.index)
-router.post('/:lang/administration/instances/:id/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
+router.get('/:lang/administration/instances/:id/initiatives/:slug', ensureLoggedIn, administration.instances.initiatives.index)
+router.get('/:lang/administration/instances/:id/initiatives/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
+router.post('/:lang/administration/instances/:id/initiatives/:slug', ensureLoggedIn, administration.instances.initiatives.index)
+router.post('/:lang/administration/instances/:id/initiatives/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
 
 router.get('/:lang/administration/instances/:id/person/:slug', ensureLoggedIn, administration.instances.person.index)
 router.get('/:lang/administration/instances/:id/person/:slug/page/:page', ensureLoggedIn, administration.instances.person.index)
+router.post('/:lang/administration/instances/:id/person/:slug', ensureLoggedIn, administration.instances.person.index)
+router.post('/:lang/administration/instances/:id/person/:slug/page/:page', ensureLoggedIn, administration.instances.person.index)
 
 router.get('/:lang/administration/users', ensureLoggedIn, administration.users.index)
 router.get('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)

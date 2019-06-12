@@ -1,6 +1,7 @@
 const Queries = require('../../../../classes/queries')
 const GraphQL = require('../../../../classes/graphQL')
 const Config = require('../../../../classes/config')
+const Mutations = require('../../../../classes/mutations')
 const utils = require('../../../../modules/utils')
 
 exports.index = async (req, res) => {
@@ -41,13 +42,6 @@ exports.index = async (req, res) => {
     return res.redirect(`/administration/instances/${req.params.id}`)
   }
 
-  //  As we know we're allowed to do stuff to this instance, we check to see
-  //  if want to actually do anything with it.
-  if (req.fields && req.fields.action) {
-    console.log('Doing an action')
-    console.log(req.fields)
-  }
-
   //  Ok, now we checked all that action stuff, lets go get the person too!
   let person = null
   let page = 0
@@ -67,6 +61,58 @@ exports.index = async (req, res) => {
 
   if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination) {
     req.templateValues.pagination = utils.paginator(person.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/person/${req.params.slug}/page/`, 2)
+  }
+
+  //  As we know we're allowed to do stuff to this instance, we check to see
+  //  if want to actually do anything with it.
+  if (req.fields && req.fields.action) {
+    const mutations = new Mutations()
+
+    if (req.fields.action === 'suspendPerson' || req.fields.action === 'unsuspendPerson') {
+      let suspended = true
+      if (req.fields.action === 'unsuspendPerson') suspended = false
+      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${person.id}", suspended: ${suspended})`)
+      const payload = {
+        query: mutation
+      }
+      await graphQL.fetch(payload, req.user.apitoken)
+      return setTimeout(() => {
+        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+      }, 1000)
+    }
+
+    //  If we are approving or rejecting the photo
+    if (req.fields.action === 'approvePhoto' || req.fields.action === 'rejectPhoto') {
+      // Set approving or rejecting the photo
+      let approved = false
+      if (req.fields.action === 'approvePhoto') {
+        approved = true
+      }
+
+      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", reviewed: true, approved: ${approved})`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+        }, 1000)
+      }
+    }
+
+    if (req.fields.action === 'deletePhoto') {
+      const mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}")`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+        }, 1000)
+      }
+    }
   }
 
   const config = new Config()

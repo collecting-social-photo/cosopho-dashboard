@@ -1,5 +1,6 @@
 const Queries = require('../../../../classes/queries')
 const GraphQL = require('../../../../classes/graphQL')
+const Mutations = require('../../../../classes/mutations')
 const Config = require('../../../../classes/config')
 
 exports.index = async (req, res) => {
@@ -43,20 +44,37 @@ exports.index = async (req, res) => {
   //  As we know we're allowed to do stuff to this instance, we check to see
   //  if want to actually do anything with it.
   if (req.fields && req.fields.action) {
-    console.log('Doing an action')
-    console.log(req.fields)
+    if (req.fields.action === 'unsuspendPerson' || req.fields.action === 'suspendPerson') {
+      let suspended = true
+      if (req.fields.action === 'unsuspendPerson') suspended = false
+      const mutations = new Mutations()
+      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", suspended: ${suspended})`)
+      const payload = {
+        query: mutation
+      }
+      await graphQL.fetch(payload, req.user.apitoken)
+      return setTimeout(() => {
+        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/people`)
+      }, 1000)
+    }
   }
 
   //  Ok, now we checked all that action stuff, lets go get the people too!
   let people = null
   let page = 0
   let perPage = 50
-  let peopleQuery = queries.get('people', `(instance: "${req.params.id}", photos_page: ${page}, photos_per_page: ${perPage})`)
+  let peopleQuery = queries.get('people', `(instance: "${req.params.id}", page: ${page}, per_page: ${perPage}, photos_per_page: 1)`)
+
   people = await graphQL.fetch({
     query: peopleQuery
   }, process.env.HANDSHAKE)
   if (people.data && people.data.people) {
-    people = people.data.people
+    people = people.data.people.map((person) => {
+      if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination && person.photos[0]._sys.pagination.total) {
+        person.photos = person.photos[0]._sys.pagination.total
+      }
+      return person
+    })
   } else {
     return res.redirect(`/administration/instances/${req.params.id}`)
   }

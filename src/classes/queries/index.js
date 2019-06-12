@@ -39,6 +39,7 @@ class Queries {
       uploaded
       approved
       reviewed
+      suspended
       data {
         width
         height
@@ -60,6 +61,7 @@ class Queries {
       slug
       username
       avatar
+      suspended
       photos {
         ${this.photoBody}
       }`

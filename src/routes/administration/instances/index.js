@@ -1,10 +1,13 @@
 const Queries = require('../../../classes/queries')
 const Mutations = require('../../../classes/mutations')
 const GraphQL = require('../../../classes/graphQL')
+const Config = require('../../../classes/config')
 
 const initiatives = require('./initiatives')
 const people = require('./people')
 const person = require('./person')
+const utils = require('../../../modules/utils')
+
 exports.initiatives = initiatives
 exports.people = people
 exports.person = person
@@ -78,6 +81,7 @@ exports.instance = async (req, res) => {
   let results = []
   if (req.fields && req.fields.action) {
     const mutations = new Mutations()
+
     if (req.fields.action === 'addInitiative' && req.fields.title && req.fields.title !== '') {
       let description = ''
       if (req.fields.description) description = req.fields.description
@@ -111,6 +115,39 @@ exports.instance = async (req, res) => {
       return setTimeout(() => {
         res.redirect(`/${req.templateValues.selectedLang}/administration/instances`)
       }, 1000)
+    }
+
+    //  If we are approving or rejecting the photo
+    if (req.fields.action === 'approvePhoto' || req.fields.action === 'rejectPhoto') {
+      // Set approving or rejecting the photo
+      let approved = false
+      if (req.fields.action === 'approvePhoto') {
+        approved = true
+      }
+
+      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", reviewed: true, approved: ${approved})`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}`)
+        }, 1000)
+      }
+    }
+
+    if (req.fields.action === 'deletePhoto') {
+      const mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}")`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}`)
+        }, 1000)
+      }
     }
   }
 
@@ -162,5 +199,35 @@ exports.instance = async (req, res) => {
     }).filter(Boolean)
   }
 
+  //  Grab all the photos for this instance
+  //  Lets get the photos for this initiatives
+  let allPhotos = null
+  let page = 0
+  let perPage = 20
+  if (req.params.page) page = req.params.page - 1
+  let photosQuery = queries.get('photos', `(instance: "${req.params.id}", sort: "desc", sort_field: "uploaded", page: ${page}, per_page: ${perPage})`)
+  allPhotos = await graphQL.fetch({
+    query: photosQuery
+  }, process.env.HANDSHAKE)
+
+  if (allPhotos.data && allPhotos.data.photos) {
+    if (allPhotos.data.photos.length > 0 && allPhotos.data.photos[0]._sys && allPhotos.data.photos[0]._sys.pagination) {
+      req.templateValues.pagination = utils.paginator(allPhotos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/page/`, 2)
+    }
+
+    req.templateValues.photos = allPhotos.data.photos.map((photo) => {
+      if (photo.tags) {
+        if (Array.isArray(photo.tags)) {
+          photo.tags = photo.tags.join(', ')
+        } else {
+          photo.tags = [photo.tags]
+        }
+      }
+      return photo
+    })
+  }
+
+  const config = new Config()
+  req.templateValues.cloudinary = config.get('cloudinary')
   return res.render('administration/instances/instance', req.templateValues)
 }

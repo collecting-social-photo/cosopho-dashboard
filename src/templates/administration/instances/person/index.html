@@ -27,7 +27,7 @@
             <a href="/{{selectedLang}}/administration/instances/{{instance.id}}">{{instance.title}}</a>
           </li>
           <li class="breadcrumb-item">
-            <a href="/{{selectedLang}}/administration/instances/{{instance.id}}/ppppeople">People</a>
+            <a href="/{{selectedLang}}/administration/instances/{{instance.id}}/people">People</a>
           </li>
           <li class="breadcrumb-item">
             {{person.username}}
@@ -43,10 +43,19 @@
                 <div class="subtitle h6 text-gray">{{person.id}}</div>
               </div>
               <div class="card-body">
+                {{#if person.suspended}}
+                  This user has been suspended.
+                {{/if}}
+
                 <form method="POST"
                   action="/{{selectedLang}}/administration/instances/{{instance.id}}/person/{{person.slug}}"
                   enctype="multipart/form-data">
-                  <button class="btn btn-primary input-group-btn" name="action" value="updatePerson">Update</button>
+                  {{#if person.suspended}}
+                    <button class="btn btn-success input-group-btn" name="action"
+                      value="unsuspendPerson">Unsuspend</button>
+                  {{else}}
+                    <button class="btn btn-error input-group-btn" name="action" value="suspendPerson">Suspend</button>
+                  {{/if}}
                 </form>
               </div>
             </div>
@@ -88,18 +97,23 @@
 
                       <td>
                         <a
-                          href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{initiative}}">{{initiative}}</a>
+                          href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/initiatives/{{initiative}}">{{initiative}}</a>
                       </td>
                       <td>{{timeAgo uploaded}}</td>
-                      <td>{{#if approved}}
-                          <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                      <td>
+                        {{#if suspended}}
+                          <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                         {{else}}
-                          <span class="text-error"><i class="icon icon-cross"></i> Rejected</span>
+                          {{#if approved}}
+                            <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                          {{else}}
+                            <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                          {{/if}}
                         {{/if}}
                       </td>
                       <td>
                         <form method="POST"
-                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{../initiative.slug}}"
+                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/person/{{../person.slug}}"
                           enctype="multipart/form-data">
                           <input type="hidden" name="photoId" value="{{id}}" />
                           <div class="btn-group btn-group-block">
