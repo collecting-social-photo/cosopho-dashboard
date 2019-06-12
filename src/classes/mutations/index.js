@@ -10,6 +10,12 @@ class Mutations {
       }
     }`
 
+    this.updatePerson = `mutation {
+      updatePerson[[]] {
+        id
+      }
+    }`
+
     this.createInstance = `mutation {
       createInstance[[]] {
         id

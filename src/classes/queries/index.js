@@ -10,7 +10,6 @@ class Queries {
     displayName
     icon
     id
-    suspended
     instances {
       id
       title
@@ -62,6 +61,7 @@ class Queries {
       slug
       username
       avatar
+      suspended
       photos {
         ${this.photoBody}
       }`

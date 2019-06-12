@@ -1,6 +1,7 @@
 const Queries = require('../../../../classes/queries')
 const GraphQL = require('../../../../classes/graphQL')
 const Config = require('../../../../classes/config')
+const Mutations = require('../../../../classes/mutations')
 const utils = require('../../../../modules/utils')
 
 exports.index = async (req, res) => {
@@ -41,13 +42,6 @@ exports.index = async (req, res) => {
     return res.redirect(`/administration/instances/${req.params.id}`)
   }
 
-  //  As we know we're allowed to do stuff to this instance, we check to see
-  //  if want to actually do anything with it.
-  if (req.fields && req.fields.action) {
-    console.log('Doing an action')
-    console.log(req.fields)
-  }
-
   //  Ok, now we checked all that action stuff, lets go get the person too!
   let person = null
   let page = 0
@@ -67,6 +61,24 @@ exports.index = async (req, res) => {
 
   if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination) {
     req.templateValues.pagination = utils.paginator(person.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/person/${req.params.slug}/page/`, 2)
+  }
+
+  //  As we know we're allowed to do stuff to this instance, we check to see
+  //  if want to actually do anything with it.
+  if (req.fields && req.fields.action) {
+    if (req.fields.action === 'suspendPerson' || req.fields.action === 'unsuspendPerson') {
+      let suspended = true
+      if (req.fields.action === 'unsuspendPerson') suspended = false
+      const mutations = new Mutations()
+      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${person.id}", suspended: ${suspended})`)
+      const payload = {
+        query: mutation
+      }
+      await graphQL.fetch(payload, req.user.apitoken)
+      return setTimeout(() => {
+        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+      }, 1000)
+    }
   }
 
   const config = new Config()
