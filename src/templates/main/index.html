@@ -28,21 +28,30 @@
                   <div class="card-title h1">API Token</div>
                 </div>
                 {{#if graphQLHost}}
-                  <div class="card-body">
-                    <p>
-                      Below is your API token, you should use this when making API calls.
-                    </p>
-                    <p>
-                      <code>{{user.apitoken}}</code>
-                    </p>
-                    <p>
-                      You can <a href="{{graphQLHost}}/{{user.apitoken}}/playground">view the graphQL playground</a> to
-                      test out various queries.
-                    </p>
-                    <p>
-                      You can also <a href="{{graphQLHost}}">view the documentation</a>.
-                    </p>
-                  </div>
+                  {{#if user.roles.isDeveloper}}
+                    <div class="card-body">
+                      <p>
+                        Below is your API token, you should use this when making API calls.
+                      </p>
+                      <p>
+                        <code>{{user.apitoken}}</code>
+                      </p>
+                      <p>
+                        You can <a href="{{graphQLHost}}/{{user.apitoken}}/playground">view the graphQL playground</a>
+                        to
+                        test out various queries.
+                      </p>
+                      <p>
+                        You can also <a href="{{graphQLHost}}">view the documentation</a>.
+                      </p>
+                    </div>
+                  {{else}}
+                    <div class="card-body">
+                      <p>
+                        You currently do not have an API key.
+                      </p>
+                    </div>
+                  {{/if}}
                 {{/if}}
               </div>
             </div>
