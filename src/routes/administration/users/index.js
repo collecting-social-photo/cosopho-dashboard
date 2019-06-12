@@ -16,7 +16,45 @@ exports.index = async (req, res) => {
     query: query
   }, req.user.apitoken)
   if (results.data && results.data.users) {
-    req.templateValues.users = results.data.users
+    const filteredUserIds = []
+
+    //  Get all the admin users
+    const adminUsers = results.data.users.filter((user) => {
+      if (user.roles && 'isAdmin' in user.roles && user.roles.isAdmin === true) {
+        filteredUserIds.push(user.id)
+        return true
+      }
+      return false
+    })
+
+    //  Now all the developer users who arent already accounted for
+    const instanceOwners = results.data.users.filter((user) => {
+      if (user.roles && 'isDeveloper' in user.roles && user.roles.isDeveloper === true && user.instances && user.instances.length > 0 && !filteredUserIds.includes(user.id)) {
+        filteredUserIds.push(user.id)
+        return true
+      }
+      return false
+    })
+
+    //  Now all the developer users who arent already accounted for
+    const developerOnlyUsers = results.data.users.filter((user) => {
+      if (user.roles && 'isDeveloper' in user.roles && user.roles.isDeveloper === true && !filteredUserIds.includes(user.id)) {
+        filteredUserIds.push(user.id)
+        return true
+      }
+      return false
+    })
+
+    //  Get everyone else
+    const suspendedUsers = results.data.users.filter((user) => {
+      if (!filteredUserIds.includes(user.id)) return true
+      return false
+    })
+
+    req.templateValues.adminUsers = adminUsers
+    req.templateValues.instanceOwners = instanceOwners
+    req.templateValues.developerOnlyUsers = developerOnlyUsers
+    req.templateValues.suspendedUsers = suspendedUsers
   }
 
   return res.render('administration/users/index', req.templateValues)
