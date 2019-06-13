@@ -123,17 +123,19 @@ div.docs-content {
   }
 }
 
-@media (max-width: 960px) {
-  .docs-navbar {
-    left: inherit !important;
-  }
+table {
+  tr {
+    td.breaker {
+      -ms-word-break: break-all;
+      word-break: break-all;
 
-  .docs-content {
-    padding-left: 1.5rem !important;
-  }
+      /* Non standard for WebKit */
+      word-break: break-word;
 
-  .contacts-links {
-    position: inherit !important;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      hyphens: auto;
+    }
   }
 }
 
@@ -151,5 +153,19 @@ ul {
 
   .page-next {
     text-align: left !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .docs-navbar {
+    left: inherit !important;
+  }
+
+  .docs-content {
+    padding-left: 1.5rem !important;
+  }
+
+  .contacts-links {
+    position: inherit !important;
   }
 }
