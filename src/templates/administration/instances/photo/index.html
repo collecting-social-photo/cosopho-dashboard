@@ -1,0 +1,273 @@
+<html>
+
+<head>
+  <title>Photo</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration/instances">Instances</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration/instances/{{instance.id}}">{{instance.title}}</a>
+          </li>
+          <li class="breadcrumb-item">
+            Photos
+          </li>
+        </ul>
+
+        <div class="columns">
+          <div class="column col-6">
+            <div class="card primary-card-inverted">
+              <div class="card-image">
+                <img
+                  src="http://res.cloudinary.com/{{cloudinary.cloud_name}}/image/upload/w_2048,h_2048,c_fit/v{{photo.data.version}}/{{photo.data.public_id}}.jpg"
+                  class="img-responsive">
+              </div>
+              <div class="card-body">
+                <strong>Initiative: </strong><a
+                  href="/{{selectedLang}}/administration/instances/{{instance.id}}/initiatives/{{photo.initiative}}">{{photo.initiative}}</a>
+                <br />
+                <strong>Uploaded by: </strong><a
+                  href="/{{selectedLang}}/administration/instances/{{instance.id}}/person/{{photo.person.slug}}">{{photo.person.username}}</a>
+                <br />
+                <strong>Status:</strong> {{#if photo.suspended}}
+                  <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
+                {{else}}
+                  {{#if photo.approved}}
+                    <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                  {{else}}
+                    <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                  {{/if}}
+                {{/if}}
+              </div>
+              <div class="card-footer">
+                <form method="POST" enctype="multipart/form-data">
+                  <div class="btn-group btn-group-block">
+                    {{#if photo.approved}}
+                      <button class="btn btn-warning" name="action" value="rejectPhoto">Reject</button>
+                    {{else}}
+                      <button class="btn btn-success" name="action" value="approvePhoto">Approve</button>
+                    {{/if}}
+                    <button class="btn btn-error" name="action" value="deletePhoto">Delete</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="column col-6">
+            <div class="card primary-card-inverted">
+              <div class="card-header">
+                <div class="card-title h5">Photo details</div>
+              </div>
+              <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                <div class="card-body">
+
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="title">Title</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="title" name="title" placeholder="Photo title"
+                        value="{{photo.title}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="story">Story</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <textarea class="form-input" type="text" id="story" name="story"
+                        placeholder="ex. Every year my family goes to the beach and celebrates the holidays in the summer.">{{photo.story}}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="tags">Tags</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="tags" name="tags"
+                        placeholder="ex. selfie, landscape, family, pet" value="{{photo.tags}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="license">License</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <label class="form-radio">
+                        <input type="radio" name="license" value="CC-0"
+                          {{#ifEqual photo.license "CC-0"}}checked{{/ifEqual}}><i class="form-icon"></i>
+                        <strong>CC-0</strong>
+                        Free to use
+                        without restrictions
+                      </label>
+                      <label class="form-radio">
+                        <input type="radio" name="license" value="CC-BY"
+                          {{#ifEqual photo.license "CC-BY"}}checked{{/ifEqual}}><i class="form-icon"></i>
+                        <strong>CC-BY</strong> There are a few restrictions
+                      </label>
+                      <label class="form-radio">
+                        <input type="radio" name="license" value="CC-BY-NC"
+                          {{#ifEqual photo.license "CC-BY-NC"}}checked{{/ifEqual}}><i class="form-icon"></i>
+                        <strong>CC-BY-NC</strong> Highly Restrictive
+                      </label>
+                      <label class="form-radio">
+                        <input type="radio" name="license" value="Copyright"
+                          {{#ifEqual photo.license "Copyright"}}checked{{/ifEqual}}><i class="form-icon"></i>
+                        <strong>Copyright</strong> Not publicly visible or usable
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="location">Location</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="location" name="location" placeholder="ex. London, UK"
+                        value="{{photo.location}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="date">Date</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-date" type="date" id="date" name="date" value="{{dataDate photo.date}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="where">Social Medias</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <label class="form-checkbox form-inline">
+                        <input class="form-checkbox" type="checkbox" id="where" name="where_facebook" value="facebook"
+                          {{#ifIncludes photo.socialMedias "facebook"}}checked{{/ifIncludes}}><i class="form-icon"></i>
+                        Facebook
+                      </label>
+                      <br />
+                      <label class="form-checkbox form-inline">
+                        <input class="form-checkbox" type="checkbox" id="where" name="where_instagram" value="instagram"
+                          {{#ifIncludes photo.socialMedias "instagram"}}checked{{/ifIncludes}}><i class="form-icon"></i>
+                        Instagram
+                      </label>
+                      <br />
+                      <label class="form-checkbox form-inline">
+                        <input class="form-checkbox" type="checkbox" id="where" name="where_snapchat" value="snapchat"
+                          {{#ifIncludes photo.socialMedias "snapchat"}}checked{{/ifIncludes}}><i class="form-icon"></i>
+                        SnapChat
+                      </label>
+                      <br />
+                      <label class="form-checkbox form-inline">
+                        <input class="form-checkbox" type="checkbox" id="where" name="where_twitter" value="twitter"
+                          {{#ifIncludes photo.socialMedias "twitter"}}checked{{/ifIncludes}}><i class="form-icon"></i>
+                        Twitter
+                      </label>
+                      <br />
+                      <label class="form-checkbox form-inline">
+                        <input class="form-checkbox" type="checkbox" id="where" name="where_other" value="other"
+                          {{#ifIncludes photo.socialMedias "other"}}checked{{/ifIncludes}}><i class="form-icon"></i>
+                        Other
+                      </label>
+
+                    </div>
+                  </div>
+
+                  <h2>EXIF data</h2>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="make">Make</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="make" name="make" placeholder="Apple"
+                        value="{{photo.make}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="model">Model</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="model" name="model" placeholder="iPhone 6s"
+                        value="{{photo.model}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="aperture">Aperture</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="aperture" name="aperture" placeholder="2.3"
+                        value="{{photo.aperture}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="shutterSpeed">Shutter Speed</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="shutterSpeed" name="shutterSpeed" placeholder="2.3"
+                        value="{{photo.shutterSpeed}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="ISO">ISO</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="ISO" name="ISO" placeholder="400" value="{{photo.ISO}}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="focalLength">Focal Length</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="focalLength" name="focalLength" placeholder="2.3"
+                        value="{{photo.focalLength}}">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" name="action" value="updatePhoto">Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{>tail}}
+</body>
+
+</html>

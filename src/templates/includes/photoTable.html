@@ -24,12 +24,14 @@
           {{#each photos}}
             <tr>
               <td>
-                <img
-                  src="http://res.cloudinary.com/{{../cloudinary.cloud_name}}/image/upload/w_250,h_250,c_fit/v{{data.version}}/{{data.public_id}}.jpg"
-                  class="img-responsive">
+                <a href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/photo/{{id}}"><img
+                    src="http://res.cloudinary.com/{{../cloudinary.cloud_name}}/image/upload/w_250,h_250,c_fit/v{{data.version}}/{{data.public_id}}.jpg"
+                    class="img-responsive"></a>
               </td>
 
-              <td class="breaker">{{title}}</td>
+              <td class="breaker"><a
+                  href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/photo/{{id}}">{{title}}</a>
+              </td>
               <td class="breaker">{{story}}</td>
               <td>{{tags}}</td>
               <td>{{location}}</td>
