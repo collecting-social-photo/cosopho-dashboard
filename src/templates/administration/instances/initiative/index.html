@@ -89,82 +89,8 @@
 
         </div>
 
-        <div class="columns">
-          {{#if photos}}
-            <div class="column col-12">
-              <h1 class="h1">Photos</h1>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Story</th>
-                    <th>Tags</th>
-                    <th>Location</th>
-                    <th>Owner</th>
-                    <th>Uploaded</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {{#each photos}}
-                    <tr>
-                      <td>
-                        <img
-                          src="http://res.cloudinary.com/{{../cloudinary.cloud_name}}/image/upload/w_250,h_250,c_fit/v{{data.version}}/{{data.public_id}}.jpg"
-                          class="img-responsive">
-                      </td>
+        {{> photoTable}}
 
-                      <td class="breaker">{{title}}</td>
-                      <td class="breaker">{{story}}</td>
-                      <td>{{tags}}</td>
-                      <td>{{location}}</td>
-
-                      <td>
-                        <a
-                          href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/person/{{person.slug}}">
-                          {{#if person.username}}
-                            {{person.username}}
-                          {{else}}
-                            {{person.id}}
-                          {{/if}}
-                        </a>
-                      </td>
-                      <td>{{timeAgo uploaded}}</td>
-                      <td>{{#if suspended}}
-                          <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
-                        {{else}}
-                          {{#if approved}}
-                            <span class="text-success"><i class="icon icon-check"></i> Approved</span>
-                          {{else}}
-                            <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
-                          {{/if}}
-                        {{/if}}
-                      </td>
-                      <td>
-                        <form method="POST" enctype="multipart/form-data">
-                          <input type="hidden" name="photoId" value="{{id}}" />
-                          <div class="btn-group btn-group-block">
-                            {{#if approved}}
-                              <button class="btn btn-warning" name="action" value="rejectPhoto">Reject</button>
-                            {{else}}
-                              <button class="btn btn-success" name="action" value="approvePhoto">Approve</button>
-                            {{/if}}
-                            <button class="btn btn-error" name="action" value="deletePhoto">Delete</button>
-                          </div>
-                        </form>
-                      </td>
-                    </tr>
-                  {{/each}}
-                </tbody>
-              </table>
-
-              {{>pagination}}
-
-            </div>
-          {{/if}}
-        </div>
       </div>
     </div>
     {{>tail}}
