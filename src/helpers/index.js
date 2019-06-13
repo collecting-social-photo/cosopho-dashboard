@@ -58,6 +58,13 @@ exports.ifOdd = (n, options) => {
   return options.inverse(this)
 }
 
+exports.ifIncludes = (v1, v2, options) => {
+  if (v1.includes(v2)) {
+    return options.fn(this)
+  }
+  return options.inverse(this)
+}
+
 exports.ifEqual = (v1, v2, options) => {
   if (v1 === v2) {
     return options.fn(this)
@@ -316,6 +323,10 @@ exports.elasticsearchStatus = () => {
   return `<span class="good">Ave ping: ${averagePing}ms</span>`
 }
 
+exports.dataDate = t => {
+  if (t === null || t === undefined) return ''
+  return moment(t).format('YYYY-MM-DD')
+}
 exports.prettyNumber = x => {
   if (x === null || x === undefined) return ''
   if (x === '0' || x === 0) return '0'

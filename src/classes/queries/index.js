@@ -35,6 +35,8 @@ class Queries {
       model
       aperture
       shutterSpeed
+      ISO
+      focalLength
       license
       uploaded
       approved
@@ -148,6 +150,22 @@ class Queries {
 
     this.photos = `query {
       photos[[]] {
+        ${this.photoBody}
+        person {
+          id
+          username
+          slug
+        }
+        _sys {
+          pagination {
+            total
+          }
+        }
+      }
+    }`
+
+    this.photo = `query {
+      photo[[]] {
         ${this.photoBody}
         person {
           id
