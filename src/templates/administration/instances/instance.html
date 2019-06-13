@@ -38,8 +38,7 @@
                 <div class="subtitle h6 text-gray">{{instance.id}}</div>
               </div>
               <div class="card-body">
-                <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
-                  enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-input" type="text" id="title" name="title" placeholder="Instance title"
@@ -49,8 +48,7 @@
                 </form>
 
 
-                <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
-                  enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                   <button class="btn btn-error input-group-btn" name="action" value="deleteInstance"
                     {{#if instance.initiatives}}disabled{{/if}}>Delete</button>
                   {{#if instance.initiatives}}
@@ -110,8 +108,7 @@
               </div>
             {{/each}}
             <div class="column col-6">
-              <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
-                enctype="multipart/form-data">
+              <form method="POST" enctype="multipart/form-data">
                 <div class="card primary-card-inverted">
                   <div class="card-header">
                     <div class="card-title h1">Add new initiative</div>
@@ -148,8 +145,7 @@
             </div>
 
             <div class="column col-6">
-              <form method="POST" action="/{{selectedLang}}/administration/instances/{{instance.id}}"
-                enctype="multipart/form-data">
+              <form method="POST" enctype="multipart/form-data">
                 <div class="card primary-card-inverted">
                   <div class="card-header">
                     <div class="card-title h1">Add new initiative</div>
@@ -296,9 +292,7 @@
                           href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/initiatives/{{initiative}}">{{initiative}}</a>
                       </td>
                       <td>
-                        <form method="POST"
-                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/{{../initiative.slug}}"
-                          enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data">
                           <input type="hidden" name="photoId" value="{{id}}" />
                           <div class="btn-group btn-group-block">
                             {{#if approved}}

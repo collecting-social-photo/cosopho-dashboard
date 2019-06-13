@@ -47,9 +47,7 @@
                   This user has been suspended.
                 {{/if}}
 
-                <form method="POST"
-                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/person/{{person.slug}}"
-                  enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                   {{#if person.suspended}}
                     <button class="btn btn-success input-group-btn" name="action"
                       value="unsuspendPerson">Unsuspend</button>
@@ -112,9 +110,7 @@
                         {{/if}}
                       </td>
                       <td>
-                        <form method="POST"
-                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/person/{{../person.slug}}"
-                          enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data">
                           <input type="hidden" name="photoId" value="{{id}}" />
                           <div class="btn-group btn-group-block">
                             {{#if approved}}
