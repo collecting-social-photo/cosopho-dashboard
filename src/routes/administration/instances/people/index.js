@@ -2,6 +2,7 @@ const Queries = require('../../../../classes/queries')
 const GraphQL = require('../../../../classes/graphQL')
 const Mutations = require('../../../../classes/mutations')
 const Config = require('../../../../classes/config')
+const utils = require('../../../../modules/utils')
 
 exports.index = async (req, res) => {
   //  Work out if the user is allowed to see this or not
@@ -62,12 +63,18 @@ exports.index = async (req, res) => {
   //  Ok, now we checked all that action stuff, lets go get the people too!
   let people = null
   let page = 0
-  let perPage = 50
+  let perPage = 20
+  if (req.params.page) page = req.params.page - 1
   let peopleQuery = queries.get('people', `(instance: "${req.params.id}", page: ${page}, per_page: ${perPage}, photos_per_page: 1)`)
 
   people = await graphQL.fetch({
     query: peopleQuery
   }, process.env.HANDSHAKE)
+
+  if (people.data.people && people.data.people.length > 0 && people.data.people[0]._sys && people.data.people[0]._sys.pagination) {
+    req.templateValues.peoplePagination = utils.paginator(people.data.people[0]._sys.pagination, `/administration/instances/${req.params.id}/people/page/`, 2)
+  }
+
   if (people.data && people.data.people) {
     people = people.data.people.map((person) => {
       if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination && person.photos[0]._sys.pagination.total) {
@@ -75,8 +82,6 @@ exports.index = async (req, res) => {
       }
       return person
     })
-  } else {
-    return res.redirect(`/administration/instances/${req.params.id}`)
   }
 
   const config = new Config()

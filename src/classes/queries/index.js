@@ -64,6 +64,13 @@ class Queries {
       suspended
       photos {
         ${this.photoBody}
+      }
+      _sys {
+        pagination {
+          page
+          maxPage
+          total
+        }
       }`
 
     this.hello = `query {

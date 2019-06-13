@@ -234,7 +234,11 @@
         </div>
 
         {{> photoTable}}
-
+        {{> peopleTable}}
+        {{#if showMorePeople}}
+          <a class="btn" href="/{{selectedLang}}/administration/instances/{{instance.id}}/people">See more
+            people</a>
+        {{/if}}
       </div>
     </div>
     {{>tail}}

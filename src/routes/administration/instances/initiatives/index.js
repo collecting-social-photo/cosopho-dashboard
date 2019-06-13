@@ -136,7 +136,7 @@ exports.index = async (req, res) => {
   }, process.env.HANDSHAKE)
 
   if (photos.data.photos && photos.data.photos.length > 0 && photos.data.photos[0]._sys && photos.data.photos[0]._sys.pagination) {
-    req.templateValues.pagination = utils.paginator(photos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/initiatives/${req.params.slug}/page/`, 2)
+    req.templateValues.photosPagination = utils.paginator(photos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/initiatives/${req.params.slug}/page/`, 2)
   }
 
   if (photos.data && photos.data.photos) {

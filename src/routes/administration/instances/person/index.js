@@ -60,8 +60,9 @@ exports.index = async (req, res) => {
   }
 
   if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination) {
-    req.templateValues.pagination = utils.paginator(person.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/person/${req.params.slug}/page/`, 2)
+    req.templateValues.photosPagination = utils.paginator(person.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/person/${req.params.slug}/page/`, 2)
   }
+  req.templateValues.hidePhotoOwnerColumn = true
 
   //  As we know we're allowed to do stuff to this instance, we check to see
   //  if want to actually do anything with it.

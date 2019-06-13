@@ -212,7 +212,7 @@ exports.instance = async (req, res) => {
 
   if (allPhotos.data && allPhotos.data.photos) {
     if (allPhotos.data.photos.length > 0 && allPhotos.data.photos[0]._sys && allPhotos.data.photos[0]._sys.pagination) {
-      req.templateValues.pagination = utils.paginator(allPhotos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/page/`, 2)
+      req.templateValues.photosPagination = utils.paginator(allPhotos.data.photos[0]._sys.pagination, `/administration/instances/${req.params.id}/page/`, 2)
     }
 
     req.templateValues.photos = allPhotos.data.photos.map((photo) => {
@@ -226,6 +226,30 @@ exports.instance = async (req, res) => {
       return photo
     })
   }
+
+  //  Get some the people for this instance
+  let people = null
+  let peoplePage = 0
+  let peoplePerPage = 20
+  let peopleQuery = queries.get('people', `(instance: "${req.params.id}", page: ${peoplePage}, per_page: ${peoplePerPage}, photos_per_page: 1)`)
+
+  people = await graphQL.fetch({
+    query: peopleQuery
+  }, process.env.HANDSHAKE)
+
+  if (people.data && people.data.people) {
+    people = people.data.people.map((person) => {
+      if (person.photos && person.photos.length > 0 && person.photos[0]._sys && person.photos[0]._sys.pagination && person.photos[0]._sys.pagination.total) {
+        person.photos = person.photos[0]._sys.pagination.total
+      }
+      return person
+    })
+  }
+  //  See if we need to show more people
+  if (people.length > 0 && people[0]._sys && people[0]._sys.pagination) {
+    if (people[0]._sys.pagination.page < people[0]._sys.pagination.maxPage) req.templateValues.showMorePeople = true
+  }
+  req.templateValues.people = people
 
   const config = new Config()
   req.templateValues.cloudinary = config.get('cloudinary')

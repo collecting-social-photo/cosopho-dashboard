@@ -272,6 +272,8 @@ router.post('/:lang/administration/instances/:id/page/:page', ensureLoggedIn, ad
 
 router.get('/:lang/administration/instances/:id/people', ensureLoggedIn, administration.instances.people.index)
 router.post('/:lang/administration/instances/:id/people', ensureLoggedIn, administration.instances.people.index)
+router.get('/:lang/administration/instances/:id/people/page/:page', ensureLoggedIn, administration.instances.people.index)
+router.post('/:lang/administration/instances/:id/people/page/:page', ensureLoggedIn, administration.instances.people.index)
 
 router.get('/:lang/administration/instances/:id/initiatives/:slug', ensureLoggedIn, administration.instances.initiatives.index)
 router.get('/:lang/administration/instances/:id/initiatives/:slug/page/:page', ensureLoggedIn, administration.instances.initiatives.index)
