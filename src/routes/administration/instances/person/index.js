@@ -77,7 +77,7 @@ exports.index = async (req, res) => {
       }
       await graphQL.fetch(payload, req.user.apitoken)
       return setTimeout(() => {
-        res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+        res.redirect(req.templateValues.selfURL)
       }, 1000)
     }
 
@@ -96,7 +96,7 @@ exports.index = async (req, res) => {
         }
         await graphQL.fetch(payload, process.env.HANDSHAKE)
         return setTimeout(() => {
-          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+          res.redirect(req.templateValues.selfURL)
         }, 1000)
       }
     }
@@ -109,7 +109,7 @@ exports.index = async (req, res) => {
         }
         await graphQL.fetch(payload, process.env.HANDSHAKE)
         return setTimeout(() => {
-          res.redirect(`/${req.templateValues.selectedLang}/administration/instances/${req.params.id}/person/${req.params.slug}`)
+          res.redirect(req.templateValues.selfURL)
         }, 1000)
       }
     }

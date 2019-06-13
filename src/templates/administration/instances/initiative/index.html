@@ -41,9 +41,7 @@
                 <div class="subtitle h6 text-gray">{{initiative.id}}</div>
               </div>
               <div class="card-body">
-                <form method="POST"
-                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/initiatives/{{initiative.slug}}"
-                  enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-input" type="text" id="title" name="title" placeholder="Initiative title"
@@ -76,9 +74,7 @@
                 </form>
 
 
-                <form method="POST"
-                  action="/{{selectedLang}}/administration/instances/{{instance.id}}/initiatives/{{initiative.slug}}"
-                  enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                   <button class="btn btn-error input-group-btn" name="action" value="deleteInitiative"
                     {{#if initiative.photos}}disabled{{/if}}>Delete</button>
                   {{#if initiative.photos}}
@@ -147,9 +143,7 @@
                         {{/if}}
                       </td>
                       <td>
-                        <form method="POST"
-                          action="/{{../selectedLang}}/administration/instances/{{../instance.id}}/initiatives/{{../initiative.slug}}"
-                          enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data">
                           <input type="hidden" name="photoId" value="{{id}}" />
                           <div class="btn-group btn-group-block">
                             {{#if approved}}

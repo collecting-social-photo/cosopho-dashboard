@@ -17,7 +17,7 @@ exports.index = (req, res) => {
           api_secret: req.fields.api_secret
         }
         configObj.set('cloudinary', cloudinary)
-        return res.redirect('/administration/configuration')
+        return res.redirect(req.templateValues.selfURL)
       }
     }
   }

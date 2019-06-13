@@ -100,7 +100,7 @@ exports.user = async (req, res) => {
       }
       await graphQL.fetch(payload, req.user.apitoken)
       return setTimeout(() => {
-        res.redirect(`/${req.templateValues.selectedLang}/administration/users`)
+        res.redirect(req.templateValues.selfURL)
       }, 1000)
     }
   }
@@ -114,7 +114,7 @@ exports.user = async (req, res) => {
   if (results.data && results.data.user) {
     req.templateValues.thisUser = results.data.user
   } else {
-    return res.redirect(`/${req.templateValues.selectedLang}/administration/users`)
+    return res.redirect(req.templateValues.selfURL)
   }
 
   //  Grab the instances
