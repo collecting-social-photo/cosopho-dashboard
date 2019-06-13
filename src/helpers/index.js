@@ -59,10 +59,14 @@ exports.ifOdd = (n, options) => {
 }
 
 exports.ifIncludes = (v1, v2, options) => {
-  if (v1.includes(v2)) {
-    return options.fn(this)
+  try {
+    if (v1.includes(v2)) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  } catch (er) {
+    return options.inverse(this)
   }
-  return options.inverse(this)
 }
 
 exports.ifEqual = (v1, v2, options) => {
