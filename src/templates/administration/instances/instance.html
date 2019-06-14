@@ -38,12 +38,32 @@
                 <div class="subtitle h6 text-gray">{{instance.id}}</div>
               </div>
               <div class="card-body">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" class="form-horizontal">
                   <div class="form-group">
-                    <label class="form-label" for="title">Title</label>
-                    <input class="form-input" type="text" id="title" name="title" placeholder="Instance title"
-                      value="{{instance.title}}">
+                    <div class="col-3 col-sm-12"><label class="form-label" for="title">Title</label></div>
+                    <div class="col-9 col-sm-12"><input class="form-input" type="text" id="title" name="title"
+                        placeholder="Instance title" value="{{instance.title}}"></div>
                   </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12"><label class="form-label" for="colour">Colour</label></div>
+                    <div class="col-9 col-sm-12"><input class="form-input" type="text" id="colour" name="colour"
+                        placeholder="000000" value="{{instance.colour}}"></div>
+                  </div>
+                  <br />
+                  <img class="img-responsive" src="data:image/png;base64,{{instance.logo}}"
+                    style="background-color: #{{instance.colour}}">
+                  <br />
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12"><label class="form-label" for="logo">Logo</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="file" id="logo" name="logo">
+                    </div>
+                  </div>
+                  <p>
+                    <small class="label"><strong>Note:</strong> the logo will be converted to base64, try to keep it as
+                      small and simple, less than 384x128, &lt; 100kb if possible.</small>
+                  </p>
                   <button class="btn btn-primary input-group-btn" name="action" value="updateInstance">Update</button>
                 </form>
 
@@ -77,8 +97,8 @@
 
             {{#each instance.initiatives}}
               <div class="column col-3">
-                <div class="card primary-card">
-                  <div class="card-header">
+                <div class="card primary-card" style="background-color: #{{../instance.colour}}">
+                  <div class=" card-header">
                     <div class="card-title h1">
                       <a
                         href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/initiatives/{{slug}}">{{title}}</a>
@@ -186,7 +206,7 @@
 
               {{#each users}}
                 <div class="column col-3">
-                  <div class="card primary-card">
+                  <div class="card primary-card" style="background-color: #{{../instance.colour}}">
                     <div class="card-header">
                       <div class="card-title h1">
                         <figure class="avatar avatar-lg">
