@@ -3,6 +3,7 @@ const Mutations = require('../../../classes/mutations')
 const GraphQL = require('../../../classes/graphQL')
 const Config = require('../../../classes/config')
 const utils = require('../../../modules/utils')
+const fs = require('fs')
 
 const initiatives = require('./initiatives')
 const people = require('./people')
@@ -98,7 +99,26 @@ exports.instance = async (req, res) => {
     }
 
     if (req.fields.action === 'updateInstance' && req.fields.title && req.fields.title !== '') {
-      let mutation = mutations.get('updateInstance', `(id: "${req.params.id}", title:"${req.fields.title}")`)
+      const instanceMutationValues = [
+        `id: "${req.params.id}"`,
+        `title: "${req.fields.title}"`
+      ]
+      if (req.fields[`colour`]) {
+        const colour = req.fields[`colour`].replace('#', '')
+        instanceMutationValues.push(`colour: ${JSON.stringify(colour)}`)
+      }
+
+      //  See if a file has been uploaded
+      if (req.files && req.files.logo && req.files.logo.size < 300000) {
+        const bitmap = fs.readFileSync(req.files.logo.path)
+        // convert binary data to base64 encoded string
+        const encoded = Buffer.from(bitmap).toString('base64')
+        if (encoded.length <= 100000) {
+          instanceMutationValues.push(`logo: ${JSON.stringify(encoded)}`)
+        }
+      }
+
+      let mutation = mutations.get('updateInstance', `(${instanceMutationValues.join(',')})`)
       const payload = {
         query: mutation
       }

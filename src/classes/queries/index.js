@@ -83,6 +83,9 @@ class Queries {
       instance[[]] {
         id
         title
+        colour
+        logo
+        userFields
         initiatives {
           id
           slug
@@ -99,6 +102,9 @@ class Queries {
       instances[[]] {
         id
         title
+        colour
+        logo
+        userFields
         initiatives {
           id
           slug
