@@ -173,6 +173,7 @@ class Queries {
     this.photo = `query {
       photo[[]] {
         ${this.photoBody}
+        notes
         person {
           id
           username
