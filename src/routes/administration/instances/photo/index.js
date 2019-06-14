@@ -111,6 +111,7 @@ exports.index = async (req, res) => {
       if (req.fields[`shutterSpeed`]) photoMutationValues.push(`shutterSpeed: ${parseFloat(req.fields[`shutterSpeed`])}`)
       if (req.fields[`ISO`]) photoMutationValues.push(`ISO: ${parseInt(req.fields[`ISO`])}`)
       if (req.fields[`focalLength`]) photoMutationValues.push(`focalLength: ${parseInt(req.fields[`focalLength`])}`)
+      if (req.fields[`notes`]) photoMutationValues.push(`notes: ${JSON.stringify(req.fields[`notes`])}`)
 
       if (req.fields[`tags`]) {
         let tags = req.fields[`tags`].split(',').map((tag) => tag.trim())
