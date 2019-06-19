@@ -15,6 +15,7 @@
               <th>Owner</th>
             {{/unless}}
             <th>Uploaded</th>
+            <th>Archived</th>
             <th>Status</th>
             <th>Initiative</th>
             <th>Action</th>
@@ -49,6 +50,15 @@
               {{/unless}}
 
               <td>{{timeAgo uploaded}}</td>
+              <td>
+                {{#if archived}}
+                  <span class="text-gray"><i class="icon icon-check"></i> Archived</span>
+                {{else}}
+                  &nbsp;
+                {{/if}}
+              </td>
+
+              </td>
               <td>{{#if suspended}}
                   <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                 {{else}}

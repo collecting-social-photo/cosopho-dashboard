@@ -42,6 +42,7 @@ class Queries {
       approved
       reviewed
       suspended
+      archived
       data {
         width
         height

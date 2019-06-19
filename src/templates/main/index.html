@@ -85,7 +85,7 @@
 
             {{#each instances}}
               <div class="column col-3">
-                <div class="card primary-card">
+                <div class="card primary-card" style="background-color: #{{colour}}">
                   <div class="card-header">
                     <div class="card-title h1"><a
                         href="/{{../selectedLang}}/administration/instances/{{id}}">{{title}}</a>
@@ -99,7 +99,7 @@
                         {{#if initiatives}}
                           {{#each initiatives}}
                             <li><a
-                                href="/{{../../selectedLang}}/administration/instances/{{../id}}/{{slug}}">{{title}}</a>
+                                href="/{{../../selectedLang}}/administration/instances/{{../id}}/initiatives/{{slug}}">{{title}}</a>
                             </li>
                           {{/each}}
                         {{else}}
