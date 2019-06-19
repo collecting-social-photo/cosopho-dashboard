@@ -2,7 +2,7 @@ const Queries = require('../../classes/queries')
 const GraphQL = require('../../classes/graphQL')
 
 exports.index = async (req, res) => {
-  // if (!req.user || !req.user.roles || !req.user.roles.isAdmin) return res.render('main/pleaselogin', req.templateValues)
+  if (!req.user || !req.user.roles || !req.user.roles.isAdmin) return res.render('main/pleaselogin', req.templateValues)
 
   let isNotAdmin = true
   if (req.user && req.user.roles && req.user.roles.isAdmin && req.user.roles.isAdmin === true) {

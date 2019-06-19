@@ -1,5 +1,27 @@
 @import "./variables";
 
+body {
+  &.cover {
+    background: no-repeat center center fixed;
+    background-image: url(/images/cover.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+  .covercard {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background: white;
+    margin-top: 100px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
 .container {
   padding-top: 3.5rem;
 }
