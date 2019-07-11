@@ -43,6 +43,7 @@ class Queries {
       reviewed
       suspended
       archived
+      homepage
       data {
         width
         height

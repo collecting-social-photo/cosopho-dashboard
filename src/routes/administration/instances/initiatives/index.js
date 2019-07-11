@@ -97,6 +97,26 @@ exports.index = async (req, res) => {
       }
     }
 
+    //  If we are adding or removing the photo from the homepage
+    if (req.fields.action === 'homepagePhoto' || req.fields.action === 'unhomepagePhoto') {
+      // Set approving or rejecting the photo
+      let homepage = false
+      if (req.fields.action === 'homepagePhoto') {
+        homepage = true
+      }
+
+      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", homepage: ${homepage})`)
+      if (mutation) {
+        const payload = {
+          query: mutation
+        }
+        await graphQL.fetch(payload, process.env.HANDSHAKE)
+        return setTimeout(() => {
+          res.redirect(req.templateValues.selfURL)
+        }, 1000)
+      }
+    }
+
     if (req.fields.action === 'deletePhoto') {
       const mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}")`)
       if (mutation) {
