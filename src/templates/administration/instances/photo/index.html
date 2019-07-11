@@ -59,6 +59,10 @@
                   <br />
                   <strong><span class="text-gray"><i class="icon icon-check"></i> Archived</span></strong>
                 {{/if}}
+                {{#if photo.homepage}}
+                  <br />
+                  <strong><span class="text-success"><i class="icon icon-check"></i> Homepaged</span></strong>
+                {{/if}}
               </div>
               <div class="card-footer">
                 <form method="POST" enctype="multipart/form-data">
@@ -67,6 +71,12 @@
                       <button class="btn btn-warning" name="action" value="rejectPhoto">Reject</button>
                     {{else}}
                       <button class="btn btn-success" name="action" value="approvePhoto">Approve</button>
+                    {{/if}}
+                    {{#if photo.homepage}}
+                      <button class="btn btn-warning" name="action" value="unhomepagePhoto">Remove from homepage
+                        pool</button>
+                    {{else}}
+                      <button class="btn btn-success" name="action" value="homepagePhoto">Add to homepage pool</button>
                     {{/if}}
                     <button class="btn btn-error" name="action" value="deletePhoto">Delete</button>
                   </div>

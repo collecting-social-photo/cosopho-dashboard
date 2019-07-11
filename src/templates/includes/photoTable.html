@@ -16,6 +16,7 @@
             {{/unless}}
             <th>Uploaded</th>
             <th>Archived</th>
+            <th>Homepaged</th>
             <th>Status</th>
             <th>Initiative</th>
             <th>Action</th>
@@ -53,6 +54,14 @@
               <td>
                 {{#if archived}}
                   <span class="text-gray"><i class="icon icon-check"></i> Archived</span>
+                {{else}}
+                  &nbsp;
+                {{/if}}
+              </td>
+
+              <td>
+                {{#if homepage}}
+                  <span class="text-success"><i class="icon icon-check"></i> Homepaged</span>
                 {{else}}
                   &nbsp;
                 {{/if}}
