@@ -9,7 +9,6 @@ const saveConfig = async () => {
   const index = `config_${process.env.KEY}`
   const type = 'config'
   try {
-    console.log('about to call esclient.update')
     await esclient.update({
       index,
       type,

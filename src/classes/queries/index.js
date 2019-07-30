@@ -88,6 +88,8 @@ class Queries {
         colour
         logo
         userFields
+        languages
+        defaultLanguage
         initiatives {
           id
           slug
@@ -107,6 +109,8 @@ class Queries {
         colour
         logo
         userFields
+        languages
+        defaultLanguage
         initiatives {
           id
           slug

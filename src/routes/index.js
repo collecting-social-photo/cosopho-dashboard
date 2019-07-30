@@ -292,4 +292,7 @@ router.get('/:lang/administration/users', ensureLoggedIn, administration.users.i
 router.get('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)
 router.post('/:lang/administration/users/:id', ensureLoggedIn, administration.users.user)
 
+router.get('/:lang/administration/languages', ensureLoggedIn, administration.languages.index)
+router.post('/:lang/administration/languages', ensureLoggedIn, administration.languages.index)
+
 module.exports = router
