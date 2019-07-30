@@ -192,6 +192,31 @@ class Queries {
         }
       }
     }`
+
+    this.strings = `query {
+      strings[[]] {
+        id
+        instance
+        section
+        token
+        language
+        string
+        createdBy
+        created
+        updatedBy
+        updated      
+      }
+    }`
+
+    this.stringsShort = `query {
+      strings[[]] {
+        id
+        section
+        token
+        language
+        string
+      }
+    }`
   }
 
   /**

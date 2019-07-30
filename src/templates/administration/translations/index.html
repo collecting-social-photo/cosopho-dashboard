@@ -1,0 +1,98 @@
+<html>
+
+<head>
+  <title>Translations</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            Translations
+          </li>
+        </ul>
+
+        <div class="columns">
+          <div class="column col-12 bg-secondary">
+            <h1>Translations</h1>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column col-6 text-center">
+            <h1>{{primaryLanguageLong}}</h1>
+            <p>{{#each languages}}
+                {{#ifEqual @this ../primaryLanguage}}
+                  {{@../this}}
+              {{else}}
+                <span class="chip"><a
+                    href="/{{../../selectedLang}}/administration/translations/{{@../this}}/{{../../secondaryLanguage}}">{{@../this}}</a></span>
+                {{/ifEqual}}
+              {{/each}}
+            </p>
+          </div>
+          <div class="column col-6 text-center">
+            <h1>{{secondaryLanguageLong}}</h1>
+            <p>{{#each languages}}
+                {{#ifEqual @this ../secondaryLanguage}}
+                  {{@../this}}
+              {{else}}
+                <span class="chip"><a
+                    href="/{{../../selectedLang}}/administration/translations/{{../../primaryLanguage}}/{{@../this}}">{{@../this}}</a></span>
+                {{/ifEqual}}
+              {{/each}}
+            </p>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column col-12">
+            {{#each strings}}
+              <h2>{{@key}}</h2>
+              {{#each @this}}
+                <form method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="id" value="{{id}}" />
+                  <strong>{{@key}}</strong> <small><code>{{codeTwo token}}</code> or
+                    <code>{{codeThree token}}</code></small>
+                  <table class="table">
+                    <tr>
+                      <td style="width:45%">
+                        <textarea class="form-input" name="primary">{{valueOf strings ../../primaryLanguage}}</textarea>
+                      </td>
+                      <td style="width:45%">
+                        <textarea class="form-input"
+                          name="primary">{{valueOf strings ../../secondaryLanguage}}</textarea>
+                      </td>
+                      <td style="width:10%">
+                        <button class="btn btn-primary input-group-btn" name="action"
+                          value="updateTranslation">Update</button>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+              {{/each}}
+            {{/each}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {{>tail}}
+</body>
+
+</html>
