@@ -71,6 +71,18 @@ class Mutations {
         success
       }
     }`
+
+    this.createString = `mutation {
+      createString[[]] {
+        id
+      }
+    }`
+
+    this.updateString = `mutation {
+      updateString[[]] {
+        id
+      }
+    }`
   }
 
   /**

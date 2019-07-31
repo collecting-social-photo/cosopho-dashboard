@@ -81,6 +81,44 @@
             </div>
           </div>
 
+          <div class="column col-3">
+            <div class="card primary-card-inverted">
+              <div class="card-header">
+                <div class="card-title h1">Language</div>
+              </div>
+              <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                  <div class="card-title h2">Primary language
+                    <div class="subtitle h6 text-gray">(select one)</div>
+                  </div>
+                  <div class="form-group">
+                    {{#each langs}}
+                      <label class="form-radio">
+                        <input type="radio" name="default" value="{{code}}"
+                          {{#ifEqual code ../defaultLanguage}}checked{{/ifEqual}}>
+                        <i class="form-icon"></i> {{name}} ({{code}})
+                      </label>
+                    {{/each}}
+                  </div>
+
+                  <div class="card-title h2">Secondary languages
+                    <div class="subtitle h6 text-gray">(select all that apply)</div>
+                  </div>
+                  <div class="form-group">
+                    {{#each langs}}
+                      <label class="form-checkbox">
+                        <input type="checkbox" name="code_{{code}}" value="{{code}}" {{#if selected}}checked{{/if}}>
+                        <i class="form-icon"></i> {{name}} ({{code}})
+                      </label>
+                    {{/each}}
+                  </div>
+
+                  <button class="btn btn-primary input-group-btn" name="action" value="updateLanguages">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
           {{#if instance.initiatives}}
             <div class="column col-3">
               <div class="card primary-card-title">

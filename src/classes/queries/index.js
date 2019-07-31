@@ -88,6 +88,8 @@ class Queries {
         colour
         logo
         userFields
+        languages
+        defaultLanguage
         initiatives {
           id
           slug
@@ -107,6 +109,8 @@ class Queries {
         colour
         logo
         userFields
+        languages
+        defaultLanguage
         initiatives {
           id
           slug
@@ -186,6 +190,33 @@ class Queries {
             total
           }
         }
+      }
+    }`
+
+    this.strings = `query {
+      strings[[]] {
+        id
+        instance
+        section
+        stub
+        token
+        language
+        string
+        createdBy
+        created
+        updatedBy
+        updated      
+      }
+    }`
+
+    this.stringsShort = `query {
+      strings[[]] {
+        id
+        section
+        stub
+        token
+        language
+        string
       }
     }`
   }

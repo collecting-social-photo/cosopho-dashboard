@@ -69,6 +69,31 @@ exports.ifIncludes = (v1, v2, options) => {
   }
 }
 
+exports.ifOf = (v1, v2, options) => {
+  try {
+    if (v2 in v1) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  } catch (er) {
+    return options.inverse(this)
+  }
+}
+
+exports.ifOf2 = (v1, v2, options) => {
+  console.log(v1)
+  console.log(v2)
+  console.log(v2 in v1)
+  try {
+    if (v2 in v1) {
+      return options.fn(this)
+    }
+    return options.inverse(this)
+  } catch (er) {
+    return options.inverse(this)
+  }
+}
+
 exports.ifEqual = (v1, v2, options) => {
   if (v1 === v2) {
     return options.fn(this)
@@ -136,6 +161,24 @@ exports.or = (v1, v2) => {
 exports.toLowerCase = text => {
   return text.toLowerCase()
 }
+
+const valueOf = (obj, key) => {
+  if (obj[key]) {
+    return obj[key]
+  }
+  return ''
+}
+exports.valueOf = valueOf
+
+const codeTwo = (code) => {
+  return `{{${code}}}`
+}
+exports.codeTwo = codeTwo
+
+const codeThree = (code) => {
+  return `{{{${code}}}}`
+}
+exports.codeThree = codeThree
 
 const truncate = (text, targetLength) => {
   if (!text) return null

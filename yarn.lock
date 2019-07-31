@@ -1387,11 +1387,6 @@ commander@~2.9.0:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-compass@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/compass/-/compass-0.1.1.tgz#5c56d5eb442d10c1ad5989ef5c5e925db60c60e1"
-  integrity sha1-XFbV60QtEMGtWYnvXF6SXbYMYOE=
-
 component-emitter@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"

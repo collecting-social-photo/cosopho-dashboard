@@ -4,6 +4,7 @@ const GraphQL = require('../../../classes/graphQL')
 const Config = require('../../../classes/config')
 const utils = require('../../../modules/utils')
 const fs = require('fs')
+const path = require('path')
 
 const initiatives = require('./initiatives')
 const people = require('./people')
@@ -77,6 +78,16 @@ exports.instance = async (req, res) => {
     }
   }
 
+  //  Get access to the config object and grab all the language information for this
+  //  instance
+  const config = new Config()
+  const filename = path.join(__dirname, '..', '..', '..', '..', 'lang', 'langs.json')
+  const langsMap = JSON.parse(fs.readFileSync(filename, 'utf-8'))
+  let languages = await config.get('languages')
+  if (!languages) languages = []
+  let defaultLanguage = config.get('defaultLanguage')
+  if (!defaultLanguage) defaultLanguage = 'en'
+
   const graphQL = new GraphQL()
   const queries = new Queries()
 
@@ -123,6 +134,30 @@ exports.instance = async (req, res) => {
         query: mutation
       }
       results = await graphQL.fetch(payload, process.env.HANDSHAKE)
+      return setTimeout(() => {
+        res.redirect(req.templateValues.selfURL)
+      }, 1000)
+    }
+
+    if (req.fields.action === 'updateLanguages') {
+      const newLangs = Object.entries(req.fields).map((field) => {
+        const key = field[0]
+        const keySplit = key.split('_')
+        if (keySplit.length !== 2) return false
+        if (keySplit[0] !== 'code') return false
+        return keySplit[1]
+      }).filter(Boolean)
+      const defaultLanguage = req.fields.default
+      const instanceMutationValues = [
+        `id: "${req.params.id}"`,
+        `languages: ${JSON.stringify(newLangs)}`,
+        `defaultLanguage: "${defaultLanguage}"`
+      ]
+      let mutation = mutations.get('updateInstance', `(${instanceMutationValues.join(',')})`)
+      const payload = {
+        query: mutation
+      }
+      await graphQL.fetch(payload, process.env.HANDSHAKE)
       return setTimeout(() => {
         res.redirect(req.templateValues.selfURL)
       }, 1000)
@@ -293,7 +328,21 @@ exports.instance = async (req, res) => {
   }
   req.templateValues.people = people
 
-  const config = new Config()
+  //  Grab the languages we can use
+  const langs = Object.entries(langsMap.lang2code).map((langMap) => {
+    if (!languages.includes(langMap[1])) return false
+    const newLang = {
+      name: langMap[0],
+      code: langMap[1],
+      selected: false
+    }
+    if (req.templateValues.instance.languages.includes(langMap[1])) newLang.selected = true
+    return newLang
+  }).filter(Boolean)
+  if (req.templateValues.instance.defaultLanguage) defaultLanguage = req.templateValues.instance.defaultLanguage
+  req.templateValues.langs = langs
+  req.templateValues.defaultLanguage = defaultLanguage
+
   req.templateValues.cloudinary = config.get('cloudinary')
   return res.render('administration/instances/instance', req.templateValues)
 }

@@ -1,0 +1,100 @@
+<html>
+
+<head>
+  <title>Languages</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            Language
+          </li>
+        </ul>
+
+
+        <div class="columns">
+          <div class="column col-12 bg-secondary">
+            <h1>Language selection</h1>
+            <p>
+              This is where you set the languages usable by all instances installed via this dashboard.
+            </p>
+            <p>"Owners" of each instance will be able to select which languages are used on their instance from the ones
+              selected here. To be clear, this is <strong>not</strong> where languaes are set for each instance,
+              instance owners have their own list of languages on their own page for that.
+            </p>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column col-6">
+            <form method="POST" enctype="multipart/form-data">
+              <div class="card primary-card-inverted">
+                <div class="card-header">
+                  <div class="card-title h2">Which languages are valid for all instances</div>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    {{#each langs}}
+                      <label class="form-checkbox">
+                        <input type="checkbox" name="code_{{code}}" value="{{code}}" {{#if selected}}checked{{/if}}>
+                        <i class="form-icon"></i> {{name}} ({{code}})
+                      </label>
+                    {{/each}}
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary input-group-btn" name="action" value="updateLanguages">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="column col-6">
+            <form method="POST" enctype="multipart/form-data">
+              <div class="card primary-card-inverted">
+                <div class="card-header">
+                  <div class="card-title h2">Which language is the default</div>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    {{#each langs}}
+                      <label class="form-radio">
+                        <input type="radio" name="default" value="{{code}}"
+                          {{#ifEqual code ../defaultLanguage}}checked{{/ifEqual}}>
+                        <i class="form-icon"></i> {{name}} ({{code}})
+                      </label>
+                    {{/each}}
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary input-group-btn" name="action"
+                    value="updateDefaultLanguage">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    {{>tail}}
+</body>
+
+</html>
