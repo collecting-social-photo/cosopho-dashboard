@@ -198,6 +198,7 @@ class Queries {
         id
         instance
         section
+        stub
         token
         language
         string
@@ -212,6 +213,7 @@ class Queries {
       strings[[]] {
         id
         section
+        stub
         token
         language
         string

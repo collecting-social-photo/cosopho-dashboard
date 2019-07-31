@@ -63,10 +63,36 @@
           <div class="column col-12">
             {{#each strings}}
               <h2>{{@key}}</h2>
+              <form method="POST" enctype="multipart/form-data">
+                <table class="table">
+                  <tr>
+                    <td colspan="2" style="border-bottom: 0px">
+                      <input type="hidden" name="section" value="{{@key}}" />
+                      <strong>Add new translation,</strong> add the "token" name of the translation below (i.e. "First
+                      paragraph").<br />
+                      <input class="form-input" type="text" name="stub" value="" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width:45%">
+                      <textarea class="form-input" name="primary"></textarea>
+                    </td>
+                    <td style="width:45%">
+                      <textarea class="form-input" name="secondary"></textarea>
+                    </td>
+                    <td style="width:10%">
+                      <button class="btn btn-primary input-group-btn" name="action" value="addTranslations">Add</button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+
               {{#each @this}}
                 <form method="POST" enctype="multipart/form-data">
                   <input type="hidden" name="id" value="{{id}}" />
-                  <strong>{{@key}}</strong> <small><code>{{codeTwo token}}</code> or
+                  <input type="hidden" name="section" value="{{@../key}}" />
+                  <input type="hidden" name="stub" value="{{stub}}" />
+                  <strong>{{stub}}</strong> <small><code>{{codeTwo token}}</code> or
                     <code>{{codeThree token}}</code></small>
                   <table class="table">
                     <tr>
@@ -75,7 +101,7 @@
                       </td>
                       <td style="width:45%">
                         <textarea class="form-input"
-                          name="primary">{{valueOf strings ../../secondaryLanguage}}</textarea>
+                          name="secondary">{{valueOf strings ../../secondaryLanguage}}</textarea>
                       </td>
                       <td style="width:10%">
                         <button class="btn btn-primary input-group-btn" name="action"
@@ -86,6 +112,36 @@
                 </form>
               {{/each}}
             {{/each}}
+
+            <hr />
+            <h1>Add new section</h1>
+            <form method="POST" enctype="multipart/form-data">
+              <table class="table">
+                <tr>
+                  <td colspan="2" style="border-bottom: 0px">
+                    <strong>New section name</strong><br />
+                    <input class="form-input" type="text" name="section" value="" />
+                    <br />
+                    <strong>Add new translation,</strong> add the "token" name of the translation below (i.e. "First
+                    paragraph").<br />
+                    <input class="form-input" type="text" name="stub" value="" />
+                    <br />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:45%">
+                    <textarea class="form-input" name="primary"></textarea>
+                  </td>
+                  <td style="width:45%">
+                    <textarea class="form-input" name="secondary"></textarea>
+                  </td>
+                  <td style="width:10%">
+                    <button class="btn btn-primary input-group-btn" name="action" value="addTranslations">Add</button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+
           </div>
         </div>
 
