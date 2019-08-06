@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <title>Dashboard</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            Home
+          </li>
+        </ul>
+
+        <div class="columns">
+          {{#if user}}
+            <div class="column col-6">
+              <div class="card primary-card-inverted">
+                <div class="card-header">
+                  <div class="card-title h1">Translations [[Instance]]</div>
+                </div>
+              </div>
+            </div>
+          {{/if}}
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>

@@ -265,6 +265,10 @@ router.post('/:lang/administration/instances', ensureLoggedIn, administration.in
 router.get('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 router.post('/:lang/administration/configuration', ensureLoggedIn, administration.configuration.index)
 
+router.get('/:lang/administration/instances/:instance/translations', ensureLoggedIn, administration.translations.index)
+router.get('/:lang/administration/instances/:instance/translations/:primaryLanguage/:secondaryLanguage', ensureLoggedIn, administration.translations.index)
+router.post('/:lang/administration/instances/:instance/translations/:primaryLanguage/:secondaryLanguage', ensureLoggedIn, administration.translations.index)
+
 router.get('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
 router.post('/:lang/administration/instances/:id', ensureLoggedIn, administration.instances.instance)
 router.get('/:lang/administration/instances/:id/page/:page', ensureLoggedIn, administration.instances.instance)
@@ -296,7 +300,6 @@ router.get('/:lang/administration/languages', ensureLoggedIn, administration.lan
 router.post('/:lang/administration/languages', ensureLoggedIn, administration.languages.index)
 
 router.get('/:lang/administration/translations', ensureLoggedIn, administration.translations.index)
-
 router.get('/:lang/administration/translations/:primaryLanguage/:secondaryLanguage', ensureLoggedIn, administration.translations.index)
 router.post('/:lang/administration/translations/:primaryLanguage/:secondaryLanguage', ensureLoggedIn, administration.translations.index)
 

@@ -9,19 +9,24 @@
 
       {{#if user}}
         {{#if user.roles.isAdmin}}
-          <div class="accordion">
-            <input id="accordion-administration" type="checkbox" name="docs-accordion-checkbox" hidden="" navOpen
-              checked=checked>
+          <label class="accordion-header content c-hand" for="accordion-administration">Administration</label>
+          <div class="accordion-body">
+            <ul class="menu menu-nav">
+              <li class="menu-item"><a href="/{{selectedLang}}/administration/instances">Instances</a></li>
+              <li class="menu-item"><a href="/{{selectedLang}}/administration/users">Users</a></li>
+              <li class="menu-item"><a href="/{{selectedLang}}/administration/languages">Languages</a></li>
+              <li class="menu-item"><a href="/{{selectedLang}}/administration/translations">Translations</a></li>
+            </ul>
+          </div>
+        {{else}}
+          {{#if user.roles.isDeveloper}}
             <label class="accordion-header content c-hand" for="accordion-administration">Administration</label>
             <div class="accordion-body">
               <ul class="menu menu-nav">
-                <li class="menu-item"><a href="/{{selectedLang}}/administration/instances">Instances</a></li>
-                <li class="menu-item"><a href="/{{selectedLang}}/administration/users">Users</a></li>
-                <li class="menu-item"><a href="/{{selectedLang}}/administration/languages">Languages</a></li>
                 <li class="menu-item"><a href="/{{selectedLang}}/administration/translations">Translations</a></li>
               </ul>
             </div>
-          </div>
+          {{/if}}
         {{/if}}
       {{/if}}
 

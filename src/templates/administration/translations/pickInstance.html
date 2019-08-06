@@ -1,0 +1,59 @@
+<html>
+
+<head>
+  <title>Dashboard</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            Home
+          </li>
+        </ul>
+        {{dumpThis instances}}
+        <div class="columns">
+          {{#if instances}}
+
+            <div class="column col-3">
+              <div class="card primary-card-title">
+                <div class="card-header">
+                  <div class="card-title h1">Instances</div>
+                </div>
+                <div class="card-body">
+                  <p>
+                    These are the instances you can translate text for.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {{#each instances}}
+              <div class="column col-3">
+                <div class="card primary-card" style="background-color: #{{colour}}">
+                  <div class="card-header">
+                    <div class="card-title h1"><a
+                        href="/{{../selectedLang}}/administration/instances/{{id}}/translations">{{title}}</a>
+                    </div>
+                    <div class="card-subtitle text-gray">{{id}}</div>
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{>tail}}
+</body>
+
+</html>
