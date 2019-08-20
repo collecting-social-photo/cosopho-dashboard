@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <title>Translations</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            Translations
+          </li>
+        </ul>
+
+        <div class="columns">
+          <div class="column col-12 bg-secondary">
+            <h1>Import Translations</h1>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column col-12">
+            <p>Paste your translations JSON below to import.</p>
+            <form method="POST" enctype="multipart/form-data">
+              <textarea class="form-input" rows="40" name="strings"></textarea>
+              <button type="submit" name="action" value="importStrings">Import</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {{>tail}}
+</body>
+
+</html>

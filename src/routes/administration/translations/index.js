@@ -2,6 +2,7 @@ const Queries = require('../../../classes/queries')
 const Mutations = require('../../../classes/mutations')
 const GraphQL = require('../../../classes/graphQL')
 const Config = require('../../../classes/config')
+const utils = require('../../../modules/utils')
 const fs = require('fs')
 const path = require('path')
 
@@ -247,4 +248,87 @@ exports.index = async (req, res) => {
   req.templateValues.secondaryLanguageLong = langsMap.code2lang[req.params.secondaryLanguage]
 
   return res.render('administration/translations/index', req.templateValues)
+}
+
+exports.export = async (req, res) => {
+  let isAdmin = true
+  let isDeveloper = false
+
+  //  Bounce the user is they are not an admin user
+  if (!req.user || !req.user.roles || !('isAdmin' in req.user.roles) || req.user.roles.isAdmin === false) {
+    isAdmin = false
+    //  If they are the developer, then they are allowed to be here
+    if (req.user && req.user.roles && 'isDeveloper' in req.user.roles && req.user.roles.isDeveloper === true) {
+      isDeveloper = true
+    } else {
+      return res.redired('/', req.templateValues)
+    }
+  }
+
+  //  Make sure the instance is valid
+  if (req.params.instance && !req.templateValues.instances.map((i) => i.id).includes(req.params.instance)) {
+    return res.render('administration/translations/pickInstance', req.templateValues)
+  }
+
+  if (!isAdmin && isDeveloper && !('instance' in req.params)) {
+    return res.render('administration/translations/pickInstance', req.templateValues)
+  }
+
+  const configObj = new Config()
+  let languages = await configObj.get('languages')
+  if (!languages) languages = []
+  let defaultLanguage = configObj.get('defaultLanguage')
+  if (!defaultLanguage) defaultLanguage = 'en'
+
+  if (languages.length === 0) return res.redirect('/administration/languages')
+
+  req.templateValues.strings = JSON.stringify(await utils.getAllStrings(process.env.KEY, process.env.INSTANCE), null, 4)
+  return res.render('administration/translations/export', req.templateValues)
+}
+
+exports.import = async (req, res) => {
+  let isAdmin = true
+  let isDeveloper = false
+
+  //  Bounce the user is they are not an admin user
+  if (!req.user || !req.user.roles || !('isAdmin' in req.user.roles) || req.user.roles.isAdmin === false) {
+    isAdmin = false
+    //  If they are the developer, then they are allowed to be here
+    if (req.user && req.user.roles && 'isDeveloper' in req.user.roles && req.user.roles.isDeveloper === true) {
+      isDeveloper = true
+    } else {
+      return res.redired('/', req.templateValues)
+    }
+  }
+
+  //  Make sure the instance is valid
+  if (req.params.instance && !req.templateValues.instances.map((i) => i.id).includes(req.params.instance)) {
+    return res.render('administration/translations/pickInstance', req.templateValues)
+  }
+
+  if (!isAdmin && isDeveloper && !('instance' in req.params)) {
+    return res.render('administration/translations/pickInstance', req.templateValues)
+  }
+
+  const configObj = new Config()
+  let languages = await configObj.get('languages')
+  if (!languages) languages = []
+  let defaultLanguage = configObj.get('defaultLanguage')
+  if (!defaultLanguage) defaultLanguage = 'en'
+
+  if (languages.length === 0) return res.redirect('/administration/languages')
+
+  if (req.fields && req.fields.action && req.fields.action === 'importStrings') {
+    let allStrings = null
+    try {
+      allStrings = JSON.parse(req.fields.strings)
+    } catch (er) {
+      allStrings = null
+    }
+    if (allStrings && Array.isArray(allStrings) && allStrings.length > 0) {
+      //  Now we start to load the new strings back in
+      utils.reloadStrings(true, allStrings)
+    }
+  }
+  return res.render('administration/translations/import', req.templateValues)
 }

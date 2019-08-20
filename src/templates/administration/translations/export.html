@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <title>Translations</title>
+  {{> head}}
+</head>
+
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+    {{>nav}}
+
+    {{>sidebar}}
+
+    <div class="off-canvas-content">
+      <div class="docs-content" id="content">
+
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="/{{selectedLang}}/administration">Administration</a>
+          </li>
+          <li class="breadcrumb-item">
+            Translations
+          </li>
+        </ul>
+
+        <div class="columns">
+          <div class="column col-12 bg-secondary">
+            <h1>Export Translations</h1>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column col-12">
+            <p>Select and copy the JSON below to have a copy of all the strings. This can be used to import strings into
+              a different system.</p>
+            <textarea class="form-input" rows="40">{{strings}}</textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {{>tail}}
+</body>
+
+</html>

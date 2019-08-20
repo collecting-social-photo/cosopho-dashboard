@@ -83,6 +83,13 @@ class Mutations {
         id
       }
     }`
+
+    this.deleteAllStrings = `mutation {
+      deleteAllStrings[[]] {
+        status
+        success
+      }
+    }`
   }
 
   /**
