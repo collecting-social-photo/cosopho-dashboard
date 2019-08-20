@@ -300,6 +300,9 @@ router.get('/:lang/administration/languages', ensureLoggedIn, administration.lan
 router.post('/:lang/administration/languages', ensureLoggedIn, administration.languages.index)
 
 router.get('/:lang/administration/translations', ensureLoggedIn, administration.translations.index)
+router.get('/:lang/administration/translations/export', ensureLoggedIn, administration.translations.export)
+router.get('/:lang/administration/translations/import', ensureLoggedIn, administration.translations.import)
+router.post('/:lang/administration/translations/import', ensureLoggedIn, administration.translations.import)
 router.get('/:lang/administration/translations/:primaryLanguage/:secondaryLanguage', ensureLoggedIn, administration.translations.index)
 router.post('/:lang/administration/translations/:primaryLanguage/:secondaryLanguage', ensureLoggedIn, administration.translations.index)
 
