@@ -137,6 +137,34 @@ const getAllStrings = async (key, instance) => {
 }
 exports.getAllStrings = getAllStrings
 
+const getInstanceLangStrings = async (instance, languages) => {
+  const graphQL = new GraphQL()
+  const queries = new Queries()
+
+  let allStrings = []
+  let strings = [null]
+  let page = 0
+  let perPage = 200
+
+  while (strings.length !== 0) {
+    let stringsQuery = queries.get('stringsShort', `(instance: "${instance}", language: ${languages}, page: ${page}, per_page: ${perPage})`)
+    strings = await graphQL.fetch({
+      query: stringsQuery
+    }, process.env.HANDSHAKE)
+
+    if (strings.data && strings.data.strings) {
+      strings = strings.data.strings
+    }
+    if (strings.length > 0) {
+      allStrings = allStrings.concat(strings)
+    }
+    page++
+  }
+
+  return allStrings
+}
+exports.getInstanceLangStrings = getInstanceLangStrings
+
 //  This sends all the strings back to the database one by one
 const reloadStrings = async (deleteFirst, strings) => {
   const graphQL = new GraphQL()

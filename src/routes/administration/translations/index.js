@@ -106,7 +106,7 @@ exports.index = async (req, res) => {
     //  See if we need to update or create a new record
     let mutation = null
     if (foundPrimary && changedPrimary) {
-      mutation = mutations.get('updateString', `(id: "${checkToken.join('.')}.${req.params.primaryLanguage}", string:"${req.fields.primary.trim()}")`)
+      mutation = mutations.get('updateString', `(id: "${checkToken.join('.')}.${req.params.primaryLanguage}", string:"${escape(req.fields.primary.trim())}")`)
       const payload = {
         query: mutation
       }
@@ -172,15 +172,7 @@ exports.index = async (req, res) => {
   }
 
   //  Grab the primary
-  let results = null
-  let query = queries.get('stringsShort', `(instance: "${process.env.KEY}", language: ["${req.params.primaryLanguage}", "${req.params.secondaryLanguage}"])`)
-  results = await graphQL.fetch({
-    query: query
-  }, process.env.HANDSHAKE)
-  let primaryStrings = []
-  if (results.data && results.data.strings) {
-    primaryStrings = results.data.strings
-  }
+  let primaryStrings = await utils.getInstanceLangStrings(process.env.KEY, `["${req.params.primaryLanguage}", "${req.params.secondaryLanguage}"]`)
 
   //  Turn the strings into a JSON object that the template will understand
   const strings = {}
@@ -204,15 +196,7 @@ exports.index = async (req, res) => {
   //  Now if we have an instance then we need to get the strings for that too
   //  Which will overwrite the current strings
   if (req.params.instance && req.templateValues.instances.map((i) => i.id).includes(req.params.instance)) {
-    results = null
-    query = queries.get('stringsShort', `(instance: "${req.params.instance}", language: ["${req.params.primaryLanguage}", "${req.params.secondaryLanguage}"])`)
-    results = await graphQL.fetch({
-      query: query
-    }, process.env.HANDSHAKE)
-    let instanceStrings = []
-    if (results.data && results.data.strings) {
-      instanceStrings = results.data.strings
-    }
+    let instanceStrings = await utils.getInstanceLangStrings(req.params.instance, `["${req.params.primaryLanguage}", "${req.params.secondaryLanguage}"]`)
 
     //  Turn the strings into a JSON object that the template will understand
     instanceStrings.forEach((record) => {
