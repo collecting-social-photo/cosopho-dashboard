@@ -114,9 +114,9 @@ exports.index = async (req, res) => {
     }
     if (!foundPrimary && req.fields.primary.trim() !== '') {
       if (req.params.instance) {
-        mutation = mutations.get('createString', `(instance: "${req.params.instance}", section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.primaryLanguage}", string:"${req.fields.primary.trim()}")`)
+        mutation = mutations.get('createString', `(instance: "${req.params.instance}", section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.primaryLanguage}", string:"${escape(req.fields.primary.trim())}")`)
       } else {
-        mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.primaryLanguage}", string:"${req.fields.primary.trim()}")`)
+        mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.primaryLanguage}", string:"${escape(req.fields.primary.trim())}")`)
       }
       const payload = {
         query: mutation
@@ -125,7 +125,7 @@ exports.index = async (req, res) => {
     }
 
     if (foundSecondary && changedSeconary) {
-      mutation = mutations.get('updateString', `(id: "${checkToken.join('.')}.${req.params.secondaryLanguage}", string:"${req.fields.secondary.trim()}")`)
+      mutation = mutations.get('updateString', `(id: "${checkToken.join('.')}.${req.params.secondaryLanguage}", string:"${escape(req.fields.secondary.trim())}")`)
       const payload = {
         query: mutation
       }
@@ -133,9 +133,9 @@ exports.index = async (req, res) => {
     }
     if (!foundSecondary && req.fields.secondary.trim() !== '') {
       if (req.params.instance) {
-        mutation = mutations.get('createString', `(instance: "${req.params.instance}", section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.secondaryLanguage}", string:"${req.fields.secondary.trim()}")`)
+        mutation = mutations.get('createString', `(instance: "${req.params.instance}", section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.secondaryLanguage}", string:"${escape(req.fields.secondary.trim())}")`)
       } else {
-        mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.secondaryLanguage}", string:"${req.fields.secondary.trim()}")`)
+        mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.secondaryLanguage}", string:"${escape(req.fields.secondary.trim())}")`)
       }
       const payload = {
         query: mutation
@@ -153,14 +153,14 @@ exports.index = async (req, res) => {
     //  Go grab the strings we already have for this token
     let mutation = null
     if (req.fields.primary && req.fields.primary.trim() !== '') {
-      mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.primaryLanguage}", string:"${req.fields.primary.trim()}")`)
+      mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.primaryLanguage}", string:"${escape(req.fields.primary.trim())}")`)
       const payload = {
         query: mutation
       }
       await graphQL.fetch(payload, req.user.apitoken)
     }
     if (req.fields.secondary && req.fields.secondary.trim() !== '') {
-      mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.secondaryLanguage}", string:"${req.fields.secondary.trim()}")`)
+      mutation = mutations.get('createString', `(section: "${req.fields.section}", stub: "${req.fields.stub}", language: "${req.params.secondaryLanguage}", string:"${escape(req.fields.secondary.trim())}")`)
       const payload = {
         query: mutation
       }
