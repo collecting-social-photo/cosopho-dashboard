@@ -336,7 +336,7 @@ exports.instance = async (req, res) => {
       code: langMap[1],
       selected: false
     }
-    if (req.templateValues.instance.languages.includes(langMap[1])) newLang.selected = true
+    if (req.templateValues.instance.languages && req.templateValues.instance.languages.includes(langMap[1])) newLang.selected = true
     return newLang
   }).filter(Boolean)
   if (req.templateValues.instance.defaultLanguage) defaultLanguage = req.templateValues.instance.defaultLanguage
