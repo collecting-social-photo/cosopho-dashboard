@@ -184,7 +184,7 @@ const reloadStrings = async (deleteFirst, strings) => {
 
   const thisString = strings.pop()
 
-  mutation = mutations.get('createString', `(section: "${thisString.section}", stub: "${thisString.stub}", language: "${thisString.language}", string:"${thisString.string}")`)
+  mutation = mutations.get('createString', `(section: "${thisString.section}", stub: "${thisString.stub}", language: "${thisString.language}", string:"${escape(thisString.string.trim())}")`)
   const payload = {
     query: mutation
   }
