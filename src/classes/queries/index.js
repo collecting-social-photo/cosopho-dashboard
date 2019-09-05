@@ -42,6 +42,7 @@ class Queries {
       approved
       reviewed
       suspended
+      ownerDeleted
       archived
       homepage
       data {
@@ -66,6 +67,7 @@ class Queries {
       username
       avatar
       suspended
+      deleted
       photos {
         ${this.photoBody}
       }

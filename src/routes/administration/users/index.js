@@ -45,16 +45,23 @@ exports.index = async (req, res) => {
       return false
     })
 
-    //  Get everyone else
+    //  Get suspended
     const suspendedUsers = results.data.users.filter((user) => {
-      if (!filteredUserIds.includes(user.id)) return true
+      if (user.suspended) return true
       return false
-    })
+    }).filter(Boolean)
+
+    //  Get deleted
+    const deletedUsers = results.data.users.filter((user) => {
+      if (user.deleted) return true
+      return false
+    }).filter(Boolean)
 
     req.templateValues.adminUsers = adminUsers
     req.templateValues.instanceOwners = instanceOwners
     req.templateValues.developerOnlyUsers = developerOnlyUsers
     req.templateValues.suspendedUsers = suspendedUsers
+    req.templateValues.deletedUsers = deletedUsers
   }
 
   return res.render('administration/users/index', req.templateValues)

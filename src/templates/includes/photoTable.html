@@ -71,10 +71,14 @@
               <td>{{#if suspended}}
                   <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                 {{else}}
-                  {{#if approved}}
-                    <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                  {{#if ownerDeleted}}
+                    <span class="text-error"><i class="icon icon-cross"></i> Owner deleted</span>
                   {{else}}
-                    <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                    {{#if approved}}
+                      <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                    {{else}}
+                      <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                    {{/if}}
                   {{/if}}
                 {{/if}}
               </td>

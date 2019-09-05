@@ -58,6 +58,20 @@ exports.index = async (req, res) => {
         res.redirect(req.templateValues.selfURL)
       }, 1000)
     }
+
+    if (req.fields.action === 'undeletePerson' || req.fields.action === 'deletePerson') {
+      let deleted = true
+      if (req.fields.action === 'undeletePerson') deleted = false
+      const mutations = new Mutations()
+      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", deleted: ${deleted})`)
+      const payload = {
+        query: mutation
+      }
+      await graphQL.fetch(payload, req.user.apitoken)
+      return setTimeout(() => {
+        res.redirect(req.templateValues.selfURL)
+      }, 1000)
+    }
   }
 
   //  Ok, now we checked all that action stuff, lets go get the people too!

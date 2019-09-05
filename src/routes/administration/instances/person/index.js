@@ -82,6 +82,19 @@ exports.index = async (req, res) => {
       }, 1000)
     }
 
+    if (req.fields.action === 'deletePerson' || req.fields.action === 'undeletePerson') {
+      let deleted = true
+      if (req.fields.action === 'undeletePerson') deleted = false
+      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${person.id}", deleted: ${deleted})`)
+      const payload = {
+        query: mutation
+      }
+      await graphQL.fetch(payload, req.user.apitoken)
+      return setTimeout(() => {
+        res.redirect(req.templateValues.selfURL)
+      }, 1000)
+    }
+
     //  If we are approving or rejecting the photo
     if (req.fields.action === 'approvePhoto' || req.fields.action === 'rejectPhoto') {
       // Set approving or rejecting the photo

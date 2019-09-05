@@ -267,7 +267,12 @@
                       {{else}}
                         {{#if roles.isDeveloper}}
                         {{else}}
-                          <p><br /><strong>This user is suspended.</strong></p>
+                          {{#if suspended}}
+                            <p><br /><strong>This user is suspended.</strong></p>
+                          {{/if}}
+                          {{#if deleted}}
+                            <p><br /><strong>This user is deleted.</strong></p>
+                          {{/if}}
                         {{/if}}
                       {{/if}}
                       <p>

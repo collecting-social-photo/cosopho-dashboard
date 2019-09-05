@@ -49,10 +49,14 @@
                 <strong>Status:</strong> {{#if photo.suspended}}
                   <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                 {{else}}
-                  {{#if photo.approved}}
-                    <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                  {{#if photo.ownerDeleted}}
+                    <span class="text-error"><i class="icon icon-cross"></i> Owner Deleted</span>
                   {{else}}
-                    <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                    {{#if photo.approved}}
+                      <span class="text-success"><i class="icon icon-check"></i> Approved</span>
+                    {{else}}
+                      <span class="text-warning"><i class="icon icon-cross"></i> Rejected</span>
+                    {{/if}}
                   {{/if}}
                 {{/if}}
                 {{#if photo.archived}}
