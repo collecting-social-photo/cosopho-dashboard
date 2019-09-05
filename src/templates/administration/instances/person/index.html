@@ -46,6 +46,9 @@
                 {{#if person.suspended}}
                   This user has been suspended.
                 {{/if}}
+                {{#if person.deleted}}
+                  This user has been deleted.
+                {{/if}}
 
                 <form method="POST" enctype="multipart/form-data">
                   {{#if person.suspended}}
@@ -53,6 +56,12 @@
                       value="unsuspendPerson">Unsuspend</button>
                   {{else}}
                     <button class="btn btn-error input-group-btn" name="action" value="suspendPerson">Suspend</button>
+                  {{/if}}
+                  {{#if person.deleted}}
+                    <button class="btn btn-success input-group-btn" name="action"
+                      value="undeletePerson">Undelete</button>
+                  {{else}}
+                    <button class="btn btn-error input-group-btn" name="action" value="deletePerson">Delete</button>
                   {{/if}}
                 </form>
               </div>

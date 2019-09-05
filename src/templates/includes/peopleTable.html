@@ -31,7 +31,11 @@
               <td>{{#if suspended}}
                   <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                 {{else}}
-                  &nbsp;
+                  {{#if deleted}}
+                    <span class="text-error"><i class="icon icon-cross"></i> Deleted</span>
+                  {{else}}
+                    &nbsp;
+                  {{/if}}
                 {{/if}}
               </td>
               <td>
@@ -42,6 +46,11 @@
                       <button class="btn btn-success" name="action" value="unsuspendPerson">Unsuspend</button>
                     {{else}}
                       <button class="btn btn-warning" name="action" value="suspendPerson">Suspend</button>
+                    {{/if}}
+                    {{#if deleted}}
+                      <button class="btn btn-success" name="action" value="undeletePerson">Undelete</button>
+                    {{else}}
+                      <button class="btn btn-warning" name="action" value="deletePerson">Delete</button>
                     {{/if}}
                   </div>
                 </form>
