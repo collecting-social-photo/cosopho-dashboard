@@ -11,6 +11,7 @@
  */
 const fs = require('fs')
 const path = require('path')
+require('dotenv').config()
 
 const rootDir = __dirname
 
@@ -18,8 +19,8 @@ const rootDir = __dirname
 console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
 console.log('Making sure we are up to date, please wait...')
 const spawnSync = require('child_process').spawnSync
-const yarn = spawnSync('yarn', ['install'])
-console.log(yarn.stdout.toString())
+const npm = spawnSync('npm', ['install'])
+console.log(npm.stdout.toString())
 
 const colours = require('colors')
 
@@ -42,56 +43,61 @@ console.log(`server.js exists in this directory: ${rootDir}`.help)
  * the port, host, environment and if we want to skip any build steps
  */
 const argOptionDefinitions = [{
-  name: 'key',
-  alias: 'k',
-  default: true,
-  type: String
-},
-{
-  name: 'port',
-  alias: 'p',
-  type: Number
-},
-{
-  name: 'host',
-  alias: 't',
-  type: String
-},
-{
-  name: 'env',
-  alias: 'e',
-  type: String
-},
-{
-  name: 'elastic',
-  alias: 'l',
-  type: String
-},
-{
-  name: 'skipBuild',
-  alias: 's',
-  type: Boolean
-},
-{
-  name: 'buildOnly',
-  alias: 'b',
-  type: Boolean
-},
-{
-  name: 'skipOpen',
-  alias: 'o',
-  type: Boolean
-},
-{
-  name: 'redirecthttps',
-  alias: 'r',
-  type: Boolean
-},
-{
-  name: 'help',
-  alias: 'h',
-  type: String
-}
+    name: 'key',
+    alias: 'k',
+    default: true,
+    type: String
+  },
+  {
+    name: 'port',
+    alias: 'p',
+    type: Number
+  },
+  {
+    name: 'host',
+    alias: 't',
+    type: String
+  },
+  {
+    name: 'env',
+    alias: 'e',
+    type: String
+  },
+  {
+    name: 'elastic',
+    alias: 'l',
+    type: String
+  },
+  {
+    name: 'callback',
+    alias: 'c',
+    type: String
+  },
+  {
+    name: 'skipBuild',
+    alias: 's',
+    type: Boolean
+  },
+  {
+    name: 'buildOnly',
+    alias: 'b',
+    type: Boolean
+  },
+  {
+    name: 'skipOpen',
+    alias: 'o',
+    type: Boolean
+  },
+  {
+    name: 'redirecthttps',
+    alias: 'r',
+    type: Boolean
+  },
+  {
+    name: 'help',
+    alias: 'h',
+    type: String
+  }
 ]
 
 /*
@@ -99,6 +105,7 @@ const argOptionDefinitions = [{
  * and if we should show the help text or not
  */
 const commandLineArgs = require('command-line-args')
+
 let showHelp = false
 let argOptions = null
 try {
@@ -113,54 +120,20 @@ if (!argOptions) {
   if (argOptions.help) showHelp = true
 }
 
-/*
- * We need to make sure we have been passed a stub, this is the whole key on which we
- * base everything else
- */
-if (argOptions && !argOptions.key) {
-  console.log(`\n\nYou must pass the 'key' parameter 'yarn start --key xxxxx' see the README.md for more details\n\n`.error)
-  showHelp = true
-}
-
-/*
- * How the help if we need to
- */
-if (showHelp) {
-  console.log(`
-Usage: yarn start [options]
-       yarn start --key xxxxx --port 4001 --host localhost --env development --elastic http://localhost:9200
-
-Options:
- -k, --key              The 'key' used to reference tables in the database, must be unique per app
- -p, --port [4001]      The port to run on (default 4001)
- -t, --host [localhost] The host to run on (default localhost)
- -e, --env [development|staging|production]
-                        The environment (default development)
- -l, --elastic [http://localhost:9200]
-                        Where we can find the elasticSearch host, (default localhost:9200)
- -r, --redirecthttps    Tells us to redirect to https (default false for development)
-
- -s, --skipBuild        Skips the build process
- -b, --buildOnly        Runs the build process then exits
- -o, --skipOpen         Stops the browser from opening on start, when running locally
-
- -h, --help             Displays this help text
-  `)
-  process.exit()
-}
-
-process.env.PORT = 4001
-process.env.HOST = 'localhost'
-process.env.NODE_ENV = 'development'
-process.env.ELASTICSEARCH = 'http://localhost:9200'
-process.env.REDIRECT_HTTPS = false
+if (!process.env.PORT) process.env.PORT = 4001
+if (!process.env.HOST) process.env.HOST = 'localhost'
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development'
+if (!process.env.ELASTICSEARCH) process.env.ELASTICSEARCH = 'http://localhost:9200'
+if (!process.env.REDIRECT_HTTPS) process.env.REDIRECT_HTTPS = false
 
 if (argOptions.port) process.env.PORT = argOptions.port
 if (argOptions.host) process.env.HOST = argOptions.host
 if (argOptions.env) process.env.NODE_ENV = argOptions.env
 if (argOptions.elastic) process.env.ELASTICSEARCH = argOptions.elastic
+if (argOptions.callback) process.env.CALLBACK_URL = argOptions.callback
 if (argOptions.redirecthttps) process.env.REDIRECT_HTTPS = argOptions.redirecthttps
-process.env.KEY = argOptions.key
+if (argOptions.key) process.env.KEY = argOptions.key
+
 
 //  Here we are managing if we are going to skip the build step
 //  we'll want to do that if we are forcing a restart of the app.
@@ -183,6 +156,43 @@ let skipOpen = false
 if ('skipOpen' in argOptions && argOptions.skipOpen === true) {
   skipOpen = true
 }
+
+/*
+ * We need to make sure we have been passed a stub, this is the whole key on which we
+ * base everything else
+ */
+if (!process.env.KEY) {
+  console.log(`\n\nYou must pass the 'key' parameter 'npm start --key xxxxx' see the README.md for more details\n\n`.error)
+  showHelp = true
+}
+
+/*
+ * How the help if we need to
+ */
+if (showHelp) {
+  console.log(`
+Usage: npm start [options]
+npm start --key xxxxx --port 4001 --host localhost --env development --elastic http://localhost:9200
+
+Options:
+ -k, --key              The 'key' used to reference tables in the database, must be unique per app
+ -p, --port [4001]      The port to run on (default 4001)
+ -t, --host [localhost] The host to run on (default localhost)
+ -e, --env [development|staging|production]
+                        The environment (default development)
+ -l, --elastic [http://localhost:9200]
+                        Where we can find the elasticSearch host, (default localhost:9200)
+ -r, --redirecthttps    Tells us to redirect to https (default false for development)
+
+ -s, --skipBuild        Skips the build process
+ -b, --buildOnly        Runs the build process then exits
+ -o, --skipOpen         Stops the browser from opening on start, when running locally
+
+ -h, --help             Displays this help text
+  `)
+  process.exit()
+}
+
 
 // ########################################################################
 /*
@@ -334,7 +344,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const elasticsearch = require('elasticsearch')
 
-async function getConfig () {
+async function getConfig() {
   //  This is putting all the config into the global config object
   const esclient = new elasticsearch.Client({
     host: process.env.ELASTICSEARCH
@@ -396,6 +406,7 @@ p.then((res) => {
 
   app.engine('html', hbs.engine)
   app.set('view engine', 'html')
+  app.locals.layout = false
   app.set('views', `${__dirname}/app/templates`)
   app.use(
     express.static(`${__dirname}/app/public`, {
@@ -433,11 +444,11 @@ p.then((res) => {
   if (auth0 !== null && auth0.AUTH0_CALLBACK_URL_DASHBOARD) {
     // Configure Passport to use Auth0
     const strategy = new Auth0Strategy({
-      domain: auth0.AUTH0_DOMAIN,
-      clientID: auth0.AUTH0_CLIENT_ID,
-      clientSecret: auth0.AUTH0_SECRET,
-      callbackURL: auth0.AUTH0_CALLBACK_URL_DASHBOARD
-    },
+        domain: auth0.AUTH0_DOMAIN,
+        clientID: auth0.AUTH0_CLIENT_ID,
+        clientSecret: auth0.AUTH0_SECRET,
+        callbackURL: auth0.AUTH0_CALLBACK_URL_DASHBOARD
+      },
       (accessToken, refreshToken, extraParams, profile, done) => {
         return done(null, profile)
       }
