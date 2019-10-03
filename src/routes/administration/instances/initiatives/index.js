@@ -21,7 +21,7 @@ exports.index = async (req, res) => {
   const queries = new Queries()
 
   let initiative = null
-  const initiativeQuery = queries.get('initiative', `(instance: "${req.params.id}", slug: "${req.params.slug}")`)
+  let initiativeQuery = queries.get('initiative', `(instance: "${req.params.id}", slug: "${req.params.slug}")`)
   console.log(initiativeQuery)
   initiative = await graphQL.fetch({
     query: initiativeQuery
