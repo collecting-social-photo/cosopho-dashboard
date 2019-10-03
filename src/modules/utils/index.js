@@ -146,11 +146,18 @@ const getInstanceLangStrings = async (instance, languages) => {
   let page = 0
   let perPage = 200
 
+  console.log('in getInstanceLangStrings', page)
   while (strings.length !== 0) {
     let stringsQuery = queries.get('stringsShort', `(instance: "${instance}", language: ${languages}, page: ${page}, per_page: ${perPage})`)
-    strings = await graphQL.fetch({
-      query: stringsQuery
-    }, process.env.HANDSHAKE)
+    try {
+      console.log('trying to get strings')
+      strings = await graphQL.fetch({
+        query: stringsQuery
+      }, process.env.HANDSHAKE)
+    } catch (er) {
+      console.log('failed to get strings')
+      strings = []
+    }
 
     if (strings.data && strings.data.strings) {
       strings = strings.data.strings
