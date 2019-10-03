@@ -158,6 +158,7 @@ const getInstanceLangStrings = async (instance, languages) => {
       console.log('failed to get strings')
       strings = []
     }
+    console.log(strings)
 
     if (strings.data && strings.data.strings) {
       strings = strings.data.strings
@@ -166,6 +167,7 @@ const getInstanceLangStrings = async (instance, languages) => {
       allStrings = allStrings.concat(strings)
     }
     page++
+    strings = []
   }
 
   return allStrings
