@@ -172,12 +172,9 @@ exports.index = async (req, res) => {
   }
 
   //  Grab the primary
-  console.log('About to get the primaryString')
   let primaryStrings = await utils.getInstanceLangStrings(process.env.KEY, `["${req.params.primaryLanguage}", "${req.params.secondaryLanguage}"]`)
-  console.log('We now have the primary strings')
 
   //  Turn the strings into a JSON object that the template will understand
-  console.log('Primary strings loop')
   const strings = {}
   primaryStrings.forEach((record) => {
     if (!strings[record.section]) strings[record.section] = {}
@@ -198,7 +195,6 @@ exports.index = async (req, res) => {
 
   //  Now if we have an instance then we need to get the strings for that too
   //  Which will overwrite the current strings
-  console.log('instance strings loop')
   if (req.params.instance && req.templateValues.instances.map((i) => i.id).includes(req.params.instance)) {
     let instanceStrings = await utils.getInstanceLangStrings(req.params.instance, `["${req.params.primaryLanguage}", "${req.params.secondaryLanguage}"]`)
 
