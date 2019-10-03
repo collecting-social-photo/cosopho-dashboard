@@ -90,7 +90,6 @@ exports.index = async (req, res) => {
       }
 
       const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}", homepage: ${homepage})`)
-      console.log(mutation)
       if (mutation) {
         const payload = {
           query: mutation
