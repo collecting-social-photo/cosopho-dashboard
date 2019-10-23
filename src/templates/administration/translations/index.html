@@ -40,7 +40,7 @@
                   {{@../this}}
               {{else}}
                 <span class="chip"><a
-                    href="/{{../../selectedLang}}/administration/translations/{{@../this}}/{{../../secondaryLanguage}}">{{@../this}}</a></span>
+                    href="/{{../../selectedLang}}/administration{{../../insertInstance}}/translations/{{@../this}}/{{../../secondaryLanguage}}">{{@../this}}</a></span>
                 {{/ifEqual}}
               {{/each}}
             </p>
@@ -52,7 +52,7 @@
                   {{@../this}}
               {{else}}
                 <span class="chip"><a
-                    href="/{{../../selectedLang}}/administration/translations/{{../../primaryLanguage}}/{{@../this}}">{{@../this}}</a></span>
+                    href="/{{../../selectedLang}}/administration{{../../insertInstance}}/translations/{{../../primaryLanguage}}/{{@../this}}">{{@../this}}</a></span>
                 {{/ifEqual}}
               {{/each}}
             </p>

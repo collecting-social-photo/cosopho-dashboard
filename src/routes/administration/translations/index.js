@@ -221,6 +221,10 @@ exports.index = async (req, res) => {
 
   req.templateValues.languages = languages
 
+  if ('instance' in req.params) {
+    req.templateValues.insertInstance = `/instances/${req.params.instance}`
+  }
+
   req.templateValues.instance = req.params.instance
   req.templateValues.isAdmin = isAdmin
   req.templateValues.isDeveloper = isDeveloper
