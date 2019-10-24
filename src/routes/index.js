@@ -200,7 +200,7 @@ if (configObj.get('auth0') !== null) {
     passport.authenticate('auth0', {
       clientID: auth0Obj.AUTH0_CLIENT_ID,
       domain: auth0Obj.AUTH0_DOMAIN,
-      redirectUri: CALLBACK_URL,
+      redirectUri: 'https://google.com',
       audience: `https://${auth0Obj.AUTH0_DOMAIN}/userinfo`,
       responseType: 'code',
       scope: 'openid profile'
