@@ -192,14 +192,15 @@ router.use(function (req, res, next) {
 const configObj = new Config()
 if (configObj.get('auth0') !== null) {
   const auth0Obj = configObj.get('auth0')
-  let AUTH0_CALLBACK_URL = auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD
-  if (process.env.CALLBACK_URL) AUTH0_CALLBACK_URL = process.env.CALLBACK_URL
+  let CALLBACK_URL = auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD
+  if (process.env.CALLBACK_URL) CALLBACK_URL = process.env.CALLBACK_URL
+  console.log('CALLBACK_URL: ', CALLBACK_URL)
   router.get(
     '/login',
     passport.authenticate('auth0', {
       clientID: auth0Obj.AUTH0_CLIENT_ID,
       domain: auth0Obj.AUTH0_DOMAIN,
-      redirectUri: AUTH0_CALLBACK_URL,
+      redirectUri: CALLBACK_URL,
       audience: `https://${auth0Obj.AUTH0_DOMAIN}/userinfo`,
       responseType: 'code',
       scope: 'openid profile'
@@ -213,13 +214,15 @@ if (configObj.get('auth0') !== null) {
   router.get('/logout', (req, res) => {
     req.logout()
     req.user = null
+    let CALLBACK_URL = auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD
+    if (process.env.CALLBACK_URL) CALLBACK_URL = process.env.CALLBACK_URL
     req.session.destroy(function (err) {
       req.user = null
       req.session = null
       res.clearCookie('connect.sid')
-      res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD.replace('/callback', '')}`)
+      res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${CALLBACK_URL.replace('/callback', '')}`)
       if (err) {
-        res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD.replace('/callback', '')}`)
+        res.redirect(`https://${auth0Obj.AUTH0_DOMAIN}/v2/logout?returnTo=${CALLBACK_URL.replace('/callback', '')}`)
       }
     })
   })
