@@ -440,12 +440,14 @@ p.then((res) => {
 
   const auth0 = config.get('auth0')
   if (auth0 !== null && auth0.AUTH0_CALLBACK_URL_DASHBOARD) {
+    let CALLBACK_URL = auth0.AUTH0_CALLBACK_URL_DASHBOARD
+    if (process.env.CALLBACK_URL) CALLBACK_URL = process.env.CALLBACK_URL
     // Configure Passport to use Auth0
     const strategy = new Auth0Strategy({
       domain: auth0.AUTH0_DOMAIN,
       clientID: auth0.AUTH0_CLIENT_ID,
       clientSecret: auth0.AUTH0_SECRET,
-      callbackURL: auth0.AUTH0_CALLBACK_URL_DASHBOARD
+      callbackURL: CALLBACK_URL
     },
       (accessToken, refreshToken, extraParams, profile, done) => {
         return done(null, profile)

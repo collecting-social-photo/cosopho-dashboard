@@ -192,14 +192,11 @@ router.use(function (req, res, next) {
 const configObj = new Config()
 if (configObj.get('auth0') !== null) {
   const auth0Obj = configObj.get('auth0')
-  let CALLBACK_URL = auth0Obj.AUTH0_CALLBACK_URL_DASHBOARD
-  if (process.env.CALLBACK_URL) CALLBACK_URL = process.env.CALLBACK_URL
   router.get(
     '/login',
     passport.authenticate('auth0', {
       clientID: auth0Obj.AUTH0_CLIENT_ID,
       domain: auth0Obj.AUTH0_DOMAIN,
-      redirectUri: CALLBACK_URL,
       audience: `https://${auth0Obj.AUTH0_DOMAIN}/userinfo`,
       responseType: 'code',
       scope: 'openid profile'
