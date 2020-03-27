@@ -5,6 +5,9 @@ const Config = require('../../../classes/config')
 const utils = require('../../../modules/utils')
 const fs = require('fs')
 const path = require('path')
+const {
+  Parser
+} = require('json2csv')
 
 const initiatives = require('./initiatives')
 const people = require('./people')
@@ -226,6 +229,69 @@ exports.instance = async (req, res) => {
         }, 1000)
       }
     }
+
+    if (req.fields.action === 'createCSV') {
+      if (!global.csvs) {
+        global.csvs = {}
+        global.csvs[req.params.id] = {}
+      }
+      global.csvs[req.params.id].progress = {
+        status: 'started',
+        lastTick: new Date(),
+        finished: false,
+        page: 0,
+        maxPage: null,
+        photos: {
+          page: {}
+        }
+      }
+
+      //  Kick off the loading of the CSV
+      utils.makeCSV(req.params.id)
+      return setTimeout(() => {
+        res.redirect(`${req.templateValues.selfURL}#downloadCSV`)
+      }, 1000)
+    }
+
+    if (req.fields.action === 'downloadCSV') {
+      if (!global.csvs || !global.csvs[req.params.id] || global.csvs[req.params.id].progress.finished !== true) {
+        return setTimeout(() => {
+          res.redirect(`${req.templateValues.selfURL}#downloadCSV`)
+        }, 1000)
+      }
+
+      //  Grab all the rows out of the data
+      let allrows = []
+      for (let page = 0; page <= global.csvs[req.params.id].progress.maxPage; page++) {
+        allrows = [...allrows, ...global.csvs[req.params.id].progress.photos.page[page]]
+      }
+      const cloud = config.get('cloudinary')
+      allrows = allrows.map((row) => {
+        //  List up the social media
+        if (row.socialMedias) row.socialMedias = row.socialMedias.join()
+        //  Grab the image data
+        if (row.data) {
+          if (row.data.height) row['image.height'] = row.data.height
+          if (row.data.width) row['image.width'] = row.data.width
+          if (row.data.public_id && row.data.version) row['image.url'] = `http://res.cloudinary.com/${cloud.cloud_name}/image/upload/v${row.data.version}/${row.data.public_id}.jpg`
+          delete row.data
+        }
+        //  Grab the person data
+        if (row.person) {
+          if (row.person.id) row['person.id'] = row.person.id
+          if (row.person.username) row['person.username'] = row.person.username
+          if (row.person.slug) row['person.slug'] = row.person.slug
+          delete row.person
+        }
+        delete row._sys
+        return row
+      })
+      const json2csvParser = new Parser()
+      const csv = json2csvParser.parse(allrows)
+      res.setHeader('Content-disposition', 'attachment; filename=testing.csv')
+      res.set('Content-Type', 'text/csv')
+      return res.status(200).send(csv)
+    }
   }
 
   //  Grab the instance
@@ -327,6 +393,13 @@ exports.instance = async (req, res) => {
     if (people[0]._sys.pagination.page < people[0]._sys.pagination.maxPage) req.templateValues.showMorePeople = true
   }
   req.templateValues.people = people
+
+  //  See if we have a CSV already in global
+  let csvProgress = null
+  if (global.csvs && global.csvs[req.templateValues.instance.id]) {
+    csvProgress = global.csvs[req.templateValues.instance.id].progress
+  }
+  req.templateValues.csvProgress = csvProgress
 
   //  Grab the languages we can use
   const langs = Object.entries(langsMap.lang2code).map((langMap) => {

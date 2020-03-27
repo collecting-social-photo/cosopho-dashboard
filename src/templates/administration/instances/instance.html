@@ -3,6 +3,13 @@
 <head>
   <title>Instance</title>
   {{> head}}
+  {{#if csvProgress}}
+    {{#if csvProgress.finished}}
+    {{else}}
+      <meta http-equiv="refresh" content="5">
+    {{/if}}
+  {{else}}
+  {{/if}}
 </head>
 
 <body>
@@ -297,6 +304,25 @@
         </div>
 
         {{> photoTable}}
+        {{#if photos}}
+          <hr />
+          <h1 class="h1" id="downloadCSV">Download Photos CSV</h1>
+          {{#if csvProgress}}
+            {{#if csvProgress.finished}}
+              <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                <button class="btn btn-primary input-group-btn" name="action" value="downloadCSV">Download CSV</button>
+              </form>
+            {{else}}
+              Building CSV, page {{csvProgress.page}} of {{csvProgress.maxPage}}, please wait.
+            {{/if}}
+          {{else}}
+            <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+              <button class="btn btn-primary input-group-btn" name="action" value="createCSV">Create new CSV</button>
+            </form>
+          {{/if}}
+          <hr />
+        {{/if}}
+
         {{> peopleTable}}
         {{#if showMorePeople}}
           <a class="btn" href="/{{selectedLang}}/administration/instances/{{instance.id}}/people">See more
