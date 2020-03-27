@@ -203,3 +203,62 @@ const reloadStrings = async (deleteFirst, strings) => {
   }
 }
 exports.reloadStrings = reloadStrings
+
+const makeCSV = async (instance, page = 0) => {
+  const graphQL = new GraphQL()
+  const queries = new Queries()
+
+  if (!global.csvs) global.csvs = {}
+  if (!global.csvs[instance]) {
+    global.csvs[instance] = {
+      progress: {
+        status: 'started',
+        lastTick: new Date(),
+        finished: false,
+        page,
+        maxPage: null,
+        photos: {
+          page: {}
+        }
+      }
+    }
+  }
+
+  global.csvs[instance].progress.page = page
+  //  Grab the photos based on this page
+  let allPhotos = null
+  let perPage = 5
+  let photosQuery = queries.get('photos', `(instance: "${instance}", sort: "desc", sort_field: "uploaded", page: ${page}, per_page: ${perPage})`)
+  allPhotos = await graphQL.fetch({
+    query: photosQuery
+  }, process.env.HANDSHAKE)
+
+  let photos = null
+  if (allPhotos.data && allPhotos.data.photos) {
+    photos = allPhotos.data.photos.map((photo) => {
+      if (photo.tags) {
+        if (Array.isArray(photo.tags)) {
+          photo.tags = photo.tags.join(', ')
+        } else {
+          photo.tags = [photo.tags]
+        }
+      }
+      return photo
+    })
+    global.csvs[instance].progress.photos.page[page] = photos
+    global.csvs[instance].progress.status = 'running'
+    global.csvs[instance].progress.lastTick = new Date()
+    if (photos.length && photos[0]._sys && photos[0]._sys.pagination) {
+      global.csvs[instance].progress.maxPage = photos[0]._sys.pagination.maxPage
+      if (photos[0]._sys.pagination.page < photos[0]._sys.pagination.maxPage) {
+        setTimeout(() => {
+          makeCSV(instance, ++page)
+        }, 500)
+      } else {
+        global.csvs[instance].progress.status = 'finished'
+        global.csvs[instance].progress.finished = true
+      }
+    }
+  }
+}
+exports.makeCSV = makeCSV
