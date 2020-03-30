@@ -227,7 +227,7 @@ const makeCSV = async (instance, page = 0) => {
   global.csvs[instance].progress.page = page
   //  Grab the photos based on this page
   let allPhotos = null
-  let perPage = 5
+  let perPage = 250
   let photosQuery = queries.get('photos', `(instance: "${instance}", sort: "desc", sort_field: "uploaded", page: ${page}, per_page: ${perPage})`)
   allPhotos = await graphQL.fetch({
     query: photosQuery
