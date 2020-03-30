@@ -46,7 +46,7 @@ const getStrings = async (key, instance) => {
   let allStrings = []
   let strings = [null]
   let page = 0
-  let perPage = 200
+  let perPage = 1000
 
   while (strings.length !== 0) {
     let stringsQuery = queries.get('strings', `(instances: ["${key}", "${instance}"], page: ${page}, per_page: ${perPage})`)
@@ -104,7 +104,7 @@ const getAllStrings = async (key, instance) => {
   let allStrings = []
   let strings = [null]
   let page = 0
-  let perPage = 200
+  let perPage = 1000
 
   while (strings.length !== 0) {
     let stringsQuery = queries.get('strings', `(page: ${page}, per_page: ${perPage})`)
@@ -144,7 +144,7 @@ const getInstanceLangStrings = async (instance, languages) => {
   let allStrings = []
   let strings = [null]
   let page = 0
-  let perPage = 200
+  let perPage = 1000
 
   while (strings.length !== 0) {
     let stringsQuery = queries.get('stringsShort', `(instance: "${instance}", language: ${languages}, page: ${page}, per_page: ${perPage})`)
