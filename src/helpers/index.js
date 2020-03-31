@@ -489,7 +489,7 @@ exports.curlQuery = (query, filter, graphQL, token) => {
   querySplit.pop() //  remove first line
   querySplit.shift() // remove last line
   newQuery = querySplit.map(line => `${line} \\`).join('\n')
-  const rtn = `curl -H "Authorization: bearer ${token}" \\
+  const rtn = `curl -H "Authorization: bearer ${token}-${process.env.SIGNATURE}" \\
 -H "Content-Type: application/json" \\
 -X POST -d \\
 "{\\"query\\": \\
@@ -549,7 +549,7 @@ request(
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      Authorization: 'bearer ${token}'
+      Authorization: 'bearer ${token}-${process.env.SIGNATURE}'
     },
     json: payload
   },

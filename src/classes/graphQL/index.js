@@ -26,7 +26,7 @@ class GraphQL {
 
     const headers = {
       'content-type': 'application/json',
-      Authorization: `bearer ${token}`
+      Authorization: `bearer ${token}-${process.env.SIGNATURE}`
     }
     return request({
       url: `${graphQL}/graphql`,
