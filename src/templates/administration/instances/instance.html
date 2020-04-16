@@ -148,7 +148,9 @@
                       <a
                         href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/initiatives/{{slug}}">{{title}}</a>
                     </div>
-                    <div class="card-subtitle h6 text-gray">{{id}}</div>
+                    <div class="card-subtitle h6 text-gray"><a
+                        href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/initiatives/{{id}}">{{id}}</a>
+                    </div>
                     <div class="card-subtitle h6 text-gray"><i class="icon icon-time"></i> {{prettyDate created}}</div>
                     <div class="card-subtitle h6 {{#if isActive}}{{else}}text-gray{{/if}}">
                       {{#if isActive}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-cross"></i>
