@@ -5,7 +5,6 @@ const Config = require('../../../../classes/config')
 const utils = require('../../../../modules/utils')
 
 exports.index = async (req, res) => {
-  console.log('In admin/instances/initiatives')
   //  Work out if the user is allowed to see this or not
   let isAllowed = false
 
@@ -14,7 +13,6 @@ exports.index = async (req, res) => {
     isAllowed = true
   }
 
-  console.log('isAllowed: ', isAllowed)
   //  Now we need to know if the user has the right to see the instance this inititative belongs to
   //  1. Get the actual instance
   const graphQL = new GraphQL()
@@ -22,16 +20,23 @@ exports.index = async (req, res) => {
 
   let initiative = null
   let initiativeQuery = queries.get('initiative', `(instance: "${req.params.id}", slug: "${req.params.slug}")`)
-  console.log(initiativeQuery)
   initiative = await graphQL.fetch({
     query: initiativeQuery
   }, process.env.HANDSHAKE)
-  console.log(initiative)
 
   if (initiative.data && initiative.data.initiative) {
     initiative = initiative.data.initiative
   } else {
-    return res.redirect(`/administration/instances/${req.params.id}`)
+    let initiativeQuery = queries.get('initiative', `(instance: "${req.params.id}", id: "${req.params.slug}")`)
+    initiative = await graphQL.fetch({
+      query: initiativeQuery
+    }, process.env.HANDSHAKE)
+
+    if (initiative.data && initiative.data.initiative) {
+      initiative = initiative.data.initiative
+    } else {
+      return res.redirect(`/administration/instances/${req.params.id}`)
+    }
   }
 
   //  We have an initiative, now we want to check its instance against the ones this
