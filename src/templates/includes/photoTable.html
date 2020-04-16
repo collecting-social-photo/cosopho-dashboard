@@ -27,7 +27,7 @@
             <tr>
               <td>
                 <a href="/{{../selectedLang}}/administration/instances/{{../instance.id}}/photo/{{id}}"><img
-                    src="http://res.cloudinary.com/{{../cloudinary.cloud_name}}/image/upload/w_250,h_250,c_fit/v{{data.version}}/{{data.public_id}}.jpg"
+                    src="http://res.cloudinary.com/{{../cloudinary.cloud_name}}/image/upload/w_250,h_250,c_fit/{{#if data.version}}v{{data.version}}/{{/if}}{{data.public_id}}.jpg"
                     class="img-responsive"></a>
               </td>
 

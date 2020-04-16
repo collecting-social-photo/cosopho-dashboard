@@ -36,7 +36,7 @@
             <div class="card primary-card-inverted">
               <div class="card-image">
                 <img
-                  src="http://res.cloudinary.com/{{cloudinary.cloud_name}}/image/upload/w_2048,h_2048,c_fit/v{{photo.data.version}}/{{photo.data.public_id}}.jpg"
+                  src="http://res.cloudinary.com/{{cloudinary.cloud_name}}/image/upload/w_2048,h_2048,c_fit/{{#if photo.data.version}}v{{photo.data.version}}/{{/if}}{{photo.data.public_id}}.jpg"
                   class="img-responsive">
               </div>
               <div class="card-body">
