@@ -60,58 +60,30 @@ exports.index = async (req, res) => {
   //  if want to actually do anything with it.
   if (req.fields && req.fields.action) {
     const mutations = new Mutations()
+    let mutation = null
 
     //  If we are approving or rejecting the photo
     if (req.fields.action === 'approvePhoto' || req.fields.action === 'rejectPhoto') {
       // Set approving or rejecting the photo
-      let approved = false
-      if (req.fields.action === 'approvePhoto') {
-        approved = true
-      }
+      const approved = (req.fields.action === 'approvePhoto')
+      mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}", reviewed: true, approved: ${approved})`)
+    }
 
-      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}", reviewed: true, approved: ${approved})`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
-      }
+    //  If we are adding or removing the photo from the homepage
+    if (req.fields.action === 'updateSlug' && req.fields.slug.trim() !== '') {
+      // Set approving or rejecting the photo
+      mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}", personSlug: "${req.fields.slug.trim()}")`)
+    }
+
+    if (req.fields.action === 'deletePhoto') {
+      mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}")`)
     }
 
     //  If we are adding or removing the photo from the homepage
     if (req.fields.action === 'homepagePhoto' || req.fields.action === 'unhomepagePhoto') {
       // Set approving or rejecting the photo
-      let homepage = false
-      if (req.fields.action === 'homepagePhoto') {
-        homepage = true
-      }
-
-      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}", homepage: ${homepage})`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
-      }
-    }
-
-    if (req.fields.action === 'deletePhoto') {
-      const mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}")`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
-      }
+      const homepage = (req.fields.action === 'homepagePhoto')
+      mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.params.photoId}", homepage: ${homepage})`)
     }
 
     if (req.fields.action === 'updatePhoto') {
@@ -145,16 +117,15 @@ exports.index = async (req, res) => {
       })
       if (where.length > 0) photoMutationValues.push(`socialMedias: ${JSON.stringify(where)}`)
 
-      const mutation = mutations.get('updatePhoto', `(${photoMutationValues.join(',')})`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
+      mutation = mutations.get('updatePhoto', `(${photoMutationValues.join(',')})`)
+    }
+
+    if (mutation) {
+      const payload = {
+        query: mutation
       }
+      await graphQL.fetch(payload, process.env.HANDSHAKE)
+      return res.redirect(req.templateValues.selfURL)
     }
   }
 

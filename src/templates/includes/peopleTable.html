@@ -2,12 +2,13 @@
   <hr />
   <div class="columns">
     <div class="column col-12">
-      <h1 class="h1">people</h1>
+      <h1 class="h1">People</h1>
       <table class="table">
         <thead>
           <tr>
             <th>id</th>
             <th>username</th>
+            <th>slug</th>
             <th>photos</th>
             <th>status</th>
             <th>action</th>
@@ -24,6 +25,9 @@
                     {{id}}
                   {{/if}}
                 </a>
+              </td>
+              <td>
+                {{slug}}
               </td>
               <td>
                 {{#if photos}}{{photos}}{{/if}}

@@ -46,6 +46,32 @@
                 <strong>Uploaded by: </strong><a
                   href="/{{selectedLang}}/administration/instances/{{instance.id}}/person/{{photo.person.slug}}">{{photo.person.username}}</a>
                 <br />
+
+                <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                  <div class="toast toast-primary">
+                    <small>To change the owner of a photo, put the new owner's slug into the form below.</small>
+                  </div>
+                  <br />
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="title">Change owner</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="slug" name="slug" value="{{photo.person.slug}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      &nbsp;
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <button class="btn btn-primary" name="action" value="updateSlug">Save</button>
+                    </div>
+                  </div>
+
+                </form>
+                <hr />
+
                 <strong>Status:</strong> {{#if photo.suspended}}
                   <span class="text-error"><i class="icon icon-cross"></i> Suspended</span>
                 {{else}}
