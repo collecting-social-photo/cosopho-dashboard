@@ -45,32 +45,25 @@ exports.index = async (req, res) => {
   //  As we know we're allowed to do stuff to this instance, we check to see
   //  if want to actually do anything with it.
   if (req.fields && req.fields.action) {
+    let mutation = null
+    const mutations = new Mutations()
+    //  If we are (un)suspending a user
     if (req.fields.action === 'unsuspendPerson' || req.fields.action === 'suspendPerson') {
-      let suspended = true
-      if (req.fields.action === 'unsuspendPerson') suspended = false
-      const mutations = new Mutations()
-      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", suspended: ${suspended})`)
-      const payload = {
-        query: mutation
-      }
-      await graphQL.fetch(payload, req.user.apitoken)
-      return setTimeout(() => {
-        res.redirect(req.templateValues.selfURL)
-      }, 1000)
+      const suspended = (req.fields.action === 'suspendPerson')
+      mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", suspended: ${suspended})`)
     }
-
+    //  If we are (un)deleting a user
     if (req.fields.action === 'undeletePerson' || req.fields.action === 'deletePerson') {
-      let deleted = true
-      if (req.fields.action === 'undeletePerson') deleted = false
-      const mutations = new Mutations()
-      let mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", deleted: ${deleted})`)
+      const deleted = (req.fields.action === 'deletePerson')
+      mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", deleted: ${deleted})`)
+    }
+    //  If a mutation has been set, do it here
+    if (mutation) {
       const payload = {
         query: mutation
       }
       await graphQL.fetch(payload, req.user.apitoken)
-      return setTimeout(() => {
-        res.redirect(req.templateValues.selfURL)
-      }, 1000)
+      return res.redirect(req.templateValues.selfURL)
     }
   }
 

@@ -97,21 +97,17 @@ exports.instance = async (req, res) => {
   //  If we have been told to do something, do it here
   let results = []
   if (req.fields && req.fields.action) {
+    let mutation = null
     const mutations = new Mutations()
 
+    //  ADDING AN INITIATIVE
     if (req.fields.action === 'addInitiative' && req.fields.title && req.fields.title !== '') {
       let description = ''
       if (req.fields.description) description = req.fields.description
-      let mutation = mutations.get('createInitiative', `(instance: "${req.params.id}", title: "${req.fields.title}", description: "${description}")`)
-      const payload = {
-        query: mutation
-      }
-      results = await graphQL.fetch(payload, process.env.HANDSHAKE)
-      return setTimeout(() => {
-        res.redirect(req.templateValues.selfURL)
-      }, 1000)
+      mutation = mutations.get('createInitiative', `(instance: "${req.params.id}", title: "${req.fields.title}", description: "${description}")`)
     }
 
+    //  UPDATING AN INSTANCE
     if (req.fields.action === 'updateInstance' && req.fields.title && req.fields.title !== '') {
       const instanceMutationValues = [
         `id: "${req.params.id}"`,
@@ -131,17 +127,10 @@ exports.instance = async (req, res) => {
           instanceMutationValues.push(`logo: ${JSON.stringify(encoded)}`)
         }
       }
-
-      let mutation = mutations.get('updateInstance', `(${instanceMutationValues.join(',')})`)
-      const payload = {
-        query: mutation
-      }
-      results = await graphQL.fetch(payload, process.env.HANDSHAKE)
-      return setTimeout(() => {
-        res.redirect(req.templateValues.selfURL)
-      }, 1000)
+      mutation = mutations.get('updateInstance', `(${instanceMutationValues.join(',')})`)
     }
 
+    //  UPDATING THE LANGUAGES
     if (req.fields.action === 'updateLanguages') {
       const newLangs = Object.entries(req.fields).map((field) => {
         const key = field[0]
@@ -156,78 +145,49 @@ exports.instance = async (req, res) => {
         `languages: ${JSON.stringify(newLangs)}`,
         `defaultLanguage: "${defaultLanguage}"`
       ]
-      let mutation = mutations.get('updateInstance', `(${instanceMutationValues.join(',')})`)
-      const payload = {
-        query: mutation
-      }
-      await graphQL.fetch(payload, process.env.HANDSHAKE)
-      return setTimeout(() => {
-        res.redirect(req.templateValues.selfURL)
-      }, 1000)
+      mutation = mutations.get('updateInstance', `(${instanceMutationValues.join(',')})`)
     }
 
+    //  DELETING AN INSTANCE
     if (req.fields.action === 'deleteInstance') {
-      let mutation = mutations.get('deleteInstance', `(id: "${req.params.id}")`)
-      const payload = {
-        query: mutation
-      }
-      results = await graphQL.fetch(payload, process.env.HANDSHAKE)
-      return setTimeout(() => {
-        res.redirect(`/${req.templateValues.selectedLang}/administration/instances`)
-      }, 1000)
+      mutation = mutations.get('deleteInstance', `(id: "${req.params.id}")`)
     }
 
-    //  If we are approving or rejecting the photo
+    //  APPROVE OR REJECT A PHOTO
     if (req.fields.action === 'approvePhoto' || req.fields.action === 'rejectPhoto') {
       // Set approving or rejecting the photo
-      let approved = false
-      if (req.fields.action === 'approvePhoto') {
-        approved = true
-      }
-
-      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", reviewed: true, approved: ${approved})`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
-      }
+      const approved = (req.fields.action === 'approvePhoto')
+      mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", reviewed: true, approved: ${approved})`)
     }
 
     //  If we are adding or removing the photo from the homepage
     if (req.fields.action === 'homepagePhoto' || req.fields.action === 'unhomepagePhoto') {
       // Set approving or rejecting the photo
-      let homepage = false
-      if (req.fields.action === 'homepagePhoto') {
-        homepage = true
-      }
-
-      const mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", homepage: ${homepage})`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
-      }
+      const homepage = (req.fields.action === 'homepagePhoto')
+      mutation = mutations.get('updatePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}", homepage: ${homepage})`)
     }
 
     if (req.fields.action === 'deletePhoto') {
-      const mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}")`)
-      if (mutation) {
-        const payload = {
-          query: mutation
-        }
-        await graphQL.fetch(payload, process.env.HANDSHAKE)
-        return setTimeout(() => {
-          res.redirect(req.templateValues.selfURL)
-        }, 1000)
+      mutation = mutations.get('deletePhoto', `(instance: "${req.params.id}", id: "${req.fields.photoId}")`)
+    }
+
+    //  If we are (un)suspending a user
+    if (req.fields.action === 'unsuspendPerson' || req.fields.action === 'suspendPerson') {
+      const suspended = (req.fields.action === 'suspendPerson')
+      mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", suspended: ${suspended})`)
+    }
+    //  If we are (un)deleting a user
+    if (req.fields.action === 'undeletePerson' || req.fields.action === 'deletePerson') {
+      const deleted = (req.fields.action === 'deletePerson')
+      mutation = mutations.get('updatePerson', `(instance: "${req.params.id}", id: "${req.fields.personId}", deleted: ${deleted})`)
+    }
+
+    if (mutation) {
+      const payload = {
+        query: mutation
       }
+      await graphQL.fetch(payload, process.env.HANDSHAKE)
+      return res.redirect(req.templateValues.selfURL)
     }
 
     if (req.fields.action === 'createCSV') {

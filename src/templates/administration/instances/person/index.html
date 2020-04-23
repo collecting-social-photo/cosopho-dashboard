@@ -44,6 +44,33 @@
                 <div class="subtitle h6 text-gray">{{person.sessionId}}</div>
               </div>
               <div class="card-body">
+
+                <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                  <div class="toast toast-warning">
+                    <strong>Warning!</strong> Changing the slug will change the user's URL to their photos, this will
+                    break any incoming links to specific photos.
+                  </div>
+                  <br />
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="title">Update slug</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="slug" name="slug" value="{{person.slug}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      &nbsp;
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <button class="btn btn-primary" name="action" value="updateSlug">Save</button>
+                    </div>
+                  </div>
+
+                </form>
+                <hr />
+
                 {{#if person.suspended}}
                   This user has been suspended.
                 {{/if}}
