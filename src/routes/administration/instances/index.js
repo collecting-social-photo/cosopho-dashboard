@@ -191,10 +191,9 @@ exports.instance = async (req, res) => {
     }
 
     if (req.fields.action === 'createCSV') {
-      if (!global.csvs) {
-        global.csvs = {}
-        global.csvs[req.params.id] = {}
-      }
+      if (!global.csvs) global.csvs = {}
+      if (!global.csvs[req.params.id]) global.csvs[req.params.id] = {}
+
       global.csvs[req.params.id].progress = {
         status: 'started',
         lastTick: new Date(),
