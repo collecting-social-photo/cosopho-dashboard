@@ -32,6 +32,8 @@ exports.index = async (req, res) => {
     }
   }
 
+  req.templateValues.KEY = process.env.KEY
+  req.templateValues.SIGNATURE = process.env.SIGNATURE
   return res.render('main/index', req.templateValues)
 }
 
