@@ -120,11 +120,12 @@ exports.index = async (req, res) => {
       mutation = mutations.get('updatePhoto', `(${photoMutationValues.join(',')})`)
     }
 
+    let results = []
     if (mutation) {
       const payload = {
         query: mutation
       }
-      await graphQL.fetch(payload, process.env.HANDSHAKE)
+      results = await graphQL.fetch(payload, req.user.apitoken)
       return res.redirect(req.templateValues.selfURL)
     }
   }
